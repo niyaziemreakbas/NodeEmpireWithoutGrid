@@ -1,17 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-
- 
-
-    bool foodSource;
-
-    bool waterSource;
-
-    Vector2 nodeVector2;
+    public int foodToTrainSoldier = 2;
+    public int waterToTrainSoldier = 2;
+    public TextMeshProUGUI soldierCountText;
+    public Vector3 offSet;
 
     public Vector2 closestStone;
     public Vector2 closestFood;
@@ -23,40 +20,32 @@ public class Node : MonoBehaviour
 
     private Node backNode;
     private List<Node> nextNodes;
-    private void Start()
+
+    private int soldierCount = 0;
+    private NodeResources nodeResources;
+    private void Awake()
     {
-        nodeVector2 = transform.position;
-       // RaycastHit2D hit = Physics2D.Raycast(nodeVector2, Vector2.zero, Mathf.Infinity, layerMask);
-        
-        
+        nodeResources = GetComponent<NodeResources>();
     }
 
-
-
-    void Update()
+    private void Start()
     {
-        // Ray ray = new Ray(raycastOrigin.position, Vector3.down);
-        // RaycastHit hit;
+        soldierCountText.transform.position = Camera.main.WorldToScreenPoint(transform.position + offSet);
+    }
 
-        
-        // if (Physics.Raycast(ray, out hit, raycastDistance))
-        // {
-        //     // �arp��ma tespit edildi
-        //     if (hit.collider.CompareTag("Water"))
-        //     {
-        //         Debug.Log("Su bulundu");
-        //         waterSource = true;
-        //     }
-        //     // �arp��ma tespit edildi
-        //     else if (hit.collider.CompareTag("Food"))
-        //     {
-        //         Debug.Log("Yemek bulundu");
-        //         foodSource = true;
-        //     }
-        // }
+    void FixedUpdate()
+    {
+        if (nodeResources.CanTrainSoldier(foodToTrainSoldier,waterToTrainSoldier))
+        {
+            nodeResources.TrainSoldier(foodToTrainSoldier,waterToTrainSoldier);
+            soldierCount++;
+            UpdateSoldierCountText();
+        }
+    }
 
-
-        
+    void UpdateSoldierCountText()
+    {
+        soldierCountText.text = soldierCount.ToString();    
     }
     
     public Node GetBackNode(){

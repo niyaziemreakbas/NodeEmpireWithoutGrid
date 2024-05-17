@@ -47,6 +47,17 @@ public class NodeResources : MonoBehaviour
         }
     }
 
+    public void TrainSoldier(int foodToTrainSoldier, int waterToTrainSoldier)
+    {
+        food -= foodToTrainSoldier;
+        water -= waterToTrainSoldier;
+    }
+
+    public bool CanTrainSoldier(int food , int water)
+    {
+        return this.food >= food && this.water >= water;
+    }
+
     public int GetFood()
     {
         return food;
