@@ -22,10 +22,10 @@ public class Node : MonoBehaviour
 
     void Update()
     {
-        // Raycast çizgisi çiz
         Ray ray = new Ray(raycastOrigin.position, Vector3.down);
         RaycastHit hit;
 
+        
         if (Physics.Raycast(ray, out hit, raycastDistance))
         {
             // Çarpýþma tespit edildi
@@ -41,5 +41,6 @@ public class Node : MonoBehaviour
                 foodSource = true;
             }
         }
+        
     }
 }
