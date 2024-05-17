@@ -30,8 +30,8 @@ public class Node : MonoBehaviour
 
     private void Start()
     {
-		 nextNodes=new List<Node>();
-        soldierCountText.transform.position = Camera.main.WorldToScreenPoint(transform.position + offSet);
+		nextNodes=new List<Node>();
+        SetTextPosition();
     }
 
     void FixedUpdate()
@@ -64,5 +64,8 @@ public class Node : MonoBehaviour
     }
     public void AddNextNode(Node nextNode){
         nextNodes.Add(nextNode);
+    }
+    public void SetTextPosition(){
+        soldierCountText.transform.position = Camera.main.WorldToScreenPoint(transform.position + offSet);
     }
 }

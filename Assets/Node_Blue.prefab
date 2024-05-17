@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8779377089424759815}
   - component: {fileID: 3282627672504944521}
   - component: {fileID: 733904125503408237}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Node_Blue
   m_TagString: Node
   m_Icon: {fileID: 0}
@@ -167,6 +167,7 @@ MonoBehaviour:
   closestStoneDistance: 0
   closestFoodDistance: 0
   closestWaterDistance: 0
+  backNode: {fileID: 0}
 --- !u!1 &6276633412887517808
 GameObject:
   m_ObjectHideFlags: 0

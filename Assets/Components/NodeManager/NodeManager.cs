@@ -52,7 +52,7 @@ public class NodeManager : MonoBehaviour
                     newPos.Normalize();
                     instantiatedNode.transform.position=newPos*distanceFromNode+parentNode.transform.position;
                 }
-
+                instantiatedNode.SetTextPosition();
                 if (newNodeLine!=null)
                 {   
                 newNodeLine.UpdateLastPosition(instantiatedNode.transform.position);
