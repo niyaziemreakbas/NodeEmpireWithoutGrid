@@ -18,7 +18,7 @@ public class NodeResources : MonoBehaviour
     #endregion
 
     
-    private void FixedUpdate() // 1 times per second
+    private void FixedUpdate() // 2 times per second
     {
         GainResources();
     }
