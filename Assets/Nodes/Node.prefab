@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5131810169158263817}
   m_Layer: 6
   m_Name: Node
-  m_TagString: Untagged
+  m_TagString: MainNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,8 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefa7e0caf27f1446af1b3b9eb559807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentNodeLine: {fileID: 0}
-  nodeLineIndex: 0
+  closestStone: {x: 0, y: 0}
+  closestFood: {x: 0, y: 0}
+  closestWater: {x: 0, y: 0}
+  closestStoneDistance: 0
+  closestFoodDistance: 0
+  closestWaterDistance: 0
+  backNode: {fileID: 0}
 --- !u!58 &5131810169158263817
 CircleCollider2D:
   m_ObjectHideFlags: 0

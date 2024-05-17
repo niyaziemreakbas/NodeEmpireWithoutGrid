@@ -21,10 +21,11 @@ public class Node : MonoBehaviour
     public double closestFoodDistance;
     public double closestWaterDistance;
 
-    private Node backNode;
+    public Node backNode;
     private List<Node> nextNodes;
     private void Start()
     {
+        nextNodes=new List<Node>();
         nodeVector2 = transform.position;
        // RaycastHit2D hit = Physics2D.Raycast(nodeVector2, Vector2.zero, Mathf.Infinity, layerMask);
         

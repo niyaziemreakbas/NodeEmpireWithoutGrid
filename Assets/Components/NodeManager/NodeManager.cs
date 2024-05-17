@@ -9,9 +9,13 @@ public class NodeManager : MonoBehaviour
     public float distanceFromNode;
     public LayerMask nodeMask;
 
+    public Transform nodesParent;
+    public Transform nodeLinesParent;
+
     Vector3 worldPosition;
     private Node instantiatedNode;
     private Node parentNode;
+    private NodeLine newNodeLine;
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -22,11 +26,17 @@ public class NodeManager : MonoBehaviour
             if (nodes != null)
             {
             parentNode=nodes.GetComponent<Node>();
-            instantiatedNode= Instantiate(nodePrefab);
+            instantiatedNode= Instantiate(nodePrefab,nodesParent);
 
             instantiatedNode.SetBackNode(parentNode);
+
             parentNode.AddNextNode(instantiatedNode);
+            
+            newNodeLine=SetLineBetweenParentNode(instantiatedNode); 
+
+
             Debug.Log(parentNode.gameObject.name);
+
             }
         }
         if (Input.GetMouseButton(0)){
@@ -42,13 +52,19 @@ public class NodeManager : MonoBehaviour
                     newPos.Normalize();
                     instantiatedNode.transform.position=newPos*distanceFromNode+parentNode.transform.position;
                 }
+
+                if (newNodeLine!=null)
+                {   
+                newNodeLine.UpdateLastPosition(instantiatedNode.transform.position);
+                }
+
             }
         }
         if (Input.GetMouseButtonUp(0)){
           
-            SetLineBetweenParentNode(instantiatedNode); 
            parentNode=null;
            instantiatedNode=null;
+           newNodeLine=null;
         }
     }
     private Collider2D GetClosestCollider(Vector3 pos){
@@ -67,17 +83,22 @@ public class NodeManager : MonoBehaviour
      return closestCollider;
     }
 
-    private void SetLineBetweenParentNode(Node node){
+    private NodeLine SetLineBetweenParentNode(Node node){
         
-            NodeLine newNodeLine=Instantiate(nodeLinePrefab);
+        NodeLine newNodeLine=Instantiate(nodeLinePrefab,nodeLinesParent);
+
+        newNodeLine.InitializeNodeLine();
+
         Node curNode = node;
         List<Vector3> positions=new List<Vector3>();
+
         while (curNode!=null)
         {
-            positions.Add(curNode.transform.position);
+            newNodeLine.AppendNodeToLine(curNode.transform.position);
+
             curNode=curNode.GetBackNode();
         }
-        newNodeLine.InitializeNodeLine(positions);
+        return newNodeLine;
     }
 
 

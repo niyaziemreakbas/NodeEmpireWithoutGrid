@@ -11,19 +11,25 @@ public class NodeLine : MonoBehaviour
         line=GetComponent<LineRenderer>();
         SetLinesByNodes();
     }
+
+    public void InitializeNodeLine(){
+        line=GetComponent<LineRenderer>();
+        nodePositions=new List<Vector3>();
+        SetLinesByNodes();
+    }
+
     public void InitializeNodeLine(List<Vector3> positions){
         line=GetComponent<LineRenderer>();
         nodePositions=positions;
         SetLinesByNodes();
     }
+
     public void AppendNodeToLine(Vector3 pos){
+        Debug.Log("worked");
         nodePositions.Add(pos);
         SetLinesByNodes();
     }
 
-    public bool IsLastNodeOnLine(int nodeIndex){
-        return nodePositions.Count-1==nodeIndex;
-    }
     
     public void SetLinesByNodes(){
         line.positionCount=nodePositions.Count;
@@ -33,6 +39,12 @@ public class NodeLine : MonoBehaviour
             positions[i]=nodePositions[i];
         }
         line.SetPositions(positions);
+    }
+
+    public void UpdateLastPosition(Vector3 pos){
+        if(nodePositions.Count==0) return;
+        nodePositions[0]=pos;
+        line.SetPosition(0,pos);
     }
 
 }
