@@ -9,14 +9,16 @@ public class Node : MonoBehaviour
 
     bool waterSource;
 
-
-    public Transform raycastOrigin;
-    public float raycastDistance = 1.0f;
+    Vector2 nodeVector2;
 
     private void Start()
     {
-        raycastOrigin = transform;
+        nodeVector2 = transform.position;
+        RaycastHit2D hit = Physics2D.Raycast(nodeVector2, Vector2.zero, Mathf.Infinity, layerMask);
+
     }
+
+
 
     void Update()
     {
