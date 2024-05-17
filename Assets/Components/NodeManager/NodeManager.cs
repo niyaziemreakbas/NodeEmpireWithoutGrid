@@ -23,6 +23,9 @@ public class NodeManager : MonoBehaviour
             {
             parentNode=nodes.GetComponent<Node>();
             instantiatedNode= Instantiate(nodePrefab);
+
+            instantiatedNode.SetBackNode(parentNode);
+            
             Debug.Log(parentNode.gameObject.name);
             }
         }
@@ -42,6 +45,8 @@ public class NodeManager : MonoBehaviour
             }
         }
         if (Input.GetMouseButtonUp(0)){
+          
+            SetLineBetweenParentNode(instantiatedNode); 
            parentNode=null;
            instantiatedNode=null;
         }
@@ -62,64 +67,22 @@ public class NodeManager : MonoBehaviour
      return closestCollider;
     }
 
-    private void SetLineBetweenParentNode(){
-                
-
-    }
-
-
-
-
-
-
-    private void BuildNode(){
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        worldPosition.z=0;
-        Collider2D nodes=Physics2D.OverlapCircle(worldPosition,distanceFromNode,nodeMask);
-
-        if (nodes!=null)
+    private void SetLineBetweenParentNode(Node node){
+        
+                NodeLine newNodeLine=Instantiate(nodeLinePrefab);
+        Node curNode = node;
+        List<Vector3> positions=new List<Vector3>();
+        while (curNode!=null)
         {
-
-            Node parentNode=nodes.GetComponent<Node>();
-            Debug.Log(parentNode.gameObject.name);
-            NodeLine parentNodeLine=parentNode.GetNodeLine();
-
-            Node newNode=Instantiate(nodePrefab);
-            newNode.transform.position=worldPosition;
-
-
-            // main node degilse diye bi kontrol gelecek
-            if (parentNode.CompareTag("MainNode"))
-            {
-                NodeLine newNodeLine=Instantiate(nodeLinePrefab);
-                newNode.SetNodeLine(newNodeLine);
-                newNode.SetNodeLineIndex(parentNode.GetNodeLineIndex()+1);
-                List<Node> newNodes=new List<Node>();
-                newNodes.Add(parentNode);
-                newNodeLine.InitializeNodeLine(newNodes);
-                newNodeLine.AppendNodeToLine(newNode);
-
-            }else {
-
-            // check if last vertex on line
-            if (parentNode.CheckLastOnLine())
-            {
-                // append to node line
-                newNode.SetNodeLine(parentNodeLine);
-                newNode.SetNodeLineIndex(parentNode.GetNodeLineIndex()+1);
-
-                newNode.GetNodeLine().AppendNodeToLine(newNode);
-
-            }else{
-
-                // create new NodeLine
-                NodeLine newNodeLine=Instantiate(nodeLinePrefab);
-                newNode.SetNodeLineIndex(parentNode.GetNodeLineIndex()+1);
-                newNodeLine.InitializeNodeLine(parentNodeLine.GetNodesToIndex(parentNode.GetNodeLineIndex()));
-                newNodeLine.AppendNodeToLine(newNode);
-            }
-
-            }
+            positions.Add(curNode.transform.position);
+            curNode=curNode.GetBackNode();
         }
+        newNodeLine.InitializeNodeLine(positions);
     }
+
+
+
+
+
+
 }
