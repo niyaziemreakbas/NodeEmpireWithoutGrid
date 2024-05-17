@@ -8,7 +8,7 @@ public class NodePlacement : MonoBehaviour
 
     public Sprite sprite;
 
-    public GameObject house;
+    public GameObject node;
 
     bool isBuilding;
 
@@ -31,7 +31,7 @@ public class NodePlacement : MonoBehaviour
     {
         if (isBuilding)
         {
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);     
 
             RaycastHit2D hit = Physics2D.Raycast(mousePosition, Vector2.zero, Mathf.Infinity, layerMask);
 
@@ -39,7 +39,7 @@ public class NodePlacement : MonoBehaviour
             {
                 if (Input.GetMouseButton(0))
                 {
-                    Instantiate(house, mousePosition, Quaternion.identity);
+                    Instantiate(node, mousePosition, Quaternion.identity);
                     customCursor.gameObject.SetActive(false);
                     Cursor.visible = true;
                     isBuilding = false;
