@@ -20,9 +20,8 @@ public class NodeManager : MonoBehaviour
         }
         if (Input.GetMouseButton(0)){
              Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            worldPosition.z=0;
-
-            nodePrefab=instantiaedNode.transform.position;
+                worldPosition.z=0;
+            instantiaedNode.transform.position=worldPosition;
         }
     }
 
