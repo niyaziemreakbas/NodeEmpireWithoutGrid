@@ -16,6 +16,11 @@ public class Resource : MonoBehaviour
         instance = this;
     }
 
+    public void GainStone(int stone)
+    {
+        this.stone += stone;
+    }
+
     public int GetStone()
     {
         return stone;
