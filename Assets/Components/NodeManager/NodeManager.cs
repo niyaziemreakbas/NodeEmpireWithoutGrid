@@ -25,7 +25,7 @@ public class NodeManager : MonoBehaviour
             instantiatedNode= Instantiate(nodePrefab);
 
             instantiatedNode.SetBackNode(parentNode);
-            
+            parentNode.AddNextNode(instantiatedNode);
             Debug.Log(parentNode.gameObject.name);
             }
         }
@@ -69,7 +69,7 @@ public class NodeManager : MonoBehaviour
 
     private void SetLineBetweenParentNode(Node node){
         
-                NodeLine newNodeLine=Instantiate(nodeLinePrefab);
+            NodeLine newNodeLine=Instantiate(nodeLinePrefab);
         Node curNode = node;
         List<Vector3> positions=new List<Vector3>();
         while (curNode!=null)

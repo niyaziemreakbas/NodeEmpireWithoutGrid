@@ -11,14 +11,9 @@ public class Node : MonoBehaviour
 
     bool waterSource;
 
-        Vector2 nodeVector2;
-
-
+    Vector2 nodeVector2;
     private Node backNode;
-    public NodeLine currentNodeLine;
-    public int nodeLineIndex;
-
-
+    private List<Node> nextNodes;
     private void Start()
     {
         nodeVector2 = transform.position;
@@ -54,23 +49,6 @@ public class Node : MonoBehaviour
 
         
     }
-
-    public bool CheckLastOnLine(){
-        return currentNodeLine.IsLastNodeOnLine(nodeLineIndex);
-    }
-    public NodeLine GetNodeLine(){
-        return currentNodeLine;
-    }
-    public int GetNodeLineIndex(){
-        return nodeLineIndex;
-    }
-    public void SetNodeLine(NodeLine nodeLine){
-        currentNodeLine=nodeLine;
-
-    }
-    public void SetNodeLineIndex(int nodeIndex){
-        nodeLineIndex=nodeIndex;
-    }
     
     public Node GetBackNode(){
         return backNode;
@@ -79,5 +57,13 @@ public class Node : MonoBehaviour
     public void SetBackNode(Node newBackNode){
         backNode=newBackNode;
     }
-    
+    public List<Node> GetNextNodes(){
+        return nextNodes;
+    }
+    public void SetNextNode(List<Node> newNextNodes){
+        nextNodes=newNextNodes;
+    }
+    public void AddNextNode(Node nextNode){
+        nextNodes.Add(nextNode);
+    }
 }
