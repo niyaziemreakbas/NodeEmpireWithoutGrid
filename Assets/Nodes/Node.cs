@@ -14,7 +14,7 @@ public class Node : MonoBehaviour
         Vector2 nodeVector2;
 
 
-
+    private Node backNode;
     public NodeLine currentNodeLine;
     public int nodeLineIndex;
 
@@ -70,6 +70,14 @@ public class Node : MonoBehaviour
     }
     public void SetNodeLineIndex(int nodeIndex){
         nodeLineIndex=nodeIndex;
+    }
+    
+    public Node GetBackNode(){
+        return backNode;
+    }
+    
+    public void SetBackNode(Node newBackNode){
+        backNode=newBackNode;
     }
     
 }

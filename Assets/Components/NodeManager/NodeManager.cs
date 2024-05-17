@@ -9,23 +9,63 @@ public class NodeManager : MonoBehaviour
     public float distanceFromNode;
     public LayerMask nodeMask;
 
-
-    private Node instantiaedNode;
-
+    Vector3 worldPosition;
+    private Node instantiatedNode;
+    private Node parentNode;
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            instantiaedNode= Instantiate(nodePrefab);
+            worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            worldPosition.z =   0;
+            Collider2D nodes=GetClosestCollider(worldPosition);
+            if (nodes != null)
+            {
+            parentNode=nodes.GetComponent<Node>();
+            instantiatedNode= Instantiate(nodePrefab);
+            Debug.Log(parentNode.gameObject.name);
+            }
         }
         if (Input.GetMouseButton(0)){
-             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (parentNode!=null)
+            {
+                worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 worldPosition.z=0;
-            instantiaedNode.transform.position=worldPosition;
+                if (Vector3.Distance(worldPosition,parentNode.transform.position)<=distanceFromNode)
+                {
+                    instantiatedNode.transform.position=worldPosition;
+                }else{
+                    Vector3 newPos=worldPosition-parentNode.transform.position;
+                    newPos.Normalize();
+                    instantiatedNode.transform.position=newPos*distanceFromNode+parentNode.transform.position;
+                }
+            }
+        }
+        if (Input.GetMouseButtonUp(0)){
+           parentNode=null;
+           instantiatedNode=null;
         }
     }
+    private Collider2D GetClosestCollider(Vector3 pos){
+        Collider2D closestCollider=null;
+        Collider2D[] nodes=Physics2D.OverlapCircleAll(worldPosition,distanceFromNode,nodeMask);
+        float distance=9999;
+        foreach (Collider2D item in nodes)
+        {
+            float curDistance=Vector3.Distance(item.transform.position,pos);
+            if (curDistance<=distance)
+            {
+                closestCollider=item;
+                distance=curDistance;
+            }
+        }
+     return closestCollider;
+    }
 
+    private void SetLineBetweenParentNode(){
+                
 
+    }
 
 
 
