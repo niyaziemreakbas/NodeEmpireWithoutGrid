@@ -12,6 +12,15 @@ public class Node : MonoBehaviour
     bool waterSource;
 
     Vector2 nodeVector2;
+
+    public Vector2 closestStone;
+    public Vector2 closestFood;
+    public Vector2 closestWater;
+
+    public double closestStoneDistance;
+    public double closestFoodDistance;
+    public double closestWaterDistance;
+
     private Node backNode;
     private List<Node> nextNodes;
     private void Start()
