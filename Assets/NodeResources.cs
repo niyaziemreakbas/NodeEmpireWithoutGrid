@@ -29,7 +29,7 @@ public class NodeResources : MonoBehaviour
         resource = mainNode.GetComponent<Resource>();
     }
 
-    private void FixedUpdate() // 2 times per second
+    private void FixedUpdate()
     {
         
         GainResources();
