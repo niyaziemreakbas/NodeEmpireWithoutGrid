@@ -9,6 +9,7 @@ TagManager:
   - Node
   - Food
   - Stone
+  - CollapsedNode
   layers:
   - Default
   - TransparentFX
