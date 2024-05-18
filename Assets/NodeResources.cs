@@ -11,17 +11,14 @@ public class NodeResources : MonoBehaviour
     #endregion
 
     private SourceType sourceType;
-
-    private Node node;
     private Node mainNode;
     private Resource resource;
 
     private void Start()
     {
-        node = GetComponent<Node>();
-        mainNode = node.GetBackNode();
+        mainNode = GetComponent<Node>();
 
-        while (mainNode != null)
+        while (mainNode.GetBackNode() != null)
         {
             mainNode = mainNode.GetBackNode();
         }
