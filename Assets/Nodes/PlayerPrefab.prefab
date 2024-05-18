@@ -166,9 +166,6 @@ MonoBehaviour:
   offSet: {x: 0, y: 1.2, z: 0}
   backNode: {fileID: 0}
   soldierCount: 0
-  isConnectedOnEnemy: 0
-  enemyNode: {fileID: 0}
-  enemyLine: {fileID: 0}
 --- !u!1 &6276633412887517808
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,15 +258,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 1
+  m_fontSizeBase: 1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 1024
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
