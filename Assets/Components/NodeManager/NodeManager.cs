@@ -91,7 +91,7 @@ public class NodeManager : MonoBehaviour
                     instantiatedNode=hit.collider.GetComponent<Node>();
                     newNodeLine=Instantiate(nodeLinePrefab,nodeLinesParent);
                     newNodeLine.InitializeNodeLine();
-                    newNodeLine.SetColor(Color.red);
+                    newNodeLine.SetColor(Color.yellow);
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
                 }
@@ -104,19 +104,21 @@ public class NodeManager : MonoBehaviour
                         worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                         worldPosition.z=0;
                         newNodeLine.UpdateLastPosition(worldPosition);
-
-
-
                 }
             }
             if (Input.GetMouseButtonUp(0))
             {
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,enemyNodeMask);
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
                 if(hit.collider != null)
                 {
-                    Node enemyNode=hit.collider.GetComponent<Node>();
-                    newNodeLine.UpdateLastPosition(enemyNode.transform.position);
-
+                    Node hittedNode=hit.collider.GetComponent<Node>();
+                    newNodeLine.UpdateLastPosition(hittedNode.transform.position);
+                    if (hittedNode.gameObject.CompareTag("EnemyNode"))
+                    {
+                        newNodeLine.SetColor(Color.red);
+                        hittedNode.SetEnemyNode(instantiatedNode);
+                        instantiatedNode.SetEnemyNode(hittedNode);
+                    }
 
                     // set enemy next node
 

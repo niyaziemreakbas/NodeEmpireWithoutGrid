@@ -24,7 +24,9 @@ public class Node : MonoBehaviour
 
     private bool builded;
 
-    
+    private bool isConnectedOnEnemy;
+    private Node enemyNode;
+    private NodeLine enemyLine;
 
     private void Awake()
     {
@@ -52,6 +54,7 @@ public class Node : MonoBehaviour
         {
             return;
         }
+
         if (nodeResources.CanTrainSoldier(foodToTrainSoldier,waterToTrainSoldier))
         {
             nodeResources.TrainSoldier(foodToTrainSoldier,waterToTrainSoldier);
@@ -85,6 +88,17 @@ public class Node : MonoBehaviour
     public void SetTextPosition(){
         soldierCountText.transform.position = Camera.main.WorldToScreenPoint(transform.position + offSet);
     }
+    public void SetEnemyNode(Node node){
+        enemyNode=node;
+    }
+    public void SetEnemyNodeLine(NodeLine nodeLine){
+        enemyLine=nodeLine;
+    }
+    public void SetIsConnectedToEnemy(bool state){
+        isConnectedOnEnemy=state;
+    }
+
+
     private void OnDestroy() {
         if(soldierCountText != null)
         {

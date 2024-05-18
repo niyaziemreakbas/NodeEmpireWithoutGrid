@@ -9,6 +9,7 @@ TagManager:
   - Node
   - Food
   - Stone
+  - Enemy
   layers:
   - Default
   - TransparentFX
