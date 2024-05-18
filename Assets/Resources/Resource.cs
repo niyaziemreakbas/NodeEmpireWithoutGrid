@@ -9,7 +9,8 @@ public class Resource : MonoBehaviour
 
 
     int stone = 0;
-    int gold = 0;
+    int food = 0;
+    int water = 0;
 
     private void Awake()
     {
@@ -21,14 +22,44 @@ public class Resource : MonoBehaviour
         this.stone += stone;
     }
 
+    public void GainFood(int food)
+    {
+        this.food += food;
+    }
+
+    public void GainWater(int water)
+    {
+        this.water += water;
+    }
+
+    public void SpendStone(int stone)
+    {
+        this.stone -= stone;
+    }
+
+    public void SpendFood(int food)
+    {
+        this.food -= food;
+    }
+
+    public void SpendWater(int water)
+    {
+        this.water -= water;
+    }
+
     public int GetStone()
     {
         return stone;
     }
 
-    public int GetGold()
+    public int GetFood()
     {
-        return gold;
+        return food;
+    }
+
+    public int GetWater()
+    {
+        return water;
     }
 
 }
