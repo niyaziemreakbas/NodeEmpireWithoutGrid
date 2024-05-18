@@ -24,6 +24,7 @@ public class AudioManager : MonoBehaviour
         }
 
         audioSource = GetComponent<AudioSource>();
+        DontDestroyOnLoad(audioSource);
     }
 
     public void SimpleButtonClickSF()
