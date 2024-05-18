@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -17,20 +19,17 @@ public class DecisionEngine : MonoBehaviour
 
     bool attack = false;
 
-    public int nodeCountUntilAttack;
+    public int nodeCountUntilAttack = 5;
 
     public GameObject Node;
 
     public NodeAI nodePrefab;
 
-    public NodeAI tempNode;
+    NodeAI tempNode;
     
     public NodeLine nodeLinePrefab;
 
-    public float lineLength;
-
-    //Kaynaklar� �ekece�imiz sat�r
-    public Resource Resource; 
+    public float lineLength = 5;
 
 
 
@@ -47,9 +46,15 @@ public class DecisionEngine : MonoBehaviour
 
 
     State currentState;
-    private void Start() {
-
+    private void Update() {
+        if(allyNodes.Count == 0)
+        {
+            tempNode = this.GetComponent<NodeAI>();
+        }
         allyNodes.Add(GetComponent<NodeAI>());
+        CheckNodesForStone();
+        CheckNodesForFood();
+        CheckNodesForWater();
         /*
         allyNodes=new List<NodeAI>();
         GoLocation(new Vector3(20,20,0));
@@ -102,14 +107,20 @@ public class DecisionEngine : MonoBehaviour
         NodeAI startNode = tempNode;
         Vector2 currentGoal = Vector2.zero;
         double currentClosestGoalDistance = double.MaxValue;
+
         foreach (NodeAI node in allyNodes)
         {
             if(currentClosestGoalDistance > node.closestStoneDistance)
             {
+                Debug.Log("if içine gşrdi");
+                Debug.Log("stone mesafesi : " + node.closestStone);
+
                 currentClosestGoalDistance = node.closestStoneDistance;
                 currentGoal = node.closestStone;
             }
         }
+        Debug.Log("currentGoal : " + currentGoal);
+
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
         GoLocation(startNode, currentGoal);
 
@@ -160,6 +171,7 @@ public class DecisionEngine : MonoBehaviour
     //Belli bir konuma node �ek
     void GoLocation(NodeAI node, Vector2 target)
     {
+        Debug.Log("Go Loc Çalıştı");
         if(target != Vector2.zero)
         {
             Debug.Log("Target not reachable");
@@ -173,21 +185,43 @@ public class DecisionEngine : MonoBehaviour
     //S�radaki node'u bul
     void generateNextNode(NodeAI startNode, Vector2 targetLoc)
     {
+
+        Vector2 startNodeLoc = startNode.transform.position;
+        Debug.Log("startNode : " + startNodeLoc);
+        Debug.Log("targetLoc : " + targetLoc);
+
         //Kaynak yeterliyse basacak
-        if(GetComponent<Resource>().stone < buildCost)
+        if (GetComponent<Resource>().stone < buildCost)
         {
             //continue to collecting
             Debug.Log("Not enough resources to create node");
             return;
         }
+        Debug.Log("Üretiyom abim");
 
+        // İki nokta arasındaki yön vektörünü hesapla
+        Vector2 direction = targetLoc - startNodeLoc;
 
+        Debug.Log("direction : " + direction);
+        float distance = (targetLoc - startNodeLoc).magnitude;
+        Debug.Log("distance : " + direction);
+
+        // Yön vektörünü normalleştir (birim vektör)
+        direction.Normalize();
+
+        // Normalleştirilmiş yön vektörünü mesafe ile çarp
+        Vector2 moveVector = direction * lineLength;
+
+        // Yeni noktayı hesapla
+        Vector2 newPoint = startNodeLoc + moveVector;
+
+        /*
         // Hedef konum ile ba�lang�� konumu aras�ndaki fark� hesapla
         Vector2 difference = targetLoc - (Vector2)startNode.transform.position;
 
         // Bu fark�n b�y�kl���n� hesapla
         float distance = difference.magnitude;
-
+        */
         if(distance <= 5f)
         {
             //Next node target loca instantiate ve ��k
@@ -199,20 +233,23 @@ public class DecisionEngine : MonoBehaviour
         else
         {
 
-
+            Debug.Log("else çalıştı amk");
+            /*
             // Fark vekt�r�n� normalle�tirerek birim vekt�r elde et
             Vector2 direction = difference.normalized;
+            Debug.Log("Direction 2 x ve y " + direction.x + " " + direction.y);
 
             // Belirli bir mesafeye (�rne�in, 5 birim) �arp ve yeni noktay� hesapla
             Vector2 nextNode = (Vector2)startNode.transform.position + direction * lineLength;
-
+            Debug.Log("VEctor 2 x ve y " + nextNode.x + " " + nextNode.y);
+            */
             //Instantiate Object at nextNode
-            NodeAI newNode=CreateNode(nextNode,startNode);
+            CreateNode(newPoint,startNode);
 
             //Next node target loc y�n�nde ama 5 birim uzakl���ndaki konuma instantiate
-            generateNextNode(newNode, targetLoc);
+            //generateNextNode(newNode, targetLoc);
         }
-
+        
     }
     
     void AttackNode()
@@ -257,7 +294,7 @@ public class DecisionEngine : MonoBehaviour
     }
 
     public NodeAI CreateNode(Vector3 position, NodeAI backNode){
-
+        Debug.Log("Create Node çağrıldı : "  +position);
             NodeAI newNode= Instantiate(nodePrefab);
             Node newNodeNode=newNode.GetComponent<Node>();
             newNode.transform.position=position;

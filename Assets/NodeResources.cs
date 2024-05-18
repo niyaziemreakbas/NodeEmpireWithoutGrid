@@ -59,7 +59,6 @@ public class NodeResources : MonoBehaviour
                 print("stone girdi");
                 break;
             default:
-                print("girdi");
                 break;
         }
     }
