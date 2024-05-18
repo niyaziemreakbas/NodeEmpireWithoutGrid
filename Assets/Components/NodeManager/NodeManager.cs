@@ -30,23 +30,23 @@ public class NodeManager : MonoBehaviour
         if (mode==0)
         {
          
-        if (Input.GetMouseButtonDown(0))
-        {
-            worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            worldPosition.z =   0;
-            Collider2D nodes=GetClosestCollider(worldPosition);
-            if (nodes != null)
+            if (Input.GetMouseButtonDown(0))
             {
-            parentNode=nodes.GetComponent<Node>();
-            instantiatedNode= Instantiate(nodePrefab,nodesParent);
+                worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                worldPosition.z =   0;
+                Collider2D nodes=GetClosestCollider(worldPosition);
+                if (nodes != null)
+                {
+                    parentNode=nodes.GetComponent<Node>();
+                    instantiatedNode= Instantiate(nodePrefab,nodesParent);
 
-            instantiatedNode.SetBackNode(parentNode);
+                    instantiatedNode.SetBackNode(parentNode);
 
-            parentNode.AddNextNode(instantiatedNode);
+                    parentNode.AddNextNode(instantiatedNode);
             
-            newNodeLine=SetLineBetweenParentNode(instantiatedNode); 
+                    newNodeLine=SetLineBetweenParentNode(instantiatedNode); 
+                }
             }
-        }
         if (Input.GetMouseButton(0)){
             if (parentNode!=null)
             {

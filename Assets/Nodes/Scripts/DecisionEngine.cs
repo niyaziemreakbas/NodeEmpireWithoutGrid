@@ -7,6 +7,8 @@ public class DecisionEngine : MonoBehaviour
     NodeAI[] allyNodes;
     NodeAI[] targetNodes;
 
+    //Kaynaklarý çekeceðimiz satýr
+
     enum State
     {
         SearchingStone,
@@ -86,7 +88,7 @@ public class DecisionEngine : MonoBehaviour
     //Nodelar arasýnda yemeðe en yakýn konumu bul
     void CheckNodesForFood()
     {
-        Vector2 currentGoal;
+        Vector2 currentGoal = Vector2.zero;
         double currentClosestGoalDistance = double.MaxValue;
         foreach (NodeAI node in allyNodes)
         {
@@ -98,29 +100,38 @@ public class DecisionEngine : MonoBehaviour
             }
         }
         //Yukarýda bulunuyor ve artýk hedefe gidebilir
+        GoLocation(currentGoal);
     }
 
 
     //Belli bir konuma node çek
     void GoLocation(Vector2 target)
     {
+        if(target != Vector2.zero)
+        {
+            Debug.Log("Target not reachable");
+        }
 
         //Orada tam hedef noktada yeni bir node oluþturulana kadar döngü devam etsin
         Vector2 startLoc = transform.position;
-        getNextNode(startLoc, target);
+        generateNextNode(startLoc, target);
         
     }
 
     //Sýradaki node'u bul
-    void getNextNode(Vector2 startLoc, Vector2 targetLoc)
+    void generateNextNode(Vector2 startLoc, Vector2 targetLoc)
     {
+        //Kaynak yeterliyse basacak
+        //if()
+
+
         // Hedef konum ile baþlangýç konumu arasýndaki farký hesapla
         Vector2 difference = targetLoc - startLoc;
 
         // Bu farkýn büyüklüðünü hesapla
         float distance = difference.magnitude;
 
-        if(distance <= 5)
+        if(distance <= 5f)
         {
             //Next node target loca instantiate ve çýk
             
@@ -128,11 +139,21 @@ public class DecisionEngine : MonoBehaviour
         }
         else
         {
+
+
+            // Fark vektörünü normalleþtirerek birim vektör elde et
+            Vector2 direction = difference.normalized;
+
+            // Belirli bir mesafeye (örneðin, 5 birim) çarp ve yeni noktayý hesapla
+            Vector2 nextNode = startLoc + direction * 5f;
+
             //Next node target loc yönünde ama 5 birim uzaklýðýndaki konuma instantiate
-            getNextNode(startLoc, targetLoc);
+            generateNextNode(nextNode, targetLoc);
         }
 
     }
+
+
 
     //Düþman yakýnsa savun
     void CheckNodesForEnemies()
