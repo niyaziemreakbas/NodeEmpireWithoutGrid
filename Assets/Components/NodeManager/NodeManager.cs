@@ -37,6 +37,7 @@ public class NodeManager : MonoBehaviour
                 if (nodes != null)
                 {
                     parentNode=nodes.GetComponent<Node>();
+                    
                     instantiatedNode= Instantiate(nodePrefab,nodesParent);
 
                     instantiatedNode.SetBackNode(parentNode);
@@ -94,7 +95,7 @@ public class NodeManager : MonoBehaviour
                     newNodeLine.SetColor(Color.yellow);
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
-                    
+
                 }
                 
             }
