@@ -8,6 +8,7 @@ public class CustomCursor : MonoBehaviour
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = mousePosition;
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
