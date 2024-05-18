@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DecisionEngine : MonoBehaviour
 {
-    List<NodeAI> allyNodes;
+    List<NodeAI> allyNodes=new List<NodeAI>();
     List<NodeAI> targetNodes;
 
     int buildCost = 15;
@@ -43,9 +43,9 @@ public class DecisionEngine : MonoBehaviour
     State currentState;
     private void Start() {
 
+        allyNodes.Add(GetComponent<NodeAI>());
         /*
         allyNodes=new List<NodeAI>();
-        allyNodes.Add(GetComponent<NodeAI>());
         GoLocation(new Vector3(20,20,0));
         GoLocation(new Vector3(5,20,0));
         */
@@ -76,7 +76,7 @@ public class DecisionEngine : MonoBehaviour
                 CheckNodesForWater();
                 break;
             case State.Danger:
-                AttackNode(tempNode);
+                AttackNode(tempNode.GetComponent<Node>());
                 break;
 
         }
@@ -208,9 +208,9 @@ public class DecisionEngine : MonoBehaviour
         Instantiate(Node, vector3, Quaternion.identity);
     }
 
-    void AttackNode(NodeAI target)
+    void AttackNode(Node target)
     {
-
+           
     }
 
     //D��man yak�nsa savun
@@ -218,7 +218,7 @@ public class DecisionEngine : MonoBehaviour
     {
         int randomIndex = Random.Range(0, targetNodes.Count);
 
-        AttackNode(targetNodes[randomIndex]);
+        AttackNode(targetNodes[randomIndex].GetComponent<Node>());
     }
 
 
@@ -249,6 +249,33 @@ public class DecisionEngine : MonoBehaviour
     }
 	
     */
+    public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode){
+        foreach (NodeAI item in allyNodes)
+        {   
+
+            if (item.GetComponent<Node>().Equals(attackedNode))
+            {
+                return;
+            }
+        }
+        
+        Node nodeAttackerNode=attackerNode.GetComponent<Node>();
+
+        NodeLine newNodeLine=Instantiate(nodeLinePrefab);
+                    newNodeLine.InitializeNodeLine();
+                    newNodeLine.SetColor(Color.red);
+                    newNodeLine.AppendNodeToLine(attackedNode.transform.position);
+                    newNodeLine.AppendNodeToLine(nodeAttackerNode.transform.position);
+    
+                        nodeAttackerNode.SetEnemyNode(attackedNode);
+                        nodeAttackerNode.SetIsConnectedToEnemy(true);
+                        nodeAttackerNode.SetEnemyNodeLine(newNodeLine);
+
+                        attackedNode.SetEnemyNode(nodeAttackerNode);
+                        attackedNode.SetIsConnectedToEnemy(true);
+                        attackedNode.SetEnemyNodeLine(newNodeLine);
+
+    }
     public NodeAI CreateNode(Vector3 position, NodeAI backNode){
 
             NodeAI newNode= Instantiate(nodePrefab);

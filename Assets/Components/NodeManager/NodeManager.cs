@@ -94,6 +94,7 @@ public class NodeManager : MonoBehaviour
                     newNodeLine.SetColor(Color.yellow);
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
+                    
                 }
                 
             }
