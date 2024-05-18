@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3282627672504944521}
   - component: {fileID: 733904125503408237}
   m_Layer: 6
-  m_Name: Node_Blue
+  m_Name: PlayerPrefab
   m_TagString: PlayerNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -451208537
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 131afa0938b0ebf44be9dc0a10fe8b4b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

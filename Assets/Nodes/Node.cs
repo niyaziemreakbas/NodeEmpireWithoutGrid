@@ -24,9 +24,9 @@ public class Node : MonoBehaviour
 
     private bool builded;
 
-    public bool isConnectedOnEnemy;
-    public Node enemyNode;
-    public NodeLine enemyLine;
+    private bool isConnectedOnEnemy;
+    private Node enemyNode;
+    private NodeLine enemyLine;
 
     private void Awake()
     {nextNodes=new List<Node>();
@@ -71,7 +71,6 @@ public class Node : MonoBehaviour
 
             if (enemyLine==null)
             {
-            
                 isConnectedOnEnemy=false;
                 enemyNode=null;
             
@@ -125,7 +124,7 @@ public class Node : MonoBehaviour
         {
             Destroy(soldierCountText.gameObject);
         }
-        
+
         foreach (Node item in nextNodes)
         {
             Destroy(item.gameObject);
