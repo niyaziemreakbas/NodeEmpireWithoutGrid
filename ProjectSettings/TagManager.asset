@@ -11,6 +11,8 @@ TagManager:
   - Stone
   - PlayerNode
   - EnemyNode
+  - Enemy
+  - CollapsedNode
   layers:
   - Default
   - TransparentFX
