@@ -15,9 +15,9 @@ public class Node : MonoBehaviour
     public Vector2 closestFood;
     public Vector2 closestWater;
 
-    public double closestStoneDistance;
-    public double closestFoodDistance;
-    public double closestWaterDistance;
+    public float closestStoneDistance;
+    public float closestFoodDistance;
+    public float closestWaterDistance;
 
     public Node backNode;
     private List<Node> nextNodes;
@@ -29,17 +29,28 @@ public class Node : MonoBehaviour
 
     private bool builded;
 
-    // Belirli bir merkez nokta ve yar��ap ile dairenin i�indeki en yak�n "food" tag'ine sahip nesnenin pozisyonunu d�ner
+    // Belirli bir merkez nokta ve yar��ap ile dairenin i�indeki en yak�n tag'ine sahip nesnenin pozisyonunu d�ner
     public Vector2 FindNearestTargetInCircle(float radius, string target)
     {
         centerPoint = transform.position;
-        
-        // Daire i�inde "food" tag'ine sahip olan Collider2D'leri al
-        Collider2D[] hits = Physics2D.OverlapCircleAll(centerPoint, radius);
-        GameObject nearestTarget = null;
-        float nearestDistance = Mathf.Infinity;
+        Vector2 closestPoint = Vector2.zero;
+        int sourceLayerMask = LayerMask.GetMask("Source");
 
-        // Bulunan Collider2D'ler aras�nda "food" tag'ine sahip olanlar� kontrol et
+        /*        
+                // Daire i�inde tag'ine sahip olan Collider2D'leri al
+                Collider2D[] hits = Physics2D.OverlapCircleAll(centerPoint, radius);
+                float nearestDistance = Mathf.Infinity;
+
+                */
+        RaycastHit2D hit = Physics2D.CircleCast(centerPoint, radius, Vector2.zero, Mathf.Infinity, sourceLayerMask);
+        if (hit.collider != null && hit.collider.CompareTag(target))
+        {
+            Debug.Log("Found a hit");
+            closestPoint = Physics2D.ClosestPoint(centerPoint, hit.collider);
+        }
+
+        /*
+        // Bulunan Collider2D'ler aras�nda tag'ine sahip olanlar� kontrol et
         foreach (Collider2D hit in hits)
         {
             if (hit.CompareTag(target))
@@ -58,15 +69,12 @@ public class Node : MonoBehaviour
                 }
             }
         }
+        */
 
-        // En yak�n "food" tag'ine sahip nesnenin pozisyonunu d�ner
-        if (nearestTarget != null)
-        {
-            return nearestTarget.transform.position;
-        }
 
-        // E�er daire i�inde hi� "food" tag'ine sahip nesne yoksa, Vector2.zero d�ner
-        return Vector2.zero;
+        
+        // E�er daire i�inde hi� tag'ine sahip nesne yoksa, Vector2.zero d�ner
+        return closestPoint;
     }
 
     // Debug ama�l�, sahnede daireyi �izer
@@ -94,10 +102,22 @@ public class Node : MonoBehaviour
 
 
         // NearestFoodFinder script'ini kullanarak daire i�indeki en yak�n "food" nesnesinin pozisyonunu al
-        Vector2 nearestFoodPosition = FindNearestTargetInCircle(searchRadius, "Food");
+        closestFood = FindNearestTargetInCircle(searchRadius, "Food");
 
-        // En yak�n "food" nesnesinin pozisyonunu ekrana yazd�r
-        Debug.Log("Nearest food position in circle: " + nearestFoodPosition);
+        // NearestFoodFinder script'ini kullanarak daire i�indeki en yak�n "food" nesnesinin pozisyonunu al
+        closestStone = FindNearestTargetInCircle(searchRadius, "Stone");
+
+        // NearestFoodFinder script'ini kullanarak daire i�indeki en yak�n "food" nesnesinin pozisyonunu al
+        closestWater = FindNearestTargetInCircle(searchRadius, "Water");
+
+        closestWaterDistance = (closestWater != Vector2.zero) ? Vector2.Distance(centerPoint, closestWater) : Mathf.Infinity;
+        closestStoneDistance = (closestStone != Vector2.zero) ? Vector2.Distance(centerPoint, closestStone) : Mathf.Infinity;
+        closestFoodDistance = (closestFood != Vector2.zero) ? Vector2.Distance(centerPoint, closestFood) : Mathf.Infinity;
+
+        Debug.Log("Nearest food position in circle: " + closestFood + ", Distance: " + closestFoodDistance);
+        Debug.Log("Nearest stone position in circle: " + closestStone + ", Distance: " + closestStoneDistance);
+        Debug.Log("Nearest water position in circle: " + closestWater + ", Distance: " + closestWaterDistance);
+
     }
 
     void FixedUpdate()

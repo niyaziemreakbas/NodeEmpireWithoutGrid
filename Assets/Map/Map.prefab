@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2565302122874369300}
   - component: {fileID: 5215207480040303731}
   - component: {fileID: 3795089782961394610}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Food
   m_TagString: Food
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 5557561097764233532}
   - component: {fileID: 3209571318847073314}
   - component: {fileID: 1591800345546612996}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Stone
   m_TagString: Stone
   m_Icon: {fileID: 0}
@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 4200229226743164844}
   - component: {fileID: 738306691434320}
   - component: {fileID: 2862793967974792393}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Water
   m_TagString: Water
   m_Icon: {fileID: 0}
