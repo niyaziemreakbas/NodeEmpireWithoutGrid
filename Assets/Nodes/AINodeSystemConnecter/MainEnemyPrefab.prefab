@@ -92,8 +92,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 1
+  m_fontSizeBase: 1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -321,8 +321,7 @@ MonoBehaviour:
   closestStoneDistance: 4.49
   closestFoodDistance: 3.93
   closestWaterDistance: 0.84
-  sourceSearchRadius: 20.2
-  targetSearchRadius: 9.72
+  nodeLinePrefab: {fileID: 0}
 --- !u!114 &909879957145483399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,12 +334,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d92925172ca3a048a25704a69cf45b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allyNodes: []
+  botUI: {fileID: 0}
+  stone: {fileID: 0}
+  food: {fileID: 0}
+  water: {fileID: 0}
   nodeCountUntilAttack: 0
   Node: {fileID: 0}
   nodePrefab: {fileID: 4773674198049352624, guid: 6a195fb2a1e02224cb67e9d46bd68540, type: 3}
-  tempNode: {fileID: 0}
   nodeLinePrefab: {fileID: 3768583794070569800, guid: 9d19328f44329584dbb7b01810d5b177, type: 3}
-  nodeResources: {fileID: 6660248818087042457}
+  lineLength: 5
 --- !u!114 &1041812561115268668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -353,3 +356,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca79f45041e6714cb6d875835e8cd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stone: 0
+  food: 0
+  water: 0

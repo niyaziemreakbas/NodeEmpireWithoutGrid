@@ -92,15 +92,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 5
+  m_fontSizeBase: 5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 1024
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -301,9 +301,6 @@ MonoBehaviour:
   offSet: {x: 0, y: 1.2, z: 0}
   backNode: {fileID: 0}
   soldierCount: 0
-  isConnectedOnEnemy: 0
-  enemyNode: {fileID: 0}
-  enemyLine: {fileID: 0}
 --- !u!114 &4773674198049352624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,5 +319,4 @@ MonoBehaviour:
   closestStoneDistance: 4.49
   closestFoodDistance: 3.93
   closestWaterDistance: 0.84
-  sourceSearchRadius: 20.2
-  targetSearchRadius: 9.72
+  nodeLinePrefab: {fileID: 0}
