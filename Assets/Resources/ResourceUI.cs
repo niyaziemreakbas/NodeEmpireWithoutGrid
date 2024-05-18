@@ -19,8 +19,5 @@ public class ResourceUI : MonoBehaviour
         stoneValue.text = Resource.instance.GetStone().ToString();
         foodValue.text = Resource.instance.GetFood().ToString();
         waterValue.text = Resource.instance.GetWater().ToString();
-
-        print("water"+waterValue.text);
-        print("food"+foodValue.text);
     }
 }
