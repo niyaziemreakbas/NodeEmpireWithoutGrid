@@ -13,8 +13,14 @@ public class NodeAI : MonoBehaviour
     public float closestFoodDistance;
     public float closestWaterDistance;
 
-    List<Vector2> attackTargets;
-    List<Vector2> defendTargets;
+    public NodeLine nodeLinePrefab;
+
+   // List<Vector2> attackTargets;
+   // List<Vector2> attackTargetsAlly;
+
+
+   // List<Vector2> defendTargets;
+
 
 
     Vector2 centerPoint;
@@ -94,17 +100,52 @@ public class NodeAI : MonoBehaviour
             {
                 //savun
                 Debug.Log("Savunacak adam Location : ");
-                defendTargets.Add(this.GetComponent<Vector2>());
+
+
+                //defendTargets.Add(this.GetComponent<Vector2>());
+                //defendTargetsAlly.Add(this.GetComponent<Vector2>());
             }
             else
             {
                 //saldır
                 Debug.Log("Saldırılacak adam Location : ");
+                ConnectEnemyToAttack(this.GetComponent<NodeAI>(), other.GetComponent<Node>());
 
-                attackTargets.Add(other.GetComponent<Vector2>());
+                //attackTargets.Add(other.GetComponent<Vector2>());
+
+                //attackTargetsAlly.Add(this.GetComponent<Vector2>());
 
             }
         }
+    }
+    public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode)
+    {
+        /*
+        foreach (NodeAI item in allyNodes)
+        {
+
+            if (item.GetComponent<Node>().Equals(attackedNode))
+            {
+                return;
+            }
+        }
+        */
+        Node nodeAttackerNode = attackerNode.GetComponent<Node>();
+
+        NodeLine newNodeLine = Instantiate(nodeLinePrefab);
+        newNodeLine.InitializeNodeLine();
+        newNodeLine.SetColor(Color.red);
+        newNodeLine.AppendNodeToLine(attackedNode.transform.position);
+        newNodeLine.AppendNodeToLine(nodeAttackerNode.transform.position);
+
+        nodeAttackerNode.SetEnemyNode(attackedNode);
+        nodeAttackerNode.SetIsConnectedToEnemy(true);
+        nodeAttackerNode.SetEnemyNodeLine(newNodeLine);
+
+        attackedNode.SetEnemyNode(nodeAttackerNode);
+        attackedNode.SetIsConnectedToEnemy(true);
+        attackedNode.SetEnemyNodeLine(newNodeLine);
+
     }
 
 
