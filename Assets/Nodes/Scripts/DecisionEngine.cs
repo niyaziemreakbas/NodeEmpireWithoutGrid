@@ -45,10 +45,9 @@ public class DecisionEngine : MonoBehaviour
         SearchingWater,
         SearchingFood,
         Defence,
-        Attack
+        Attack,
+        Idle
     }
-
-    Vector3 tempTarget;
 
 
     State currentState;
@@ -60,34 +59,19 @@ public class DecisionEngine : MonoBehaviour
         }
         allyNodes.Add(GetComponent<NodeAI>());
         CheckNodesForStone();
-        DelayedMethod();
+        DelayMethod(30f);
 
         botUI.SetActive(false);
 
     }
 
-    IEnumerator DelayedMethod()
+    IEnumerator DelayMethod(float delayAmount)
     {
-        // 2 saniye bekle
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(delayAmount);
     }
 
-    /*
-    private void Update()
-    {
-        currentState = State.SearchingStone; updateState();
-        currentState = State.SearchingWater; updateState();
-        currentState = State.SearchingFood; updateState();
-        
-        if(allyNodes.Count > nodeCountUntilAttack)
-        {
-            currentState = State.Defence; updateState();
-            currentState = State.Attack; updateState();
 
-        }
 
-    }
-    */
     void updateState()
     {
         switch (currentState)
@@ -109,6 +93,32 @@ public class DecisionEngine : MonoBehaviour
                 break;
 
         }
+    }
+
+    void chooseResourceGoal()
+    {
+        int stone = GetComponent<Resource>().stone;
+        int water = GetComponent<Resource>().water;
+        int food = GetComponent<Resource>().food;
+
+        // En az olan değeri bulmak için minimumu hesaplayın
+        int minValue = Mathf.Min(stone, water, food);
+
+        if (minValue == stone && (stone <= water && stone <= food))
+        {
+            currentState = State.SearchingStone;
+        }
+        if (minValue == water && (water <= stone && water <= food))
+        {
+            currentState = State.SearchingWater;
+        }
+        if (minValue == food && (food <= stone && food <= water))
+        {
+            currentState = State.SearchingFood;
+        }
+
+        Debug.Log("changed Resource : " + currentState);
+
     }
 
     void updateText()
@@ -147,6 +157,23 @@ public class DecisionEngine : MonoBehaviour
                 updateText();
             }
         }
+
+
+
+        // Under Attack if()
+        
+        if(nodeCountUntilAttack > 5 )
+        {
+
+        }
+
+        if (currentState == State.Idle)
+        {
+            chooseResourceGoal();
+            updateState();
+
+            DelayMethod(15f);
+        }
     }
 
     //Nodelar aras�nda ta�a en yak�n konumu bul
@@ -160,15 +187,12 @@ public class DecisionEngine : MonoBehaviour
         {
             if(currentClosestGoalDistance > node.closestStoneDistance)
             {
-                Debug.Log("if içine gşrdi");
-                Debug.Log("stone mesafesi : " + node.closestStone);
 
                 currentClosestGoalDistance = node.closestStoneDistance;
                 currentGoal = node.closestStone;
             }
         }
-        Debug.Log("currentGoal : " + currentGoal);
-        
+
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
         GoLocation(startNode, currentGoal);
 
@@ -262,13 +286,14 @@ public class DecisionEngine : MonoBehaviour
             //Instantiate Object at targetLoc
             CreateNode(targetLoc, startNode);
 
+            Debug.Log("Reached Location");
+            currentState = State.Idle;
         }
         else
         {
-
             //Instantiate Object at nextNode
-            CreateNode(newPoint,startNode);
-
+            
+            generateNextNode(CreateNode(newPoint, startNode), targetLoc);
 
         }
         
@@ -316,7 +341,6 @@ public class DecisionEngine : MonoBehaviour
     }
 
     public NodeAI CreateNode(Vector3 position, NodeAI backNode){
-        Debug.Log("Create Node çağrıldı : "  +position);
         NodeAI newNode = Instantiate(nodePrefab);
         Node newNodeNode = newNode.GetComponent<Node>();
         newNode.transform.position = position;
@@ -332,10 +356,7 @@ public class DecisionEngine : MonoBehaviour
         newNodeNode.SetBuilded(true);
         backNode.GetComponent<Node>().AddNextNode(newNodeNode);
 
-        Debug.Log("önce : " + GetComponent<Resource>().stone);
         GetComponent<Resource>().stone -= buildCost;
-        Debug.Log("sonra : " + GetComponent<Resource>().stone);
-
 
         return newNode;
     }

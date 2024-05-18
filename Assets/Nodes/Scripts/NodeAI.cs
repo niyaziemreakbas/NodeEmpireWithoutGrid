@@ -36,8 +36,6 @@ public class NodeAI : MonoBehaviour
     public void FindNearestTargetInCircle(float radius, string target, string layer)
     {
 
-
-        float closestDistance = Mathf.Infinity;
         /*
         RaycastHit2D[] hits = Physics2D.CircleCastAll(centerPoint, radius, Vector2.zero, Mathf.Infinity, sourceLayerMask);
         foreach (RaycastHit2D hit in hits)
@@ -78,8 +76,6 @@ public class NodeAI : MonoBehaviour
         {
             if (hit.point != null && hit.collider.CompareTag(target))
             {
-                Debug.Log("Found a hit" + target);
-                Debug.Log("hit point  : " + hit.point);
 
                 closestPoint = hit.point;
             }
@@ -89,8 +85,6 @@ public class NodeAI : MonoBehaviour
             }
             else if (target == "Stone")
             {
-                Debug.Log("nodeAı içinde  : " + closestStone);
-                Debug.Log("nodeAı içinde closest  : " + closestPoint);
 
                 closestStone = closestPoint;
             }
@@ -130,9 +124,9 @@ public class NodeAI : MonoBehaviour
         closestStoneDistance = (closestStone != Vector2.zero) ? Vector2.Distance(centerPoint, closestStone) : Mathf.Infinity;
         closestFoodDistance = (closestFood != Vector2.zero) ? Vector2.Distance(centerPoint, closestFood) : Mathf.Infinity;
 
-        Debug.Log("Nearest food position in circle: " + closestFood + ", Distance: " + closestFoodDistance);
-        Debug.Log("Nearest stone position in circle: " + closestStone + ", Distance: " + closestStoneDistance);
-        Debug.Log("Nearest water position in circle: " + closestWater + ", Distance: " + closestWaterDistance);
+       // Debug.Log("Nearest food position in circle: " + closestFood + ", Distance: " + closestFoodDistance);
+       // Debug.Log("Nearest stone position in circle: " + closestStone + ", Distance: " + closestStoneDistance);
+       // Debug.Log("Nearest water position in circle: " + closestWater + ", Distance: " + closestWaterDistance);
     }
 
     //Add new Targets
