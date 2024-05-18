@@ -54,3 +54,4 @@ MonoBehaviour:
   nodesParent: {fileID: 0}
   nodeLinesParent: {fileID: 0}
   totalMode: 3
+  modChangeAllow: 0
