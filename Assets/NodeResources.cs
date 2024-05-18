@@ -4,69 +4,58 @@ using UnityEngine;
 
 public class NodeResources : MonoBehaviour
 {
-    private const int resourcePerSecond = 1;
-
-    #region multipliers
-    private int foodM = 1;
-    private int waterM = 1;
-    private int stoneM = 1;
+    #region resource amounts
+    public int food = 5;
+    public int water = 5;
+    public int stone = 5;
     #endregion
 
-    #region resources
-    private int food = 0 ;
-    private int water = 0;
-    #endregion
+    private SourceType sourceType;
 
-    
+
     private void FixedUpdate() // 2 times per second
     {
         GainResources();
+
     }
 
     public void GainResources()
     {
-        Resource.instance.GainStone(resourcePerSecond * stoneM);
-        food += resourcePerSecond * foodM;
-        water += resourcePerSecond * waterM;
-
-    }
-
-    public void SetResourceProductionSpeed(SourceType type)
-    {
-        switch (type)
+        switch (sourceType)
         {
-            case SourceType.Stone:
-                Debug.Log("stone selected");
-                stoneM *= 2;
-                break;
             case SourceType.Water:
-                waterM *= 2;
+                Resource.instance.GainWater(water);
+                print("water"+water);
                 break;
+
             case SourceType.Food:
-                foodM *= 2;
+                Resource.instance.GainFood(food);
+                print("food"+food);
+                break;
+
+            case SourceType.Stone:
+                Resource.instance.GainStone(stone);
+                break;
+            default:
                 break;
         }
     }
 
+    public void SetResourceProductionSpeed(SourceType type)
+    {
+       sourceType = type;   
+    }
+        
+
     public void TrainSoldier(int foodToTrainSoldier, int waterToTrainSoldier)
     {
-        food -= foodToTrainSoldier;
-        water -= waterToTrainSoldier;
+        Resource.instance.SpendWater(waterToTrainSoldier);
+        Resource.instance.SpendFood(foodToTrainSoldier);
     }
 
     public bool CanTrainSoldier(int food , int water)
     {
-        return this.food >= food && this.water >= water;
-    }
-
-    public int GetFood()
-    {
-        return food;
-    }
-
-    public int GetWater()
-    {
-        return water;
+        return Resource.instance.GetFood() >= food && Resource.instance.GetWater() >= water;
     }
 
 
