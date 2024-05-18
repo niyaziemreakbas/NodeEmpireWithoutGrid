@@ -53,13 +53,20 @@ public class DecisionEngine : MonoBehaviour
         }
         allyNodes.Add(GetComponent<NodeAI>());
         CheckNodesForStone();
+        DelayedMethod();
         CheckNodesForFood();
+        DelayedMethod();
+
         CheckNodesForWater();
-        /*
-        allyNodes=new List<NodeAI>();
-        GoLocation(new Vector3(20,20,0));
-        GoLocation(new Vector3(5,20,0));
-        */
+        DelayedMethod();
+
+
+    }
+
+    IEnumerator DelayedMethod()
+    {
+        // 2 saniye bekle
+        yield return new WaitForSeconds(2f);
     }
 
     /*
@@ -101,6 +108,8 @@ public class DecisionEngine : MonoBehaviour
         }
     }
     */
+
+
     //Nodelar aras�nda ta�a en yak�n konumu bul
     void CheckNodesForStone()
     {
@@ -120,7 +129,7 @@ public class DecisionEngine : MonoBehaviour
             }
         }
         Debug.Log("currentGoal : " + currentGoal);
-
+        
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
         GoLocation(startNode, currentGoal);
 
@@ -171,7 +180,6 @@ public class DecisionEngine : MonoBehaviour
     //Belli bir konuma node �ek
     void GoLocation(NodeAI node, Vector2 target)
     {
-        Debug.Log("Go Loc Çalıştı");
         if(target != Vector2.zero)
         {
             Debug.Log("Target not reachable");
@@ -187,8 +195,6 @@ public class DecisionEngine : MonoBehaviour
     {
 
         Vector2 startNodeLoc = startNode.transform.position;
-        Debug.Log("startNode : " + startNodeLoc);
-        Debug.Log("targetLoc : " + targetLoc);
 
         //Kaynak yeterliyse basacak
         if (GetComponent<Resource>().stone < buildCost)
@@ -197,14 +203,11 @@ public class DecisionEngine : MonoBehaviour
             Debug.Log("Not enough resources to create node");
             return;
         }
-        Debug.Log("Üretiyom abim");
 
         // İki nokta arasındaki yön vektörünü hesapla
         Vector2 direction = targetLoc - startNodeLoc;
 
-        Debug.Log("direction : " + direction);
         float distance = (targetLoc - startNodeLoc).magnitude;
-        Debug.Log("distance : " + direction);
 
         // Yön vektörünü normalleştir (birim vektör)
         direction.Normalize();
@@ -215,17 +218,9 @@ public class DecisionEngine : MonoBehaviour
         // Yeni noktayı hesapla
         Vector2 newPoint = startNodeLoc + moveVector;
 
-        /*
-        // Hedef konum ile ba�lang�� konumu aras�ndaki fark� hesapla
-        Vector2 difference = targetLoc - (Vector2)startNode.transform.position;
-
-        // Bu fark�n b�y�kl���n� hesapla
-        float distance = difference.magnitude;
-        */
         if(distance <= 5f)
         {
-            //Next node target loca instantiate ve ��k
-            Debug.Log("final location reached");
+
             //Instantiate Object at targetLoc
             CreateNode(targetLoc, startNode);
 
@@ -233,21 +228,10 @@ public class DecisionEngine : MonoBehaviour
         else
         {
 
-            Debug.Log("else çalıştı amk");
-            /*
-            // Fark vekt�r�n� normalle�tirerek birim vekt�r elde et
-            Vector2 direction = difference.normalized;
-            Debug.Log("Direction 2 x ve y " + direction.x + " " + direction.y);
-
-            // Belirli bir mesafeye (�rne�in, 5 birim) �arp ve yeni noktay� hesapla
-            Vector2 nextNode = (Vector2)startNode.transform.position + direction * lineLength;
-            Debug.Log("VEctor 2 x ve y " + nextNode.x + " " + nextNode.y);
-            */
             //Instantiate Object at nextNode
             CreateNode(newPoint,startNode);
 
-            //Next node target loc y�n�nde ama 5 birim uzakl���ndaki konuma instantiate
-            //generateNextNode(newNode, targetLoc);
+
         }
         
     }
@@ -295,22 +279,24 @@ public class DecisionEngine : MonoBehaviour
 
     public NodeAI CreateNode(Vector3 position, NodeAI backNode){
         Debug.Log("Create Node çağrıldı : "  +position);
-            NodeAI newNode= Instantiate(nodePrefab);
-            Node newNodeNode=newNode.GetComponent<Node>();
-            newNode.transform.position=position;
-            NodeLine newNodeLine=Instantiate(nodeLinePrefab);
-            allyNodes.Add(newNode);
-    
-            newNodeLine.InitializeNodeLine();
-            newNodeLine.AppendNodeToLine(newNode.transform.position);
-            newNodeLine.AppendNodeToLine(backNode.transform.position);
-            
-            newNodeNode.SetBackNode(backNode.GetComponent<Node>());
-            newNodeNode.SetBackNodeLine(newNodeLine);
-            newNodeNode.SetBuilded(true);
-            backNode.GetComponent<Node>().AddNextNode(newNodeNode);
+        NodeAI newNode = Instantiate(nodePrefab);
+        Node newNodeNode = newNode.GetComponent<Node>();
+        newNode.transform.position = position;
+        NodeLine newNodeLine = Instantiate(nodeLinePrefab);
+        allyNodes.Add(newNode);
 
-            return newNode;
+        newNodeLine.InitializeNodeLine();
+        newNodeLine.AppendNodeToLine(newNode.transform.position);
+        newNodeLine.AppendNodeToLine(backNode.transform.position);
+
+        newNodeNode.SetBackNode(backNode.GetComponent<Node>());
+        newNodeNode.SetBackNodeLine(newNodeLine);
+        newNodeNode.SetBuilded(true);
+        backNode.GetComponent<Node>().AddNextNode(newNodeNode);
+
+        GetComponent<Resource>().stone -= buildCost;
+
+        return newNode;
     }
 
 }
