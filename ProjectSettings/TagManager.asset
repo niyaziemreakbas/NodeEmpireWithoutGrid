@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Water
   - MainNode
+  - Node
   layers:
   - Default
   - TransparentFX
@@ -42,4 +43,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Line
+    uniqueID: 3493934033
+    locked: 0
+  - name: Node
+    uniqueID: 3843758759
+    locked: 0
+  - name: WorldCanvas
+    uniqueID: 3357394347
     locked: 0

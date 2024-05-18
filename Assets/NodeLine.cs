@@ -25,7 +25,6 @@ public class NodeLine : MonoBehaviour
     }
 
     public void AppendNodeToLine(Vector3 pos){
-        Debug.Log("worked");
         nodePositions.Add(pos);
         SetLinesByNodes();
     }

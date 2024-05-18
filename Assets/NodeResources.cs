@@ -36,6 +36,7 @@ public class NodeResources : MonoBehaviour
         switch (type)
         {
             case SourceType.Stone:
+                Debug.Log("stone selected");
                 stoneM *= 2;
                 break;
             case SourceType.Water:

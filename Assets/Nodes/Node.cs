@@ -26,6 +26,8 @@ public class Node : MonoBehaviour
     private void Awake()
     {
         nodeResources = GetComponent<NodeResources>();
+        Canvas canvas= FindObjectOfType<Canvas>();
+        soldierCountText.transform.SetParent(canvas.transform,false);   
     }
 
     private void Start()
@@ -67,5 +69,8 @@ public class Node : MonoBehaviour
     }
     public void SetTextPosition(){
         soldierCountText.transform.position = Camera.main.WorldToScreenPoint(transform.position + offSet);
+    }
+    private void OnDestroy() {
+        Destroy(soldierCountText.gameObject);
     }
 }

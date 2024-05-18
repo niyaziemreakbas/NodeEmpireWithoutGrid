@@ -18,6 +18,7 @@ public class NodeManager : MonoBehaviour
     private NodeLine newNodeLine;
     void Update()
     {
+        
         if (Input.GetMouseButtonDown(0))
         {
             worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -33,15 +34,16 @@ public class NodeManager : MonoBehaviour
             parentNode.AddNextNode(instantiatedNode);
             
             newNodeLine=SetLineBetweenParentNode(instantiatedNode); 
-
-
-            Debug.Log(parentNode.gameObject.name);
-
             }
         }
         if (Input.GetMouseButton(0)){
             if (parentNode!=null)
             {
+                if (Input.GetMouseButtonDown(1) && newNodeLine != null && instantiatedNode != null)
+                {
+                Destroy(newNodeLine.gameObject);
+                Destroy(instantiatedNode.gameObject);
+                } else if (newNodeLine != null && instantiatedNode != null){
                 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 worldPosition.z=0;
                 if (Vector3.Distance(worldPosition,parentNode.transform.position)<=distanceFromNode)
@@ -57,7 +59,7 @@ public class NodeManager : MonoBehaviour
                 {   
                 newNodeLine.UpdateLastPosition(instantiatedNode.transform.position);
                 }
-
+                }
             }
         }
         if (Input.GetMouseButtonUp(0)){

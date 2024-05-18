@@ -5,11 +5,11 @@ using UnityEngine;
 public class NaturalSources : MonoBehaviour
 {
     [SerializeField] private SourceType sourceType;
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Node"))
+    private void OnTriggerStay2D(Collider2D other) {
+         if (other.gameObject.CompareTag("Node"))
         {
-            collision.gameObject.GetComponent<NodeResources>().SetResourceProductionSpeed(sourceType);
+            Debug.Log("worked");
+            other.gameObject.GetComponent<NodeResources>().SetResourceProductionSpeed(sourceType);
         }
     }
 
