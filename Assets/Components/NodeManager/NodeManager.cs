@@ -63,7 +63,7 @@ public class NodeManager : MonoBehaviour
             }
         }
         if (Input.GetMouseButtonUp(0)){
-          
+            instantiatedNode.SetBuilded(true);
            parentNode=null;
            instantiatedNode=null;
            newNodeLine=null;

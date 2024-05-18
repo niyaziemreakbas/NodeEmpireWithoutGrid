@@ -23,8 +23,11 @@ public class Node : MonoBehaviour
 
     private int soldierCount = 0;
     private NodeResources nodeResources;
+
+    private bool builded;
     private void Awake()
     {
+        builded=false;
         nodeResources = GetComponent<NodeResources>();
         Canvas canvas= FindObjectOfType<Canvas>();
         soldierCountText.transform.SetParent(canvas.transform,false);   
@@ -38,6 +41,10 @@ public class Node : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!builded)
+        {
+            return;
+        }
         if (nodeResources.CanTrainSoldier(foodToTrainSoldier,waterToTrainSoldier))
         {
             nodeResources.TrainSoldier(foodToTrainSoldier,waterToTrainSoldier);
@@ -72,5 +79,8 @@ public class Node : MonoBehaviour
     }
     private void OnDestroy() {
         Destroy(soldierCountText.gameObject);
+    }
+    public void SetBuilded(bool builded){
+        this.builded=builded;
     }
 }
