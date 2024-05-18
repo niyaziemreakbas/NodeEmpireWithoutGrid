@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static UnityEditor.ObjectChangeEventStream;
 using static UnityEngine.GraphicsBuffer;
@@ -16,17 +17,16 @@ public class NodeAI : MonoBehaviour
 
     public NodeLine nodeLinePrefab;
 
-   // List<Vector2> attackTargets;
-   // List<Vector2> attackTargetsAlly;
 
 
-   // List<Vector2> defendTargets;
+
+    // List<Vector2> attackTargets;
+    // List<Vector2> attackTargetsAlly;
 
 
+    // List<Vector2> defendTargets;
 
     Vector2 centerPoint;
-
-
 
     float sourceSearchRadius = 10.0f; // Arama yar��ap�
     float targetSearchRadius = 5.0f; // Arama yar��ap�
@@ -35,13 +35,10 @@ public class NodeAI : MonoBehaviour
     /// Belirli bir merkez nokta ve yar��ap ile dairenin i�indeki en yak�n tag'ine sahip nesnenin pozisyonunu d�ner
     public void FindNearestTargetInCircle(float radius, string target, string layer)
     {
-        /*
-        centerPoint = transform.position;
-        int sourceLayerMask = LayerMask.GetMask(layer);
 
-        Vector2 closestPoint = Vector2.zero;
+
         float closestDistance = Mathf.Infinity;
-
+        /*
         RaycastHit2D[] hits = Physics2D.CircleCastAll(centerPoint, radius, Vector2.zero, Mathf.Infinity, sourceLayerMask);
         foreach (RaycastHit2D hit in hits)
         {

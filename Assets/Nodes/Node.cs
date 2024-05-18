@@ -37,7 +37,8 @@ public class Node : MonoBehaviour
     private NodeLine enemyLine;
 #endregion
     private void Awake()
-    {nextNodes=new List<Node>();
+    {
+        nextNodes=new List<Node>();
         builded=false;
         nodeResources = GetComponent<NodeResources>();
         Canvas canvas= FindObjectOfType<Canvas>();
@@ -50,8 +51,6 @@ public class Node : MonoBehaviour
     private void Start()
     {
         SetTextPosition();
-
-
     }
 
     void FixedUpdate()
