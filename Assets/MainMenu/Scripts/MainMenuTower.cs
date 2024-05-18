@@ -21,6 +21,8 @@ public class MainMenuTower : MonoBehaviour
     {
         if (tower != this) return;
 
+        AudioManager.instance.ExplosionSF();
+
         if (damageLevel >= damageLevels.Count)
         {
             
