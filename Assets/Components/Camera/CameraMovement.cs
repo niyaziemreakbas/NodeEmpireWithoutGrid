@@ -20,7 +20,7 @@ public class CameraMovement : MonoBehaviour
     {
     Vector3 movementInput=new Vector3(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"),0);
     movementInput.Normalize();
-    Vector3 targetPosition=transform.position+movementInput*speed+offset;
+    Vector3 targetPosition=transform.position+movementInput*speed;
     transform.position=Vector3.SmoothDamp(transform.position,targetPosition,ref vel,damping);        
     }
 }
