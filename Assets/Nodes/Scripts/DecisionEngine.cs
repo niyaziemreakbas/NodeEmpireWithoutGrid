@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DecisionEngine : MonoBehaviour
 {
-    Node[] allyNodes;
-    Node[] targetNodes;
+    NodeAI[] allyNodes;
+    NodeAI[] targetNodes;
 
     enum State
     {
@@ -53,7 +53,7 @@ public class DecisionEngine : MonoBehaviour
     {
         Vector2 currentGoal;
         double currentClosestGoalDistance = double.MaxValue;
-        foreach (Node node in allyNodes)
+        foreach (NodeAI node in allyNodes)
         {
 
             if(currentClosestGoalDistance > node.closestStoneDistance)
@@ -71,7 +71,7 @@ public class DecisionEngine : MonoBehaviour
     {
         Vector2 currentGoal;
         double currentClosestGoalDistance = double.MaxValue;
-        foreach (Node node in allyNodes)
+        foreach (NodeAI node in allyNodes)
         {
 
             if (currentClosestGoalDistance > node.closestWaterDistance)
@@ -88,7 +88,7 @@ public class DecisionEngine : MonoBehaviour
     {
         Vector2 currentGoal;
         double currentClosestGoalDistance = double.MaxValue;
-        foreach (Node node in allyNodes)
+        foreach (NodeAI node in allyNodes)
         {
 
             if (currentClosestGoalDistance > node.closestFoodDistance)
