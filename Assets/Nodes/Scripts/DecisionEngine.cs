@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class DecisionEngine : MonoBehaviour
@@ -21,16 +22,18 @@ public class DecisionEngine : MonoBehaviour
     
     public NodeLine nodeLinePrefab;
 
+    public float lineLength;
+
     //Kaynaklar� �ekece�imiz sat�r
-    public NodeResources nodeResources; 
+    public Resource Resource; 
+
+
 
     enum State
     {
         SearchingStone,
         SearchingWater,
         SearchingFood,
-
-        MovingToLocation,
         Defending,
         Attacking
     }
@@ -40,6 +43,7 @@ public class DecisionEngine : MonoBehaviour
 
     State currentState;
     private void Start() {
+
         /*
         allyNodes=new List<NodeAI>();
         allyNodes.Add(GetComponent<NodeAI>());
@@ -47,7 +51,18 @@ public class DecisionEngine : MonoBehaviour
         GoLocation(new Vector3(5,20,0));
         */
     }
-
+    private void Update()
+    {
+        currentState = State.SearchingStone; updateState();
+        currentState = State.SearchingWater; updateState();
+        currentState = State.SearchingFood; updateState();
+        if(allyNodes.Count >5)
+        {
+            currentState = State.Defending; updateState();
+            currentState = State.Attacking; updateState();
+        }
+        
+    }
     void updateState()
     {
         switch (currentState)
@@ -61,9 +76,6 @@ public class DecisionEngine : MonoBehaviour
             case State.SearchingFood:
                 CheckNodesForWater();
                 break;
-            case State.MovingToLocation:
-                //GoLocation(tempTarget);
-                break;
             case State.Defending:
                 CheckNodesForEnemies();
                 break;
@@ -76,7 +88,8 @@ public class DecisionEngine : MonoBehaviour
     //Nodelar aras�nda ta�a en yak�n konumu bul
     void CheckNodesForStone()
     {
-        Vector2 currentGoal;
+        NodeAI startNode = tempNode;
+        Vector2 currentGoal = Vector2.zero;
         double currentClosestGoalDistance = double.MaxValue;
         foreach (NodeAI node in allyNodes)
         {
@@ -87,13 +100,15 @@ public class DecisionEngine : MonoBehaviour
             }
         }
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
+        GoLocation(startNode, currentGoal);
 
     }
 
     //Nodelar aras�nda suya en yak�n konumu bul
     void CheckNodesForWater()
     {
-        Vector2 currentGoal;
+        NodeAI startNode = tempNode;
+        Vector2 currentGoal = Vector2.zero;
         double currentClosestGoalDistance = double.MaxValue;
         foreach (NodeAI node in allyNodes)
         {
@@ -105,6 +120,7 @@ public class DecisionEngine : MonoBehaviour
             }
         }
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
+        GoLocation(startNode, currentGoal);
     }
 
     //Nodelar aras�nda yeme�e en yak�n konumu bul
@@ -147,9 +163,11 @@ public class DecisionEngine : MonoBehaviour
     void generateNextNode(NodeAI startNode, Vector2 targetLoc)
     {
         //Kaynak yeterliyse basacak
-        if(nodeResources.stone < buildCost)
-        { 
-            //continue to 
+        if(Resource.stone < buildCost)
+        {
+            //continue to collecting
+            Debug.Log("Not enough resources to create node");
+            return;
         }
 
 
@@ -162,9 +180,9 @@ public class DecisionEngine : MonoBehaviour
         if(distance <= 5f)
         {
             //Next node target loca instantiate ve ��k
-            Debug.Log("okey");
+            Debug.Log("final location reached");
             //Instantiate Object at targetLoc
-           
+            CreateNode(targetLoc, startNode);
 
         }
         else
@@ -175,7 +193,7 @@ public class DecisionEngine : MonoBehaviour
             Vector2 direction = difference.normalized;
 
             // Belirli bir mesafeye (�rne�in, 5 birim) �arp ve yeni noktay� hesapla
-            Vector2 nextNode = (Vector2)startNode.transform.position + direction * 5f;
+            Vector2 nextNode = (Vector2)startNode.transform.position + direction * lineLength;
 
             //Instantiate Object at nextNode
             NodeAI newNode=CreateNode(nextNode,startNode);
@@ -193,17 +211,19 @@ public class DecisionEngine : MonoBehaviour
         Instantiate(Node, vector3, Quaternion.identity);
     }
 
+    void AttackNode(NodeAI target)
+    {
+
+    }
+
     //D��man yak�nsa savun
-    void CheckNodesForEnemies()
+    void ChooseRandomEnemies()
     {
+        int randomIndex = Random.Range(0, targetNodes.Count);
 
+        AttackNode(targetNodes[randomIndex]);
     }
 
-    //Kaynaklar�n yeterince iyiyse sald�r
-    void CheckNodesForTarget()
-    {
-
-    }
 
     void attackControl()
     {
