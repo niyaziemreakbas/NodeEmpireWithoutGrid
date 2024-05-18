@@ -6,12 +6,14 @@ public class NaturalSources : MonoBehaviour
 {
     [SerializeField] private SourceType sourceType;
     private void OnTriggerStay2D(Collider2D other) {
-         if (other.gameObject.CompareTag("Node"))
+        if (other.gameObject.CompareTag("Node"))
         {
             Debug.Log("worked");
             other.gameObject.GetComponent<NodeResources>().SetResourceProductionSpeed(sourceType);
         }
     }
+
+    
 
     
 }
