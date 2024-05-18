@@ -12,6 +12,22 @@ public class NodeResources : MonoBehaviour
 
     private SourceType sourceType;
 
+    private Node node;
+    private Node mainNode;
+    private Resource resource;
+
+    private void Start()
+    {
+        node = GetComponent<Node>();
+        mainNode = node.GetBackNode();
+
+        while (mainNode != null)
+        {
+            mainNode = mainNode.GetBackNode();
+        }
+
+        resource = mainNode.GetComponent<Resource>();
+    }
 
     private void FixedUpdate() // 2 times per second
     {
@@ -25,17 +41,17 @@ public class NodeResources : MonoBehaviour
         switch (sourceType)
         {
             case SourceType.Water:
-                Resource.instance.GainWater(water);
+                resource.GainWater(water);
                 print("water"+water);
                 break;
 
             case SourceType.Food:
-                Resource.instance.GainFood(food);
+                resource.GainFood(food);
                 print("food"+food);
                 break;
 
             case SourceType.Stone:
-                Resource.instance.GainStone(stone);
+                resource.GainStone(stone);
                 break;
             default:
                 break;
@@ -50,13 +66,13 @@ public class NodeResources : MonoBehaviour
 
     public void TrainSoldier(int foodToTrainSoldier, int waterToTrainSoldier)
     {
-        Resource.instance.SpendWater(waterToTrainSoldier);
-        Resource.instance.SpendFood(foodToTrainSoldier);
+        resource.SpendWater(waterToTrainSoldier);
+        resource.SpendFood(foodToTrainSoldier);
     }
 
     public bool CanTrainSoldier(int food , int water)
     {
-        return Resource.instance.GetFood() >= food && Resource.instance.GetWater() >= water;
+        return resource.GetFood() >= food && resource.GetWater() >= water;
     }
 
 
