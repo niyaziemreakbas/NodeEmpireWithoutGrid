@@ -15,6 +15,7 @@ public class NodeResources : MonoBehaviour
 
     private void FixedUpdate() // 2 times per second
     {
+        
         GainResources();
 
     }

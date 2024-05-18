@@ -49,4 +49,9 @@ public class NodeLine : MonoBehaviour
         line.SetPosition(0,pos);
     }
 
+    void generateLine()
+    {
+
+    }
+
 }
