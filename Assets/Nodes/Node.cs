@@ -176,8 +176,12 @@ public class Node : MonoBehaviour
         {
             Destroy(item.gameObject);
         }
-
-        Destroy(backNodeLine.gameObject);
+        
+        if (backNodeLine != null)
+        {
+            Destroy(backNodeLine.gameObject);
+        }
+        
         
 
         

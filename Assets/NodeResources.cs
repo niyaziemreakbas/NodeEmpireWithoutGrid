@@ -35,6 +35,7 @@ public class NodeResources : MonoBehaviour
 
     public void GainResources()
     {
+        
         switch (sourceType)
         {
             case SourceType.Water:
@@ -49,8 +50,10 @@ public class NodeResources : MonoBehaviour
 
             case SourceType.Stone:
                 resource.GainStone(stone);
+                print("stone girdi");
                 break;
             default:
+                print("girdi");
                 break;
         }
     }
