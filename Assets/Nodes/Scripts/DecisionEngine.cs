@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -17,20 +19,17 @@ public class DecisionEngine : MonoBehaviour
 
     bool attack = false;
 
-    public int nodeCountUntilAttack;
+    public int nodeCountUntilAttack = 5;
 
     public GameObject Node;
 
     public NodeAI nodePrefab;
 
-    public NodeAI tempNode;
+    NodeAI tempNode;
     
     public NodeLine nodeLinePrefab;
 
-    public float lineLength;
-
-    //Kaynaklar� �ekece�imiz sat�r
-    public Resource Resource; 
+    public float lineLength = 5;
 
 
 
@@ -47,14 +46,27 @@ public class DecisionEngine : MonoBehaviour
 
 
     State currentState;
-    private void Start() {
-
+    private void Update() {
+        if(allyNodes.Count == 0)
+        {
+            tempNode = this.GetComponent<NodeAI>();
+        }
         allyNodes.Add(GetComponent<NodeAI>());
-        /*
-        allyNodes=new List<NodeAI>();
-        GoLocation(new Vector3(20,20,0));
-        GoLocation(new Vector3(5,20,0));
-        */
+        CheckNodesForStone();
+        DelayedMethod();
+        CheckNodesForFood();
+        DelayedMethod();
+
+        CheckNodesForWater();
+        DelayedMethod();
+
+
+    }
+
+    IEnumerator DelayedMethod()
+    {
+        // 2 saniye bekle
+        yield return new WaitForSeconds(2f);
     }
 
     /*
@@ -96,20 +108,28 @@ public class DecisionEngine : MonoBehaviour
         }
     }
     */
+
+
     //Nodelar aras�nda ta�a en yak�n konumu bul
     void CheckNodesForStone()
     {
         NodeAI startNode = tempNode;
         Vector2 currentGoal = Vector2.zero;
         double currentClosestGoalDistance = double.MaxValue;
+
         foreach (NodeAI node in allyNodes)
         {
             if(currentClosestGoalDistance > node.closestStoneDistance)
             {
+                Debug.Log("if içine gşrdi");
+                Debug.Log("stone mesafesi : " + node.closestStone);
+
                 currentClosestGoalDistance = node.closestStoneDistance;
                 currentGoal = node.closestStone;
             }
         }
+        Debug.Log("currentGoal : " + currentGoal);
+        
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
         GoLocation(startNode, currentGoal);
 
@@ -173,25 +193,34 @@ public class DecisionEngine : MonoBehaviour
     //S�radaki node'u bul
     void generateNextNode(NodeAI startNode, Vector2 targetLoc)
     {
+
+        Vector2 startNodeLoc = startNode.transform.position;
+
         //Kaynak yeterliyse basacak
-        if(GetComponent<Resource>().stone < buildCost)
+        if (GetComponent<Resource>().stone < buildCost)
         {
             //continue to collecting
             Debug.Log("Not enough resources to create node");
             return;
         }
 
+        // İki nokta arasındaki yön vektörünü hesapla
+        Vector2 direction = targetLoc - startNodeLoc;
 
-        // Hedef konum ile ba�lang�� konumu aras�ndaki fark� hesapla
-        Vector2 difference = targetLoc - (Vector2)startNode.transform.position;
+        float distance = (targetLoc - startNodeLoc).magnitude;
 
-        // Bu fark�n b�y�kl���n� hesapla
-        float distance = difference.magnitude;
+        // Yön vektörünü normalleştir (birim vektör)
+        direction.Normalize();
+
+        // Normalleştirilmiş yön vektörünü mesafe ile çarp
+        Vector2 moveVector = direction * lineLength;
+
+        // Yeni noktayı hesapla
+        Vector2 newPoint = startNodeLoc + moveVector;
 
         if(distance <= 5f)
         {
-            //Next node target loca instantiate ve ��k
-            Debug.Log("final location reached");
+
             //Instantiate Object at targetLoc
             CreateNode(targetLoc, startNode);
 
@@ -199,20 +228,12 @@ public class DecisionEngine : MonoBehaviour
         else
         {
 
-
-            // Fark vekt�r�n� normalle�tirerek birim vekt�r elde et
-            Vector2 direction = difference.normalized;
-
-            // Belirli bir mesafeye (�rne�in, 5 birim) �arp ve yeni noktay� hesapla
-            Vector2 nextNode = (Vector2)startNode.transform.position + direction * lineLength;
-
             //Instantiate Object at nextNode
-            NodeAI newNode=CreateNode(nextNode,startNode);
+            CreateNode(newPoint,startNode);
 
-            //Next node target loc y�n�nde ama 5 birim uzakl���ndaki konuma instantiate
-            generateNextNode(newNode, targetLoc);
+
         }
-
+        
     }
     
     void AttackNode()
@@ -257,23 +278,25 @@ public class DecisionEngine : MonoBehaviour
     }
 
     public NodeAI CreateNode(Vector3 position, NodeAI backNode){
+        Debug.Log("Create Node çağrıldı : "  +position);
+        NodeAI newNode = Instantiate(nodePrefab);
+        Node newNodeNode = newNode.GetComponent<Node>();
+        newNode.transform.position = position;
+        NodeLine newNodeLine = Instantiate(nodeLinePrefab);
+        allyNodes.Add(newNode);
 
-            NodeAI newNode= Instantiate(nodePrefab);
-            Node newNodeNode=newNode.GetComponent<Node>();
-            newNode.transform.position=position;
-            NodeLine newNodeLine=Instantiate(nodeLinePrefab);
-            allyNodes.Add(newNode);
-    
-            newNodeLine.InitializeNodeLine();
-            newNodeLine.AppendNodeToLine(newNode.transform.position);
-            newNodeLine.AppendNodeToLine(backNode.transform.position);
-            
-            newNodeNode.SetBackNode(backNode.GetComponent<Node>());
-            newNodeNode.SetBackNodeLine(newNodeLine);
-            newNodeNode.SetBuilded(true);
-            backNode.GetComponent<Node>().AddNextNode(newNodeNode);
+        newNodeLine.InitializeNodeLine();
+        newNodeLine.AppendNodeToLine(newNode.transform.position);
+        newNodeLine.AppendNodeToLine(backNode.transform.position);
 
-            return newNode;
+        newNodeNode.SetBackNode(backNode.GetComponent<Node>());
+        newNodeNode.SetBackNodeLine(newNodeLine);
+        newNodeNode.SetBuilded(true);
+        backNode.GetComponent<Node>().AddNextNode(newNodeNode);
+
+        GetComponent<Resource>().stone -= buildCost;
+
+        return newNode;
     }
 
 }

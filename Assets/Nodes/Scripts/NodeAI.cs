@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.ObjectChangeEventStream;
+using static UnityEngine.GraphicsBuffer;
 
 public class NodeAI : MonoBehaviour
 {
@@ -27,28 +28,81 @@ public class NodeAI : MonoBehaviour
 
 
 
-    public float sourceSearchRadius = 5.0f; // Arama yar��ap�
-    public float targetSearchRadius = 5.0f; // Arama yar��ap�
+    float sourceSearchRadius = 10.0f; // Arama yar��ap�
+    float targetSearchRadius = 5.0f; // Arama yar��ap�
 
 
     /// Belirli bir merkez nokta ve yar��ap ile dairenin i�indeki en yak�n tag'ine sahip nesnenin pozisyonunu d�ner
-    public Vector2 FindNearestTargetInCircle(float radius, string target, string layer)
+    public void FindNearestTargetInCircle(float radius, string target, string layer)
     {
+        /*
+        centerPoint = transform.position;
+        int sourceLayerMask = LayerMask.GetMask(layer);
+
+        Vector2 closestPoint = Vector2.zero;
+        float closestDistance = Mathf.Infinity;
+
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(centerPoint, radius, Vector2.zero, Mathf.Infinity, sourceLayerMask);
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider != null && hit.collider.CompareTag(target))
+            {
+                Vector2 point = Physics2D.ClosestPoint(centerPoint, hit.collider);
+                float distance = Vector2.Distance(centerPoint, point);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestPoint = point;
+                }
+            }
+        }
+
+        if (target == "Food")
+        {
+            closestFood = closestPoint;
+        }
+        else if (target == "Stone")
+        {
+            closestStone = closestPoint;
+        }
+        else if (target == "Water")
+        {
+            closestWater = closestPoint;
+        }
+        */
         centerPoint = transform.position;
         Vector2 closestPoint = Vector2.zero;
         int sourceLayerMask = LayerMask.GetMask(layer);
 
-        RaycastHit2D hit = Physics2D.CircleCast(centerPoint, radius, Vector2.zero, Mathf.Infinity, sourceLayerMask);
-        if (hit.collider != null && hit.collider.CompareTag(target))
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(centerPoint, radius, Vector2.zero, Mathf.Infinity, sourceLayerMask);
+
+        foreach (RaycastHit2D hit in hits)
         {
-            Debug.Log("Found a hit");
-            closestPoint = Physics2D.ClosestPoint(centerPoint, hit.collider);
+            if (hit.point != null && hit.collider.CompareTag(target))
+            {
+                Debug.Log("Found a hit" + target);
+                Debug.Log("hit point  : " + hit.point);
+
+                closestPoint = hit.point;
+            }
+            if (target == "Food")
+            {
+                closestFood = closestPoint;
+            }
+            else if (target == "Stone")
+            {
+                Debug.Log("nodeAı içinde  : " + closestStone);
+                Debug.Log("nodeAı içinde closest  : " + closestPoint);
+
+                closestStone = closestPoint;
+            }
+            else if (target == "Water")
+            {
+                closestWater = closestPoint;
+            }
         }
 
-
-
-        // E�er daire i�inde hi� tag'ine sahip nesne yoksa, Vector2.zero d�ner
-        return closestPoint;
     }
 
     // Debug ama�l�, sahnede daireyi �izer
@@ -63,14 +117,16 @@ public class NodeAI : MonoBehaviour
 
     private void Start()
     {
-        // NearestFoodFinder script'ini kullanarak daire i�indeki en yak�n "food" nesnesinin pozisyonunu al
-            closestFood = FindNearestTargetInCircle(sourceSearchRadius, "Food", "Source");
 
         // NearestFoodFinder script'ini kullanarak daire i�indeki en yak�n "taş" nesnesinin pozisyonunu al
-        closestStone = FindNearestTargetInCircle(sourceSearchRadius, "Stone", "Source");
+        FindNearestTargetInCircle(sourceSearchRadius, "Stone", "Source");
+
+        // NearestFoodFinder script'ini kullanarak daire i�indeki en yak�n "food" nesnesinin pozisyonunu al
+        FindNearestTargetInCircle(sourceSearchRadius, "Food", "Source");
+
 
         // NearestFoodFinder script'ini kullanarak daire i�indeki en yak�n "su" nesnesinin pozisyonunu al
-        closestWater = FindNearestTargetInCircle(sourceSearchRadius, "Water", "Source");
+        FindNearestTargetInCircle(sourceSearchRadius, "Water", "Source");
 
 
         closestWaterDistance = (closestWater != Vector2.zero) ? Vector2.Distance(centerPoint, closestWater) : Mathf.Infinity;
@@ -118,6 +174,7 @@ public class NodeAI : MonoBehaviour
             }
         }
     }
+    
     public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode)
     {
         /*
