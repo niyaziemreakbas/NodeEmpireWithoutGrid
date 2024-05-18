@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class DecisionEngine : MonoBehaviour
 {
-    List<NodeAI> allyNodes=new List<NodeAI>();
+    public List<NodeAI> allyNodes=new List<NodeAI>();
     List<NodeAI> attackTargetNodes;
+    List<NodeAI> attackTargetNodesAlly;
+
     List<NodeAI> defendTargetNodes;
+    //List<NodeAI> defendTargetNodesAlly;
 
 
     int buildCost = 15;
@@ -53,11 +56,14 @@ public class DecisionEngine : MonoBehaviour
         GoLocation(new Vector3(5,20,0));
         */
     }
+
+    /*
     private void Update()
     {
         currentState = State.SearchingStone; updateState();
         currentState = State.SearchingWater; updateState();
         currentState = State.SearchingFood; updateState();
+        
         if(allyNodes.Count > nodeCountUntilAttack)
         {
             currentState = State.Defence; updateState();
@@ -66,6 +72,7 @@ public class DecisionEngine : MonoBehaviour
         }
 
     }
+    
     void updateState()
     {
         switch (currentState)
@@ -88,7 +95,7 @@ public class DecisionEngine : MonoBehaviour
 
         }
     }
-
+    */
     //Nodelar aras�nda ta�a en yak�n konumu bul
     void CheckNodesForStone()
     {
@@ -167,7 +174,7 @@ public class DecisionEngine : MonoBehaviour
     void generateNextNode(NodeAI startNode, Vector2 targetLoc)
     {
         //Kaynak yeterliyse basacak
-        if(Resource.stone < buildCost)
+        if(GetComponent<Resource>().stone < buildCost)
         {
             //continue to collecting
             Debug.Log("Not enough resources to create node");
@@ -207,11 +214,12 @@ public class DecisionEngine : MonoBehaviour
         }
 
     }
-
+    
     void AttackNode()
     {
         int randomIndex = Random.Range(0, attackTargetNodes.Count);
-        attackTargetNodes[randomIndex].GetComponent<Node>();
+        //ConnectEnemyToAttack(attackTargetNodes[randomIndex].GetComponent<Node>(), attackTargetNodesAlly[randomIndex].GetComponent<Node>());
+        
     }
     void DefenceNode()
     {
@@ -219,7 +227,7 @@ public class DecisionEngine : MonoBehaviour
         defendTargetNodes[randomIndex].GetComponent<Node>();
 
     }
-
+    
     public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode){
         foreach (NodeAI item in allyNodes)
         {   

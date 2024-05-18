@@ -133,9 +133,10 @@ public class NodeManager : MonoBehaviour
                         instantiatedNode.SetTransferNode(hittedNode);
                         instantiatedNode.SetIsExporting(true);
 
-                        
                         hittedNode.SetTransferNode(instantiatedNode);
                         hittedNode.SetIsImporting(true);
+
+                        instantiatedNode.SetExportLine(newNodeLine);
                     }
 
                     // set enemy next node
