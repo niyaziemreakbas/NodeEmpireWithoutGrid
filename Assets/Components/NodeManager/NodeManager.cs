@@ -89,6 +89,9 @@ public class NodeManager : MonoBehaviour
                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
                 if(hit.collider != null)
                 {
+                    if (hit.collider.gameObject.CompareTag("PlayerNode"))
+                    {
+                        
                     instantiatedNode=hit.collider.GetComponent<Node>();
                     newNodeLine=Instantiate(nodeLinePrefab,nodeLinesParent);
                     newNodeLine.InitializeNodeLine();
@@ -96,6 +99,7 @@ public class NodeManager : MonoBehaviour
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
 
+                    }
                 }
                 
             }
@@ -110,6 +114,8 @@ public class NodeManager : MonoBehaviour
             }
             if (Input.GetMouseButtonUp(0))
             {
+                if (instantiatedNode!=null && newNodeLine!=null)
+                {
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
                 if(hit.collider != null)
                 {
@@ -145,7 +151,8 @@ public class NodeManager : MonoBehaviour
                     Destroy(newNodeLine.gameObject);
                 }
                 newNodeLine=null;    
-                instantiatedNode=null;      
+                instantiatedNode=null; 
+                }     
             }
             
                 
