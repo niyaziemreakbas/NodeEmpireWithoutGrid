@@ -28,7 +28,7 @@ private void Start() {
     {
         if (Input.GetKeyDown(KeyCode.K) && !modChangeAllow)
         {
-            Debug.Log("Modda aktif işlem yapılmakta olduğundan değiştirilemiyor");
+            Debug.Log("değişti");
             mode++;
             mode%=totalMode;
         }
@@ -72,9 +72,12 @@ private void Start() {
             {
                 if (Input.GetMouseButtonDown(1) && newNodeLine != null && instantiatedNode != null)
                 {
+                    modChangeAllow=false;
                 Destroy(newNodeLine.gameObject);
                 Destroy(instantiatedNode.gameObject);
-                } else if (newNodeLine != null && instantiatedNode != null){
+                } else 
+                if (newNodeLine != null && instantiatedNode != null){
+                
                 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 worldPosition.z=0;
                 Vector2 diff=worldPosition-parentNode.transform.position;
@@ -165,6 +168,12 @@ private void Start() {
                 }     
             } else if (modChangeAllow)
             {
+
+                if (Input.GetMouseButtonDown(1) && newNodeLine != null && instantiatedNode != null)
+                {
+                    modChangeAllow=false;
+                Destroy(newNodeLine.gameObject);
+                }
                 if (instantiatedNode!=null && newNodeLine!=null)
                 {
                         worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
