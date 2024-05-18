@@ -141,22 +141,25 @@ public class Node : MonoBehaviour
         isConnectedOnEnemy=state;
     }
     public void SetIsImporting(bool state){
-        if (exportLine!=null)
-        {
-            Destroy(exportLine.gameObject);   
-        }
         isImporting=state;
-        isExporting=!state;
     }
     public void SetIsExporting(bool state){
-        
         if (exportLine!=null)
         {
             Destroy(exportLine.gameObject);   
         }
-
         isExporting=state;
-        isImporting=!state;
+    }
+    public void ResetExport(){
+        if (exportLine!=null)
+        {
+            Destroy(exportLine.gameObject);   
+        }
+        isExporting=false;
+        transferNode=null;
+    }
+    public NodeLine GetExportNodeLine(){
+        return exportLine;
     }
     public void SetTransferNode(Node node){
         transferNode=node;

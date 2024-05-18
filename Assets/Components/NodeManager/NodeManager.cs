@@ -117,7 +117,13 @@ private void Start() {
                     if (hit.collider.gameObject.CompareTag("PlayerNode"))
                     {
                     instantiatedNode=hit.collider.GetComponent<Node>();
+                    if (instantiatedNode.GetExportNodeLine()!=null)
+                    {
+                        newNodeLine=instantiatedNode.GetExportNodeLine();
+                    }else
+                    {
                     newNodeLine=Instantiate(nodeLinePrefab,nodeLinesParent);
+                    }
                     newNodeLine.InitializeNodeLine();
                     newNodeLine.SetColor(Color.yellow);
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
@@ -148,14 +154,15 @@ private void Start() {
                         hittedNode.SetEnemyNodeLine(newNodeLine);
                         
                     }else if (hittedNode.gameObject.CompareTag("PlayerNode")){
+
                         newNodeLine.SetColor(Color.green);
                         instantiatedNode.SetTransferNode(hittedNode);
                         instantiatedNode.SetIsExporting(true);
+                        instantiatedNode.SetExportLine(newNodeLine);
 
                         hittedNode.SetTransferNode(instantiatedNode);
                         hittedNode.SetIsImporting(true);
-
-                        instantiatedNode.SetExportLine(newNodeLine);
+ 
                     }
 
                     // set enemy next node
@@ -171,7 +178,10 @@ private void Start() {
 
                 if (Input.GetMouseButtonDown(1) && newNodeLine != null && instantiatedNode != null)
                 {
+                    
                     modChangeAllow=false;
+                    instantiatedNode.ResetExport();
+
                 Destroy(newNodeLine.gameObject);
                 }
                 if (instantiatedNode!=null && newNodeLine!=null)
