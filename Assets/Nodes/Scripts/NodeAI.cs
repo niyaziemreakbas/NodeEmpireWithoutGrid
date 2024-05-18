@@ -94,7 +94,7 @@ public class NodeAI : MonoBehaviour
 
         }
         */
-        if (other.CompareTag("PlayerNode"))
+        if (other.CompareTag("Node"))
         {
             if(this.gameObject.GetComponent<Node>().soldierCount <= other.gameObject.GetComponent<Node>().soldierCount)
             {

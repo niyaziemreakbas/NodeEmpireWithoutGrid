@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DecisionEngine : MonoBehaviour
 {
-    List<NodeAI> allyNodes=new List<NodeAI>();
+    public List<NodeAI> allyNodes=new List<NodeAI>();
     List<NodeAI> attackTargetNodes;
     List<NodeAI> attackTargetNodesAlly;
 
@@ -56,6 +56,8 @@ public class DecisionEngine : MonoBehaviour
         GoLocation(new Vector3(5,20,0));
         */
     }
+
+    /*
     private void Update()
     {
         currentState = State.SearchingStone; updateState();
@@ -70,6 +72,7 @@ public class DecisionEngine : MonoBehaviour
         }
 
     }
+    
     void updateState()
     {
         switch (currentState)
@@ -92,7 +95,7 @@ public class DecisionEngine : MonoBehaviour
 
         }
     }
-
+    */
     //Nodelar aras�nda ta�a en yak�n konumu bul
     void CheckNodesForStone()
     {
@@ -171,7 +174,7 @@ public class DecisionEngine : MonoBehaviour
     void generateNextNode(NodeAI startNode, Vector2 targetLoc)
     {
         //Kaynak yeterliyse basacak
-        if(Resource.stone < buildCost)
+        if(GetComponent<Resource>().stone < buildCost)
         {
             //continue to collecting
             Debug.Log("Not enough resources to create node");
