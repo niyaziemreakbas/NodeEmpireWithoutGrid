@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -14,6 +15,11 @@ public class DecisionEngine : MonoBehaviour
     List<NodeAI> defendTargetNodes;
     //List<NodeAI> defendTargetNodesAlly;
 
+    public GameObject botUI;
+
+    public TextMeshProUGUI stone;
+    public TextMeshProUGUI food;
+    public TextMeshProUGUI water;
 
     int buildCost = 15;
 
@@ -46,7 +52,8 @@ public class DecisionEngine : MonoBehaviour
 
 
     State currentState;
-    private void Update() {
+
+    private void Start() {
         if(allyNodes.Count == 0)
         {
             tempNode = this.GetComponent<NodeAI>();
@@ -54,12 +61,8 @@ public class DecisionEngine : MonoBehaviour
         allyNodes.Add(GetComponent<NodeAI>());
         CheckNodesForStone();
         DelayedMethod();
-        CheckNodesForFood();
-        DelayedMethod();
 
-        CheckNodesForWater();
-        DelayedMethod();
-
+        botUI.SetActive(false);
 
     }
 
@@ -84,7 +87,7 @@ public class DecisionEngine : MonoBehaviour
         }
 
     }
-    
+    */
     void updateState()
     {
         switch (currentState)
@@ -107,8 +110,44 @@ public class DecisionEngine : MonoBehaviour
 
         }
     }
-    */
 
+    void updateText()
+    {
+        if(botUI.activeInHierarchy)
+        {
+            stone.text = GetComponent<Resource>().stone.ToString();
+            food.text = GetComponent<Resource>().food.ToString();
+            water.text = GetComponent<Resource>().water.ToString();
+        }
+    }
+
+    Vector2 centerPoint;
+
+    private void Update()
+    {
+        // Fare tıklamasını kontrol eder
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Fare pozisyonunu ekrandan dünya koordinatlarına çevirir
+            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+
+            // Eğer tıklanan obje bu obje ise
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("EnemyNode"))
+            {
+                // Aktif etmek istediğiniz objeyi aktif hale getirir
+                if (botUI != null && !botUI.activeInHierarchy)
+                {
+                    botUI.SetActive(true);
+                }
+                else if (botUI != null && botUI.activeInHierarchy)
+                {
+                    botUI.SetActive(false);
+                }
+                updateText();
+            }
+        }
+    }
 
     //Nodelar aras�nda ta�a en yak�n konumu bul
     void CheckNodesForStone()
@@ -143,7 +182,6 @@ public class DecisionEngine : MonoBehaviour
         double currentClosestGoalDistance = double.MaxValue;
         foreach (NodeAI node in allyNodes)
         {
-
             if (currentClosestGoalDistance > node.closestWaterDistance)
             {
                 currentClosestGoalDistance = node.closestWaterDistance;
@@ -294,7 +332,10 @@ public class DecisionEngine : MonoBehaviour
         newNodeNode.SetBuilded(true);
         backNode.GetComponent<Node>().AddNextNode(newNodeNode);
 
+        Debug.Log("önce : " + GetComponent<Resource>().stone);
         GetComponent<Resource>().stone -= buildCost;
+        Debug.Log("sonra : " + GetComponent<Resource>().stone);
+
 
         return newNode;
     }
