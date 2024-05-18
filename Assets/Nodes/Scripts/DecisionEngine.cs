@@ -73,7 +73,6 @@ public class DecisionEngine : MonoBehaviour
         double currentClosestGoalDistance = double.MaxValue;
         foreach (NodeAI node in allyNodes)
         {
-
             if(currentClosestGoalDistance > node.closestStoneDistance)
             {
                 currentClosestGoalDistance = node.closestStoneDistance;
@@ -171,17 +170,7 @@ public class DecisionEngine : MonoBehaviour
             Vector2 nextNode = (Vector2)startNode.transform.position + direction * 5f;
 
             //Instantiate Object at nextNode
-            
-            NodeAI newNode= Instantiate(nodePrefab);
-            newNode.transform.position=nextNode;
-            NodeLine newNodeLine=Instantiate(nodeLinePrefab);
-            allyNodes.Add(newNode);
-            newNodeLine.InitializeNodeLine();
-            newNodeLine.AppendNodeToLine(newNode.transform.position);
-            newNodeLine.AppendNodeToLine(startNode.transform.position);
-            
-            newNode.GetComponent<Node>().SetBackNode(startNode.GetComponent<Node>());
-            newNode.GetComponent<Node>().SetBackNodeLine(newNodeLine);
+            NodeAI newNode=CreateNode(nextNode,startNode);
 
             //Next node target loc y�n�nde ama 5 birim uzakl���ndaki konuma instantiate
             generateNextNode(newNode, targetLoc);
@@ -229,6 +218,25 @@ public class DecisionEngine : MonoBehaviour
             }
         }
         return currentNode;
+    }
+    public NodeAI CreateNode(Vector3 position, NodeAI backNode){
+
+            NodeAI newNode= Instantiate(nodePrefab);
+            Node newNodeNode=newNode.GetComponent<Node>();
+            newNode.transform.position=position;
+            NodeLine newNodeLine=Instantiate(nodeLinePrefab);
+            allyNodes.Add(newNode);
+    
+            newNodeLine.InitializeNodeLine();
+            newNodeLine.AppendNodeToLine(newNode.transform.position);
+            newNodeLine.AppendNodeToLine(backNode.transform.position);
+            
+            newNodeNode.SetBackNode(backNode.GetComponent<Node>());
+            newNodeNode.SetBackNodeLine(newNodeLine);
+            newNodeNode.SetBuilded(true);
+            backNode.GetComponent<Node>().AddNextNode(newNodeNode);
+
+            return newNode;
     }
 
 }

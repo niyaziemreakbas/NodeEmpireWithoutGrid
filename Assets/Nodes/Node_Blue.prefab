@@ -165,6 +165,7 @@ MonoBehaviour:
   soldierCountText: {fileID: 4171168090006636220}
   offSet: {x: 0, y: 1.2, z: 0}
   backNode: {fileID: 0}
+  soldierCount: 0
 --- !u!1 &6276633412887517808
 GameObject:
   m_ObjectHideFlags: 0

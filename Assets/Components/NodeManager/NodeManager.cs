@@ -113,11 +113,20 @@ public class NodeManager : MonoBehaviour
                 {
                     Node hittedNode=hit.collider.GetComponent<Node>();
                     newNodeLine.UpdateLastPosition(hittedNode.transform.position);
-                    if (hittedNode.gameObject.CompareTag("EnemyNode"))
+
+                    if (hittedNode.gameObject.CompareTag("Enemy"))
                     {
                         newNodeLine.SetColor(Color.red);
-                        hittedNode.SetEnemyNode(instantiatedNode);
+
                         instantiatedNode.SetEnemyNode(hittedNode);
+                        instantiatedNode.SetIsConnectedToEnemy(true);
+                        instantiatedNode.SetEnemyNodeLine(newNodeLine);
+
+                        hittedNode.SetEnemyNode(instantiatedNode);
+                        hittedNode.SetIsConnectedToEnemy(true);
+                        hittedNode.SetEnemyNodeLine(newNodeLine);
+                        
+
                     }
 
                     // set enemy next node

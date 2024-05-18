@@ -17,16 +17,16 @@ public class Node : MonoBehaviour
     private List<Node> nextNodes;
     private NodeLine backNodeLine;
 
-    private int soldierCount = 0;
+    public int soldierCount = 0;
     private NodeResources nodeResources;
 
     Vector2 centerPoint;
 
     private bool builded;
 
-    private bool isConnectedOnEnemy;
-    private Node enemyNode;
-    private NodeLine enemyLine;
+    public bool isConnectedOnEnemy;
+    public Node enemyNode;
+    public NodeLine enemyLine;
 
     private void Awake()
     {
@@ -60,6 +60,27 @@ public class Node : MonoBehaviour
             nodeResources.TrainSoldier(foodToTrainSoldier,waterToTrainSoldier);
             soldierCount++;
             UpdateSoldierCountText();
+        }
+
+        if (isConnectedOnEnemy)
+        {
+            if (soldierCount<=0)
+            {
+                Destroy(enemyLine.gameObject);
+                Destroy(gameObject);
+            }
+
+            if (enemyLine==null)
+            {
+            
+                isConnectedOnEnemy=false;
+                enemyNode=null;
+            
+            }else{
+                soldierCount--;
+            }
+            
+            
         }
     }
 
@@ -100,10 +121,19 @@ public class Node : MonoBehaviour
 
 
     private void OnDestroy() {
+        
+        foreach (Node item in nextNodes)
+        {
+            Destroy(item.gameObject);
+        }
+
+        Destroy(backNodeLine.gameObject);
+        
         if(soldierCountText != null)
         {
             Destroy(soldierCountText.gameObject);
         }
+
         
     }
     public void SetBuilded(bool builded){
