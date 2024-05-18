@@ -34,8 +34,7 @@ public class DecisionEngine : MonoBehaviour
         SearchingStone,
         SearchingWater,
         SearchingFood,
-        Defending,
-        Attacking
+        Danger
     }
 
     Vector3 tempTarget;
@@ -58,8 +57,8 @@ public class DecisionEngine : MonoBehaviour
         currentState = State.SearchingFood; updateState();
         if(allyNodes.Count >5)
         {
-            currentState = State.Defending; updateState();
-            currentState = State.Attacking; updateState();
+            currentState = State.Danger; updateState();
+
         }
         
     }
@@ -76,12 +75,10 @@ public class DecisionEngine : MonoBehaviour
             case State.SearchingFood:
                 CheckNodesForWater();
                 break;
-            case State.Defending:
-                CheckNodesForEnemies();
+            case State.Danger:
+                AttackNode(tempNode);
                 break;
-            case State.Attacking:
-                CheckNodesForTarget();
-                break;
+
         }
     }
 
