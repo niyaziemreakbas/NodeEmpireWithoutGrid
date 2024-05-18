@@ -50,5 +50,9 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 64
+  enemyNodeMask:
+    serializedVersion: 2
+    m_Bits: 256
   nodesParent: {fileID: 0}
   nodeLinesParent: {fileID: 0}
+  totalMode: 3
