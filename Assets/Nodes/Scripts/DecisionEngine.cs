@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class DecisionEngine : MonoBehaviour
 {
-    NodeAI[] allyNodes;
-    NodeAI[] targetNodes;
+    List<NodeAI> allyNodes;
+    List<NodeAI> targetNodes;
+
+    bool attack = false;
+
+    public int nodeCountUntilAttack;
+
+    public GameObject Node;
 
     //Kaynaklarý çekeceðimiz satýr
 
@@ -20,7 +26,7 @@ public class DecisionEngine : MonoBehaviour
         Attacking
     }
 
-    Vector3 target;
+    Vector3 tempTarget;
 
 
     State currentState;
@@ -39,7 +45,7 @@ public class DecisionEngine : MonoBehaviour
                 CheckNodesForWater();
                 break;
             case State.MovingToLocation:
-                GoLocation(target);
+                GoLocation(tempTarget);
                 break;
             case State.Defending:
                 CheckNodesForEnemies();
@@ -104,6 +110,7 @@ public class DecisionEngine : MonoBehaviour
     }
 
 
+
     //Belli bir konuma node çek
     void GoLocation(Vector2 target)
     {
@@ -134,7 +141,8 @@ public class DecisionEngine : MonoBehaviour
         if(distance <= 5f)
         {
             //Next node target loca instantiate ve çýk
-            
+
+            //Instantiate Object at targetLoc
 
         }
         else
@@ -147,13 +155,21 @@ public class DecisionEngine : MonoBehaviour
             // Belirli bir mesafeye (örneðin, 5 birim) çarp ve yeni noktayý hesapla
             Vector2 nextNode = startLoc + direction * 5f;
 
+            //Instantiate Object at nextNode
+            createNewNode(nextNode);
+
             //Next node target loc yönünde ama 5 birim uzaklýðýndaki konuma instantiate
             generateNextNode(nextNode, targetLoc);
         }
 
     }
 
-
+    void createNewNode(Vector2 location)
+    {
+        //convert v2 to v3
+        Vector3 vector3 = new Vector3(location.x, location.y);
+        Instantiate(Node, vector3, Quaternion.identity);
+    }
 
     //Düþman yakýnsa savun
     void CheckNodesForEnemies()
@@ -165,6 +181,14 @@ public class DecisionEngine : MonoBehaviour
     void CheckNodesForTarget()
     {
 
+    }
+
+    void attackControl()
+    {
+        if(allyNodes.Count < nodeCountUntilAttack)
+        {
+            attack = true;
+        }
     }
 
 }

@@ -75,9 +75,20 @@ public class NodeAI : MonoBehaviour
         Debug.Log("Nearest water position in circle: " + closestWater + ", Distance: " + closestWaterDistance);
     }
 
+    //Add new Targets
+    private void OnTriggerEnter(Collider other)
+    {
+        // Giriş yapan objenin etiketini kontrol edebilirsiniz
+        if (other.CompareTag("Enemy"))
+        {
+            Debug.Log("Detected enemy");
+            targets.Add(other.gameObject.GetComponent<Vector2>());
+        }
+    }
+
     private void Update()
     {
-        FindNearestTargetInCircle(targetSearchRadius, "Enemy", "Node");
+
     }
 
 }
