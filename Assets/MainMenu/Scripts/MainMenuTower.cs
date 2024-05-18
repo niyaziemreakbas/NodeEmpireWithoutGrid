@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class MainMenuTower : MonoBehaviour
 {
-
-
     [SerializeField] private List<GameObject> damageLevels;
     [SerializeField] private GameObject collapsedTower;
     

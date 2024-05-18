@@ -61,7 +61,8 @@ private void Start() {
             
             if (instantiatedNode!=null)
             {
-            instantiatedNode.SetBuilded(true);
+                 instantiatedNode.SetBuilded(true);
+                 AudioManager.instance.NodeConstructedSF();
             }
            parentNode=null;
            instantiatedNode=null;

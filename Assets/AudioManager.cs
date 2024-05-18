@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
     #region clips
     [SerializeField] private AudioClip simpleButtonClickSF;
     [SerializeField] private AudioClip explosionSF;
+    [SerializeField] private AudioClip nodeConstructedSF;
     #endregion
 
     private AudioSource audioSource;
@@ -39,6 +40,14 @@ public class AudioManager : MonoBehaviour
         if(SoundOn)
         {
             audioSource.PlayOneShot(explosionSF);
+        }
+    }
+
+    public void NodeConstructedSF()
+    {
+        if(SoundOn)
+        {
+            audioSource.PlayOneShot(nodeConstructedSF);
         }
     }
 }
