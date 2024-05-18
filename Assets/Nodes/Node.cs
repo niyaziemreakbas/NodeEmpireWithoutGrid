@@ -25,51 +25,55 @@ public class Node : MonoBehaviour
     private int soldierCount = 0;
     private NodeResources nodeResources;
 
+    Vector2 centerPoint;
+
     private bool builded;
 
-    // Belirli bir merkez nokta ve yarýçap ile dairenin içindeki en yakýn "food" tag'ine sahip nesnenin pozisyonunu döner
-    public Vector2 FindNearestFoodInCircle(Vector2 centerPoint, float radius)
+    // Belirli bir merkez nokta ve yarï¿½ï¿½ap ile dairenin iï¿½indeki en yakï¿½n "food" tag'ine sahip nesnenin pozisyonunu dï¿½ner
+    public Vector2 FindNearestTargetInCircle(float radius, string target)
     {
-        // Daire içinde "food" tag'ine sahip olan Collider2D'leri al
+        centerPoint = transform.position;
+        
+        // Daire iï¿½inde "food" tag'ine sahip olan Collider2D'leri al
         Collider2D[] hits = Physics2D.OverlapCircleAll(centerPoint, radius);
-        GameObject nearestFood = null;
+        GameObject nearestTarget = null;
         float nearestDistance = Mathf.Infinity;
 
-        // Bulunan Collider2D'ler arasýnda "food" tag'ine sahip olanlarý kontrol et
+        // Bulunan Collider2D'ler arasï¿½nda "food" tag'ine sahip olanlarï¿½ kontrol et
         foreach (Collider2D hit in hits)
         {
-            if (hit.CompareTag("Food"))
+            if (hit.CompareTag(target))
             {
                 // Nesnenin pozisyonunu al
-                Vector2 foodPosition = hit.transform.position;
+                Vector2 targetPosition = hit.transform.position;
 
-                // Bu nesnenin merkez noktaya olan uzaklýðýný hesapla
-                float distance = Vector2.Distance(centerPoint, foodPosition);
+                // Bu nesnenin merkez noktaya olan uzaklï¿½ï¿½ï¿½nï¿½ hesapla
+                float distance = Vector2.Distance(centerPoint, targetPosition);
 
-                // Eðer bu nesne, þu ana kadar bulunan en yakýn nesne ise, onu kaydet
+                // Eï¿½er bu nesne, ï¿½u ana kadar bulunan en yakï¿½n nesne ise, onu kaydet
                 if (distance < nearestDistance)
                 {
                     nearestDistance = distance;
-                    nearestFood = hit.gameObject;
+                    nearestTarget = hit.gameObject;
                 }
             }
         }
 
-        // En yakýn "food" tag'ine sahip nesnenin pozisyonunu döner
-        if (nearestFood != null)
+        // En yakï¿½n "food" tag'ine sahip nesnenin pozisyonunu dï¿½ner
+        if (nearestTarget != null)
         {
-            return nearestFood.transform.position;
+            return nearestTarget.transform.position;
         }
 
-        // Eðer daire içinde hiç "food" tag'ine sahip nesne yoksa, Vector2.zero döner
+        // Eï¿½er daire iï¿½inde hiï¿½ "food" tag'ine sahip nesne yoksa, Vector2.zero dï¿½ner
         return Vector2.zero;
     }
 
-    // Debug amaçlý, sahnede daireyi çizer
+    // Debug amaï¿½lï¿½, sahnede daireyi ï¿½izer
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 5.0f); // Örneðin 5 birimlik bir daire
+        Gizmos.DrawWireSphere(transform.position, 5.0f); // ï¿½rneï¿½in 5 birimlik bir daire
     }
 
     private void Awake()
@@ -80,15 +84,20 @@ public class Node : MonoBehaviour
         soldierCountText.transform.SetParent(canvas.transform,false);   
     }
 
-    public Vector2 currentNodePoint; // Belirli bir nokta
-    public float searchRadius = 5.0f; // Arama yarýçapý
+    //public Vector2 currentNodePoint; // Belirli bir nokta
+    public float searchRadius = 5.0f; // Arama yarï¿½ï¿½apï¿½
 
     private void Start()
     {
 		nextNodes=new List<Node>();
         SetTextPosition();
 
-        
+
+        // NearestFoodFinder script'ini kullanarak daire iï¿½indeki en yakï¿½n "food" nesnesinin pozisyonunu al
+        Vector2 nearestFoodPosition = FindNearestTargetInCircle(searchRadius, "Food");
+
+        // En yakï¿½n "food" nesnesinin pozisyonunu ekrana yazdï¿½r
+        Debug.Log("Nearest food position in circle: " + nearestFoodPosition);
     }
 
     void FixedUpdate()
@@ -105,22 +114,6 @@ public class Node : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        currentNodePoint = transform.position;
-
-
-
-        // NearestFoodFinder script'ini kullanarak daire içindeki en yakýn "food" nesnesinin pozisyonunu al
-        Vector2 nearestFoodPosition = FindNearestFoodInCircle(currentNodePoint, searchRadius);
-
-        // En yakýn "food" nesnesinin pozisyonunu ekrana yazdýr
-        Debug.Log("Nearest food position in circle: " + nearestFoodPosition);
-
-        // En yakýn "food" nesnesinin pozisyonunu ekrana yazdýr
-        Debug.Log("Current position in circle: " + currentNodePoint);
-
-    }
 
     void UpdateSoldierCountText()
     {
