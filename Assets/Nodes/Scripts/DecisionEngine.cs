@@ -53,22 +53,18 @@ public class DecisionEngine : MonoBehaviour
     State currentState;
 
     private void Start() {
+        currentState = State.Idle;
         if(allyNodes.Count == 0)
         {
             tempNode = this.GetComponent<NodeAI>();
         }
         allyNodes.Add(GetComponent<NodeAI>());
-        CheckNodesForStone();
-        DelayMethod(30f);
+        //Invoke("CheckNodesForStone()",5f);
 
         botUI.SetActive(false);
 
     }
 
-    IEnumerator DelayMethod(float delayAmount)
-    {
-        yield return new WaitForSeconds(delayAmount);
-    }
 
 
 
@@ -135,6 +131,8 @@ public class DecisionEngine : MonoBehaviour
 
     private void Update()
     {
+        if (botUI.activeInHierarchy) { updateText(); }
+
         // Fare tıklamasını kontrol eder
         if (Input.GetMouseButtonDown(0))
         {
@@ -169,10 +167,8 @@ public class DecisionEngine : MonoBehaviour
 
         if (currentState == State.Idle)
         {
-            chooseResourceGoal();
-            updateState();
-
-            DelayMethod(15f);
+            Invoke("chooseResourceGoal", 5f);
+            Invoke("updateState", 5f);
         }
     }
 
@@ -252,6 +248,9 @@ public class DecisionEngine : MonoBehaviour
         generateNextNode(node, target);
     }
 
+
+    private IEnumerator coroutine;
+
     //S�radaki node'u bul
     void generateNextNode(NodeAI startNode, Vector2 targetLoc)
     {
@@ -292,13 +291,34 @@ public class DecisionEngine : MonoBehaviour
         else
         {
             //Instantiate Object at nextNode
+            generateNextNodeDelay(10f, CreateNode(newPoint, startNode), targetLoc);
             
-            generateNextNode(CreateNode(newPoint, startNode), targetLoc);
 
         }
-        
+
+    }
+
+    IEnumerator generateNextNode(float waitTime, NodeAI startNode, Vector2 targetLoc)
+    {
+        yield return new WaitForSeconds(waitTime);
+        generateNextNode(startNode, targetLoc);
+    }
+    public void generateNextNodeDelay(float waitTime, NodeAI startNode, Vector2 targetLoc)
+    {
+        StartCoroutine(generateNextNode(waitTime, startNode, targetLoc));
+    }
+
+    IEnumerator CreateNode(float waitTime, Vector3 position, NodeAI backNode)
+    {
+        yield return new WaitForSeconds(waitTime);
+        CreateNode(position, backNode);
     }
     
+    public void StartCreateNode(float waitTime, Vector3 position, NodeAI backNode)
+    {
+        StartCoroutine(CreateNode(waitTime, position, backNode));
+    }
+
     void AttackNode()
     {
         int randomIndex = Random.Range(0, attackTargetNodes.Count);

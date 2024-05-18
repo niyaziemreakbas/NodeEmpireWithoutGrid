@@ -45,20 +45,16 @@ public class NodeResources : MonoBehaviour
         {
             case SourceType.Water:
                 resource.GainWater(water);
-                print("water"+water);
                 break;
 
             case SourceType.Food:
                 resource.GainFood(food);
-                print("food"+food);
                 break;
 
             case SourceType.Stone:
                 resource.GainStone(stone);
-                print("stone girdi");
                 break;
             default:
-                print(sourceType);
                 break;
         }
     }
