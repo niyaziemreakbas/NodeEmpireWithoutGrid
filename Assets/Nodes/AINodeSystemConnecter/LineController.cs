@@ -10,7 +10,14 @@ public class LineController : MonoBehaviour
     private void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
+
+
+
+    }
+
+    void drawLine(Transform[] positions)
+    {
         lineRenderer.positionCount = positions.Length;
-        this.positions = positions; 
+        this.positions = positions;
     }
 }

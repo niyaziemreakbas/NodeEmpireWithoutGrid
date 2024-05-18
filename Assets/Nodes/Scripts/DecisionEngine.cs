@@ -7,6 +7,8 @@ public class DecisionEngine : MonoBehaviour
     List<NodeAI> allyNodes;
     List<NodeAI> targetNodes;
 
+    int buildCost = 15;
+
     bool attack = false;
 
     public int nodeCountUntilAttack;
@@ -14,10 +16,13 @@ public class DecisionEngine : MonoBehaviour
     public GameObject Node;
 
     public NodeAI nodePrefab;
+
+    public NodeAI tempNode;
     
     public NodeLine nodeLinePrefab;
 
     //Kaynaklar� �ekece�imiz sat�r
+    public NodeResources nodeResources; 
 
     enum State
     {
@@ -35,10 +40,12 @@ public class DecisionEngine : MonoBehaviour
 
     State currentState;
     private void Start() {
+        /*
         allyNodes=new List<NodeAI>();
         allyNodes.Add(GetComponent<NodeAI>());
         GoLocation(new Vector3(20,20,0));
         GoLocation(new Vector3(5,20,0));
+        */
     }
 
     void updateState()
@@ -55,7 +62,7 @@ public class DecisionEngine : MonoBehaviour
                 CheckNodesForWater();
                 break;
             case State.MovingToLocation:
-                GoLocation(tempTarget);
+                //GoLocation(tempTarget);
                 break;
             case State.Defending:
                 CheckNodesForEnemies();
@@ -104,8 +111,10 @@ public class DecisionEngine : MonoBehaviour
     //Nodelar aras�nda yeme�e en yak�n konumu bul
     void CheckNodesForFood()
     {
+        NodeAI startNode = tempNode;
         Vector2 currentGoal = Vector2.zero;
         double currentClosestGoalDistance = double.MaxValue;
+
         foreach (NodeAI node in allyNodes)
         {
 
@@ -113,37 +122,36 @@ public class DecisionEngine : MonoBehaviour
             {
                 currentClosestGoalDistance = node.closestFoodDistance;
                 currentGoal = node.closestFood;
+                startNode = node;
             }
         }
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
-        GoLocation(currentGoal);
+        GoLocation(startNode, currentGoal);
     }
 
 
 
     //Belli bir konuma node �ek
-    void GoLocation(Vector2 target)
+    void GoLocation(NodeAI node, Vector2 target)
     {
         if(target != Vector2.zero)
         {
             Debug.Log("Target not reachable");
         }
 
+        //Orada tam hedef noktada yeni bir node oluturulana kadar d devam etsin
 
-        // targeta en yakın node çek
-        NodeAI closestNodeToTarget = GetClosestNode(target);
-
-        //Orada tam hedef noktada yeni bir node olu�turulana kadar d�ng� devam etsin
-
-        generateNextNode(closestNodeToTarget, target);
-        
+        generateNextNode(node, target);
     }
 
     //S�radaki node'u bul
     void generateNextNode(NodeAI startNode, Vector2 targetLoc)
     {
         //Kaynak yeterliyse basacak
-        //if()
+        if(nodeResources.stone < buildCost)
+        { 
+            //continue to 
+        }
 
 
         // Hedef konum ile ba�lang�� konumu aras�ndaki fark� hesapla
@@ -214,7 +222,10 @@ public class DecisionEngine : MonoBehaviour
         {
             attack = true;
         }
+
     }
+    
+    /*
     public NodeAI GetClosestNode(Vector2 target){
         NodeAI currentNode = null;
         float currentClosestGoalDistance = float.MaxValue;
@@ -230,5 +241,5 @@ public class DecisionEngine : MonoBehaviour
         }
         return currentNode;
     }
-
+    */
 }
