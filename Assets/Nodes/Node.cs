@@ -71,6 +71,10 @@ public class Node : MonoBehaviour
         soldierCountText.transform.position = Camera.main.WorldToScreenPoint(transform.position + offSet);
     }
     private void OnDestroy() {
-        Destroy(soldierCountText.gameObject);
+        if(soldierCountText != null)
+        {
+            Destroy(soldierCountText.gameObject);
+        }
+        
     }
 }
