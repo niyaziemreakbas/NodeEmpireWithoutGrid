@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
 
     #region clips
     [SerializeField] private AudioClip simpleButtonClickSF;
+    [SerializeField] private AudioClip explosionSF;
     #endregion
 
     private AudioSource audioSource;
@@ -31,5 +32,13 @@ public class AudioManager : MonoBehaviour
             audioSource.PlayOneShot(simpleButtonClickSF);
         }
         
+    }
+
+    public void ExplosionSF()
+    {
+        if(SoundOn)
+        {
+            audioSource.PlayOneShot(explosionSF);
+        }
     }
 }

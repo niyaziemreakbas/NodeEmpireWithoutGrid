@@ -332,6 +332,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SoundOn: 1
   simpleButtonClickSF: {fileID: 8300000, guid: 0f84b2f9b1f9161448e089ad6f297ca8, type: 3}
+  explosionSF: {fileID: 8300000, guid: d257e7a4f16b1644fab0dd4a75a1de7c, type: 3}
 --- !u!4 &285587348
 Transform:
   m_ObjectHideFlags: 0
@@ -359,7 +360,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.85
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -535,7 +536,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Level
+          m_StringArgument: Level 1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &428205132
