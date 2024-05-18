@@ -177,7 +177,11 @@ public class Node : MonoBehaviour
 
         foreach (Node item in nextNodes)
         {
-            Destroy(item.gameObject);
+            if (item != null)
+            {
+                Destroy(item.gameObject);
+            }
+            
         }
         
         if (backNodeLine != null)
