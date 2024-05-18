@@ -23,27 +23,33 @@ public class NodeManager : MonoBehaviour
     public bool modChangeAllow;
 private void Start() {
     modChangeAllow=false;
+    UIHelper.Instance.ShowUIPrompt(0);
 }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K) && !modChangeAllow)
+        if (Input.GetKeyDown(KeyCode.Q) && !modChangeAllow)
         {
             Debug.Log("değişti");
             mode++;
             mode%=totalMode;
+            UIHelper.Instance.ShowModeUpdate(mode);
         }
 
         if (mode==0)
         {
             if (Input.GetMouseButtonDown(0) && !modChangeAllow)
             {
-                modChangeAllow=true;
+                
+                
 
                 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 worldPosition.z =   0;
                 Collider2D nodes=GetClosestCollider(worldPosition);
                 if (nodes != null)
                 {
+                    
+                    modChangeAllow=true;
+                    UIHelper.Instance.ShowUIPrompt(1);
                     parentNode=nodes.GetComponent<Node>();
 
                     instantiatedNode= Instantiate(nodePrefab,nodesParent);
@@ -56,7 +62,7 @@ private void Start() {
                 }
         }
         else if (Input.GetMouseButtonDown(0) && modChangeAllow){
-            
+            UIHelper.Instance.ShowUIPrompt(0);
             modChangeAllow=false;
             
             if (instantiatedNode!=null)
@@ -73,9 +79,10 @@ private void Start() {
             {
                 if (Input.GetMouseButtonDown(1) && newNodeLine != null && instantiatedNode != null)
                 {
+                    UIHelper.Instance.ShowUIPrompt(0);
                     modChangeAllow=false;
-                Destroy(newNodeLine.gameObject);
-                Destroy(instantiatedNode.gameObject);
+                    Destroy(newNodeLine.gameObject);
+                    Destroy(instantiatedNode.gameObject);
                 } else 
                 if (newNodeLine != null && instantiatedNode != null){
                 
@@ -111,12 +118,13 @@ private void Start() {
 
             if (Input.GetMouseButtonDown(0) && !modChangeAllow)
             {
-                modChangeAllow=true;
                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
                 if(hit.collider != null)
                 {
                     if (hit.collider.gameObject.CompareTag("PlayerNode"))
                     {
+                    modChangeAllow=true;
+                    UIHelper.Instance.ShowUIPrompt(1);
                     instantiatedNode=hit.collider.GetComponent<Node>();
                     if (instantiatedNode.GetExportNodeLine()!=null)
                     {
@@ -133,14 +141,16 @@ private void Start() {
                 }
                 
             } else if(Input.GetMouseButtonDown(0)&&modChangeAllow){
+             
+                UIHelper.Instance.ShowUIPrompt(0);
                 modChangeAllow=false;
                 if (instantiatedNode!=null && newNodeLine!=null)
                 {
-                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
-                if(hit.collider != null)
-                {
-                    Node hittedNode=hit.collider.GetComponent<Node>();
-                    newNodeLine.UpdateLastPosition(hittedNode.transform.position);
+                    RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
+                    if(hit.collider != null)
+                    {
+                        Node hittedNode=hit.collider.GetComponent<Node>();
+                        newNodeLine.UpdateLastPosition(hittedNode.transform.position);
 
                     if (hittedNode.gameObject.CompareTag("EnemyNode"))
                     {
@@ -180,6 +190,7 @@ private void Start() {
                 if (Input.GetMouseButtonDown(1) && newNodeLine != null && instantiatedNode != null)
                 {
                     
+                UIHelper.Instance.ShowUIPrompt(0);
                     modChangeAllow=false;
                     instantiatedNode.ResetExport();
 
