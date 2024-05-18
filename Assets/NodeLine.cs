@@ -17,7 +17,10 @@ public class NodeLine : MonoBehaviour
         nodePositions=new List<Vector3>();
         SetLinesByNodes();
     }
-
+    public void SetColor(Color color){
+        line.startColor=color;
+        line.endColor=color;
+    }
     public void InitializeNodeLine(List<Vector3> positions){
         line=GetComponent<LineRenderer>();
         nodePositions=positions;
