@@ -6,7 +6,8 @@ public class NodeManager : MonoBehaviour
 {
     public Node nodePrefab;
     public NodeLine nodeLinePrefab;
-    public float distanceFromNode;
+    public float maxDistanceFromNode;
+    public float minDistanceFromNode;
     public LayerMask nodeMask;
 
     public Transform nodesParent;
@@ -19,18 +20,25 @@ public class NodeManager : MonoBehaviour
     private int mode=0;
     public int totalMode=3;
     
+    public bool modChangeAllow;
+private void Start() {
+    modChangeAllow=false;
+}
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K) && !modChangeAllow)
         {
+            Debug.Log("Modda aktif işlem yapılmakta olduğundan değiştirilemiyor");
             mode++;
             mode%=totalMode;
         }
+
         if (mode==0)
         {
-         
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !modChangeAllow)
             {
+                modChangeAllow=true;
+
                 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 worldPosition.z =   0;
                 Collider2D nodes=GetClosestCollider(worldPosition);
@@ -46,8 +54,20 @@ public class NodeManager : MonoBehaviour
             
                     newNodeLine=SetLineBetweenParentNode(instantiatedNode); 
                 }
+        }
+        else if (Input.GetMouseButtonDown(0) && modChangeAllow){
+            
+            modChangeAllow=false;
+            
+            if (instantiatedNode!=null)
+            {
+            instantiatedNode.SetBuilded(true);
             }
-        if (Input.GetMouseButton(0)){
+           parentNode=null;
+           instantiatedNode=null;
+           newNodeLine=null;
+
+        } else if (modChangeAllow){
             if (parentNode!=null)
             {
                 if (Input.GetMouseButtonDown(1) && newNodeLine != null && instantiatedNode != null)
@@ -57,13 +77,21 @@ public class NodeManager : MonoBehaviour
                 } else if (newNodeLine != null && instantiatedNode != null){
                 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 worldPosition.z=0;
-                if (Vector3.Distance(worldPosition,parentNode.transform.position)<=distanceFromNode)
+                Vector2 diff=worldPosition-parentNode.transform.position;
+                float distance=diff.magnitude;
+                if (distance<=maxDistanceFromNode && distance>=minDistanceFromNode)
                 {
                     instantiatedNode.transform.position=worldPosition;
-                }else{
+                }
+                else if (distance>maxDistanceFromNode)
+                {
                     Vector3 newPos=worldPosition-parentNode.transform.position;
                     newPos.Normalize();
-                    instantiatedNode.transform.position=newPos*distanceFromNode+parentNode.transform.position;
+                    instantiatedNode.transform.position=newPos*maxDistanceFromNode+parentNode.transform.position;
+                }else if(distance<minDistanceFromNode){
+                    Vector3 newPos=worldPosition-parentNode.transform.position;
+                    newPos.Normalize();
+                    instantiatedNode.transform.position=newPos*minDistanceFromNode+parentNode.transform.position;
                 }
                 instantiatedNode.SetTextPosition();
                 if (newNodeLine!=null)
@@ -73,47 +101,29 @@ public class NodeManager : MonoBehaviour
                 }
             }
         }
-        if (Input.GetMouseButtonUp(0)){
-            if (instantiatedNode!=null)
-            {
-            instantiatedNode.SetBuilded(true);
-            }
-           parentNode=null;
-           instantiatedNode=null;
-           newNodeLine=null;
-        }
-        }else if (mode==1){
 
-            if (Input.GetMouseButtonDown(0))
+        }
+        else if (mode==1){
+
+            if (Input.GetMouseButtonDown(0) && !modChangeAllow)
             {
+                modChangeAllow=true;
                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
                 if(hit.collider != null)
                 {
                     if (hit.collider.gameObject.CompareTag("PlayerNode"))
                     {
-                        
                     instantiatedNode=hit.collider.GetComponent<Node>();
                     newNodeLine=Instantiate(nodeLinePrefab,nodeLinesParent);
                     newNodeLine.InitializeNodeLine();
                     newNodeLine.SetColor(Color.yellow);
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
                     newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
-
                     }
                 }
                 
-            }
-            if (Input.GetMouseButton(0))
-            {
-                if (instantiatedNode!=null && newNodeLine!=null)
-                {
-                        worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        worldPosition.z=0;
-                        newNodeLine.UpdateLastPosition(worldPosition);
-                }
-            }
-            if (Input.GetMouseButtonUp(0))
-            {
+            } else if(Input.GetMouseButtonDown(0)&&modChangeAllow){
+                modChangeAllow=false;
                 if (instantiatedNode!=null && newNodeLine!=null)
                 {
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
@@ -153,6 +163,14 @@ public class NodeManager : MonoBehaviour
                 newNodeLine=null;    
                 instantiatedNode=null; 
                 }     
+            } else if (modChangeAllow)
+            {
+                if (instantiatedNode!=null && newNodeLine!=null)
+                {
+                        worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        worldPosition.z=0;
+                        newNodeLine.UpdateLastPosition(worldPosition);
+                }
             }
             
                 
@@ -163,7 +181,7 @@ public class NodeManager : MonoBehaviour
     }
     private Collider2D GetClosestCollider(Vector3 pos){
         Collider2D closestCollider=null;
-        Collider2D[] nodes=Physics2D.OverlapCircleAll(worldPosition,distanceFromNode,nodeMask);
+        Collider2D[] nodes=Physics2D.OverlapCircleAll(worldPosition,maxDistanceFromNode,nodeMask);
         float distance=9999;
         foreach (Collider2D item in nodes)
         {

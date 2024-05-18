@@ -46,7 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodePrefab: {fileID: 733904125503408237, guid: ef90a3115521dc543a4b845073b3720f, type: 3}
   nodeLinePrefab: {fileID: 3768583794070569800, guid: 9d19328f44329584dbb7b01810d5b177, type: 3}
-  distanceFromNode: 3
+  maxDistanceFromNode: 5
+  minDistanceFromNode: 2
   nodeMask:
     serializedVersion: 2
     m_Bits: 64
