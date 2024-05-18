@@ -37,7 +37,7 @@ public class NodeManager : MonoBehaviour
                 if (nodes != null)
                 {
                     parentNode=nodes.GetComponent<Node>();
-                    
+
                     instantiatedNode= Instantiate(nodePrefab,nodesParent);
 
                     instantiatedNode.SetBackNode(parentNode);
@@ -128,6 +128,14 @@ public class NodeManager : MonoBehaviour
                         hittedNode.SetIsConnectedToEnemy(true);
                         hittedNode.SetEnemyNodeLine(newNodeLine);
                         
+                    }else if (hittedNode.gameObject.CompareTag("PlayerNode")){
+                        newNodeLine.SetColor(Color.green);
+                        instantiatedNode.SetTransferNode(hittedNode);
+                        instantiatedNode.SetIsExporting(true);
+
+                        
+                        hittedNode.SetTransferNode(instantiatedNode);
+                        hittedNode.SetIsImporting(true);
                     }
 
                     // set enemy next node

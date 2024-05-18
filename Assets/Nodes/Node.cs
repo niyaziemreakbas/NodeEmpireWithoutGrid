@@ -24,10 +24,17 @@ public class Node : MonoBehaviour
 
     private bool builded;
 
+#region SOLDIER EXPORT IMPORT
+    private bool isImporting;
+    private bool isExporting;
+    private Node transferNode;
+#endregion
+
+#region ATTACK
     private bool isConnectedOnEnemy;
     private Node enemyNode;
     private NodeLine enemyLine;
-
+#endregion
     private void Awake()
     {nextNodes=new List<Node>();
         builded=false;
@@ -61,6 +68,23 @@ public class Node : MonoBehaviour
             UpdateSoldierCountText();
         }
 
+        if (isImporting)
+        {
+            if (transferNode.CanExport())
+            {
+                soldierCount++;    
+            }
+        }else if(isExporting){
+
+            if (CanExport())
+            {
+                soldierCount--;
+            }
+        }
+
+
+
+
         if (isConnectedOnEnemy)
         {
             if (soldierCount<=0)
@@ -77,8 +101,7 @@ public class Node : MonoBehaviour
             }else{
                 soldierCount--;
             }
-            
-            
+
         }
     }
 
@@ -116,7 +139,20 @@ public class Node : MonoBehaviour
     public void SetIsConnectedToEnemy(bool state){
         isConnectedOnEnemy=state;
     }
-
+    public void SetIsImporting(bool state){
+        isImporting=state;
+        isExporting=!state;
+    }
+    public void SetIsExporting(bool state){
+        isExporting=state;
+        isImporting=!state;
+    }
+    public void SetTransferNode(Node node){
+        transferNode=node;
+    }
+    public bool CanExport(){
+        return soldierCount>0;
+    }
 
     private void OnDestroy() {
         
