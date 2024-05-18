@@ -13,7 +13,8 @@ public class NodeAI : MonoBehaviour
     public float closestFoodDistance;
     public float closestWaterDistance;
 
-    List<Vector2> targets;
+    List<Vector2> attackTargets;
+    List<Vector2> defendTargets;
 
 
     Vector2 centerPoint;
@@ -78,17 +79,33 @@ public class NodeAI : MonoBehaviour
     //Add new Targets
     private void OnTriggerEnter(Collider other)
     {
+        /*
         // Giriş yapan objenin etiketini kontrol edebilirsiniz
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("EnemyNode"))
         {
-            Debug.Log("Detected enemy");
-            targets.Add(other.gameObject.GetComponent<Vector2>());
+            //Kendi node u bulmak 
+            
+
+        }
+        */
+        if (other.CompareTag("PlayerNode"))
+        {
+            if(this.gameObject.GetComponent<Node>().soldierCount <= other.gameObject.GetComponent<Node>().soldierCount)
+            {
+                //savun
+                Debug.Log("Savunacak adam Location : ");
+                defendTargets.Add(this.GetComponent<Vector2>());
+            }
+            else
+            {
+                //saldır
+                Debug.Log("Saldırılacak adam Location : ");
+
+                attackTargets.Add(other.GetComponent<Vector2>());
+
+            }
         }
     }
 
-    private void Update()
-    {
-
-    }
 
 }
