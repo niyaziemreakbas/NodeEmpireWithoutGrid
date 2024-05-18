@@ -6,7 +6,9 @@ using UnityEngine;
 public class DecisionEngine : MonoBehaviour
 {
     List<NodeAI> allyNodes=new List<NodeAI>();
-    List<NodeAI> targetNodes;
+    List<NodeAI> attackTargetNodes;
+    List<NodeAI> defendTargetNodes;
+
 
     int buildCost = 15;
 
@@ -34,7 +36,8 @@ public class DecisionEngine : MonoBehaviour
         SearchingStone,
         SearchingWater,
         SearchingFood,
-        Danger
+        Defence,
+        Attack
     }
 
     Vector3 tempTarget;
@@ -55,12 +58,13 @@ public class DecisionEngine : MonoBehaviour
         currentState = State.SearchingStone; updateState();
         currentState = State.SearchingWater; updateState();
         currentState = State.SearchingFood; updateState();
-        if(allyNodes.Count >5)
+        if(allyNodes.Count > nodeCountUntilAttack)
         {
-            currentState = State.Danger; updateState();
+            currentState = State.Defence; updateState();
+            currentState = State.Attack; updateState();
 
         }
-        
+
     }
     void updateState()
     {
@@ -73,10 +77,13 @@ public class DecisionEngine : MonoBehaviour
                 CheckNodesForWater();
                 break;
             case State.SearchingFood:
-                CheckNodesForWater();
+                CheckNodesForFood();
                 break;
-            case State.Danger:
-                AttackNode(tempNode.GetComponent<Node>());
+            case State.Defence:
+                DefenceNode();
+                break;
+            case State.Attack:
+                AttackNode();
                 break;
 
         }
@@ -201,54 +208,18 @@ public class DecisionEngine : MonoBehaviour
 
     }
 
-    void createNewNode(Vector2 location)
+    void AttackNode()
     {
-        //convert v2 to v3
-        Vector3 vector3 = new Vector3(location.x, location.y);
-        Instantiate(Node, vector3, Quaternion.identity);
+        int randomIndex = Random.Range(0, attackTargetNodes.Count);
+        attackTargetNodes[randomIndex].GetComponent<Node>();
     }
-
-    void AttackNode(Node target)
+    void DefenceNode()
     {
-           
-    }
-
-    //D��man yak�nsa savun
-    void ChooseRandomEnemies()
-    {
-        int randomIndex = Random.Range(0, targetNodes.Count);
-
-        AttackNode(targetNodes[randomIndex].GetComponent<Node>());
-    }
-
-
-    void attackControl()
-    {
-        if(allyNodes.Count < nodeCountUntilAttack)
-        {
-            attack = true;
-        }
+        int randomIndex = Random.Range(0, defendTargetNodes.Count);
+        defendTargetNodes[randomIndex].GetComponent<Node>();
 
     }
-    
-    /*
-    public NodeAI GetClosestNode(Vector2 target){
-        NodeAI currentNode = null;
-        float currentClosestGoalDistance = float.MaxValue;
-        foreach (NodeAI node in allyNodes)
-        {
-            Vector2 diff=target - (Vector2)node.transform.position;
-            float distance = diff.magnitude;
-            if (currentClosestGoalDistance >= distance)
-            {
-                currentClosestGoalDistance = node.closestFoodDistance;
-                currentNode = node;
-            }
-        }
-        return currentNode;
-    }
-	
-    */
+
     public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode){
         foreach (NodeAI item in allyNodes)
         {   
@@ -276,6 +247,7 @@ public class DecisionEngine : MonoBehaviour
                         attackedNode.SetEnemyNodeLine(newNodeLine);
 
     }
+
     public NodeAI CreateNode(Vector3 position, NodeAI backNode){
 
             NodeAI newNode= Instantiate(nodePrefab);
