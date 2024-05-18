@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 4773674198049352624}
   m_Layer: 6
   m_Name: Node_Blue (1)
-  m_TagString: Enemy
+  m_TagString: EnemyNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -300,6 +300,10 @@ MonoBehaviour:
   soldierCountText: {fileID: 6029857447146589136}
   offSet: {x: 0, y: 1.2, z: 0}
   backNode: {fileID: 0}
+  soldierCount: 0
+  isConnectedOnEnemy: 0
+  enemyNode: {fileID: 0}
+  enemyLine: {fileID: 0}
 --- !u!114 &4773674198049352624
 MonoBehaviour:
   m_ObjectHideFlags: 0

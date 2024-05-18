@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 733904125503408237}
   m_Layer: 6
   m_Name: Node_Blue
-  m_TagString: Node
+  m_TagString: PlayerNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,6 +166,9 @@ MonoBehaviour:
   offSet: {x: 0, y: 1.2, z: 0}
   backNode: {fileID: 0}
   soldierCount: 0
+  isConnectedOnEnemy: 0
+  enemyNode: {fileID: 0}
+  enemyLine: {fileID: 0}
 --- !u!1 &6276633412887517808
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,7 +14,7 @@ public class Node : MonoBehaviour
 
 
     public Node backNode;
-    private List<Node> nextNodes;
+    private List<Node> nextNodes=new List<Node>();
     private NodeLine backNodeLine;
 
     public int soldierCount = 0;
@@ -29,7 +29,7 @@ public class Node : MonoBehaviour
     public NodeLine enemyLine;
 
     private void Awake()
-    {
+    {nextNodes=new List<Node>();
         builded=false;
         nodeResources = GetComponent<NodeResources>();
         Canvas canvas= FindObjectOfType<Canvas>();
@@ -41,7 +41,6 @@ public class Node : MonoBehaviour
 
     private void Start()
     {
-		nextNodes=new List<Node>();
         SetTextPosition();
 
 
@@ -122,6 +121,11 @@ public class Node : MonoBehaviour
 
     private void OnDestroy() {
         
+        if(soldierCountText != null)
+        {
+            Destroy(soldierCountText.gameObject);
+        }
+        
         foreach (Node item in nextNodes)
         {
             Destroy(item.gameObject);
@@ -129,10 +133,6 @@ public class Node : MonoBehaviour
 
         Destroy(backNodeLine.gameObject);
         
-        if(soldierCountText != null)
-        {
-            Destroy(soldierCountText.gameObject);
-        }
 
         
     }

@@ -44,15 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d94fef7193f3240458fef639d11ed835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nodePrefab: {fileID: 6530965332132689473, guid: 2192839f6c281764da82ffa68fe6aace, type: 3}
+  nodePrefab: {fileID: 733904125503408237, guid: ef90a3115521dc543a4b845073b3720f, type: 3}
   nodeLinePrefab: {fileID: 3768583794070569800, guid: 9d19328f44329584dbb7b01810d5b177, type: 3}
   distanceFromNode: 3
   nodeMask:
     serializedVersion: 2
     m_Bits: 64
-  enemyNodeMask:
-    serializedVersion: 2
-    m_Bits: 256
   nodesParent: {fileID: 0}
   nodeLinesParent: {fileID: 0}
   totalMode: 3

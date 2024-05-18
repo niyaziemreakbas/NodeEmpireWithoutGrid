@@ -501,10 +501,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 4141021205403491000, guid: ef90a3115521dc543a4b845073b3720f, type: 3}
-      propertyPath: m_TagString
-      value: MainNode
-      objectReference: {fileID: 0}
     - target: {fileID: 4717386593366436065, guid: ef90a3115521dc543a4b845073b3720f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.003618
@@ -1058,7 +1054,9 @@ MonoBehaviour:
   nodeCountUntilAttack: 0
   Node: {fileID: 0}
   nodePrefab: {fileID: 4773674198049352624, guid: 6a195fb2a1e02224cb67e9d46bd68540, type: 3}
+  tempNode: {fileID: 0}
   nodeLinePrefab: {fileID: 3768583794070569800, guid: 9d19328f44329584dbb7b01810d5b177, type: 3}
+  nodeResources: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

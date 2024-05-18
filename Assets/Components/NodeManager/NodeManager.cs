@@ -8,7 +8,6 @@ public class NodeManager : MonoBehaviour
     public NodeLine nodeLinePrefab;
     public float distanceFromNode;
     public LayerMask nodeMask;
-    public LayerMask enemyNodeMask;
 
     public Transform nodesParent;
     public Transform nodeLinesParent;
@@ -83,6 +82,7 @@ public class NodeManager : MonoBehaviour
            newNodeLine=null;
         }
         }else if (mode==1){
+            
             if (Input.GetMouseButtonDown(0))
             {
                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
@@ -114,7 +114,7 @@ public class NodeManager : MonoBehaviour
                     Node hittedNode=hit.collider.GetComponent<Node>();
                     newNodeLine.UpdateLastPosition(hittedNode.transform.position);
 
-                    if (hittedNode.gameObject.CompareTag("Enemy"))
+                    if (hittedNode.gameObject.CompareTag("EnemyNode"))
                     {
                         newNodeLine.SetColor(Color.red);
 
@@ -151,7 +151,7 @@ public class NodeManager : MonoBehaviour
         foreach (Collider2D item in nodes)
         {
             float curDistance=Vector3.Distance(item.transform.position,pos);
-            if (curDistance<=distance)
+            if (curDistance<=distance && item.gameObject.CompareTag("PlayerNode"))
             {
                 closestCollider=item;
                 distance=curDistance;
