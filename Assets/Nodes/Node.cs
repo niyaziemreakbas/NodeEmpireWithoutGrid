@@ -41,8 +41,8 @@ public class Node : MonoBehaviour
         nextNodes=new List<Node>();
         builded=false;
         nodeResources = GetComponent<NodeResources>();
-        GameObject canvas= GameObject.Find("WorldCanvas");
-        soldierCountText.transform.SetParent(canvas.transform,true);   
+        Canvas canvas= FindObjectOfType<Canvas>();
+        soldierCountText.transform.SetParent(canvas.transform,false);   
     }
 
     //public Vector2 currentNodePoint; // Belirli bir nokta
@@ -50,6 +50,9 @@ public class Node : MonoBehaviour
 
     private void Start()
     {
+        SetTextPosition();
+    }
+    private void Update() {
         SetTextPosition();
     }
 
@@ -128,7 +131,7 @@ public class Node : MonoBehaviour
         nextNodes.Add(nextNode);
     }
     public void SetTextPosition(){
-        soldierCountText.transform.position = transform.position + offSet;
+        soldierCountText.transform.position = Camera.main.WorldToScreenPoint(transform.position + offSet);
     }
     public void SetEnemyNode(Node node){
         enemyNode=node;
