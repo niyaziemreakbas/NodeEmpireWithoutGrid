@@ -154,15 +154,9 @@ public class NodeManager : MonoBehaviour
         NodeLine newNodeLine=Instantiate(nodeLinePrefab,nodeLinesParent);
 
         newNodeLine.InitializeNodeLine();
-        Node curNode = node;
-        List<Vector3> positions=new List<Vector3>();
-
-        while (curNode!=null)
-        {
-            newNodeLine.AppendNodeToLine(curNode.transform.position);
-
-            curNode=curNode.GetBackNode();
-        }
+        newNodeLine.AppendNodeToLine(node.transform.position);
+        newNodeLine.AppendNodeToLine(node.GetBackNode().transform.position);
+        node.SetBackNodeLine(newNodeLine);
         return newNodeLine;
     }
 

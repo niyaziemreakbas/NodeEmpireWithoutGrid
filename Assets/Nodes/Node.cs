@@ -15,6 +15,7 @@ public class Node : MonoBehaviour
 
     public Node backNode;
     private List<Node> nextNodes;
+    private NodeLine backNodeLine;
 
     private int soldierCount = 0;
     private NodeResources nodeResources;
@@ -93,5 +94,8 @@ public class Node : MonoBehaviour
     }
     public void SetBuilded(bool builded){
         this.builded=builded;
+    }
+    public void SetBackNodeLine(NodeLine nodeLine){
+        this.backNodeLine=nodeLine;
     }
 }
