@@ -5,19 +5,20 @@ using UnityEngine;
 
 public class UIHelper : MonoBehaviour
 {
-    [SerializeField ]
-    private GameObject[] prompts;
+    public static UIHelper Instance{ get; private set; }   
 
+    [SerializeField]
+    private GameObject[] prompts;
 
     [SerializeField]
     private TMP_Text modeUpdateText;
     [SerializeField]
     private float fadeDuration;
+    
     private float fadeKat;
     private bool modeTextActivated;
     private Color originModeColor;
-    Color tempColor;
-    public static UIHelper Instance{ get; private set; }   
+    private Color tempColor;
    
     private void Awake() 
     { 
@@ -37,7 +38,6 @@ public class UIHelper : MonoBehaviour
     private void Update() {
         if (modeTextActivated)
         {
-         
             tempColor.a-=Time.deltaTime*fadeKat;
             modeUpdateText.color=tempColor;
               if (tempColor.a<=0)
@@ -66,6 +66,7 @@ public class UIHelper : MonoBehaviour
         }
         modeUpdateText.text = "Your mode is now "+modeText;
     }
+
     public void ShowUIPrompt(int id){
         foreach (GameObject item in prompts)
         {
