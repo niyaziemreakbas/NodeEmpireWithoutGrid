@@ -10,6 +10,7 @@ TagManager:
   - Food
   - Stone
   - Enemy
+  - CollapsedNode
   layers:
   - Default
   - TransparentFX
