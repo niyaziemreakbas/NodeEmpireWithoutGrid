@@ -8,6 +8,7 @@ public class NodeManager : MonoBehaviour
     public NodeLine nodeLinePrefab;
     public float distanceFromNode;
     public LayerMask nodeMask;
+    public LayerMask enemyNodeMask;
 
     public Transform nodesParent;
     public Transform nodeLinesParent;
@@ -16,9 +17,19 @@ public class NodeManager : MonoBehaviour
     private Node instantiatedNode;
     private Node parentNode;
     private NodeLine newNodeLine;
+    private int mode=0;
+    public int totalMode=3;
+    
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            mode++;
+            mode%=totalMode;
+        }
+        if (mode==0)
+        {
+         
         if (Input.GetMouseButtonDown(0))
         {
             worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -63,10 +74,63 @@ public class NodeManager : MonoBehaviour
             }
         }
         if (Input.GetMouseButtonUp(0)){
-          
+            if (instantiatedNode!=null)
+            {
+            instantiatedNode.SetBuilded(true);
+            }
            parentNode=null;
            instantiatedNode=null;
            newNodeLine=null;
+        }
+        }else if (mode==1){
+            if (Input.GetMouseButtonDown(0))
+            {
+               RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
+                if(hit.collider != null)
+                {
+                    instantiatedNode=hit.collider.GetComponent<Node>();
+                    newNodeLine=Instantiate(nodeLinePrefab,nodeLinesParent);
+                    newNodeLine.InitializeNodeLine();
+                    newNodeLine.SetColor(Color.red);
+                    newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
+                    newNodeLine.AppendNodeToLine(instantiatedNode.transform.position);
+                }
+                
+            }
+            if (Input.GetMouseButton(0))
+            {
+                if (instantiatedNode!=null && newNodeLine!=null)
+                {
+                        worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        worldPosition.z=0;
+                        newNodeLine.UpdateLastPosition(worldPosition);
+
+
+
+                }
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,enemyNodeMask);
+                if(hit.collider != null)
+                {
+                    Node enemyNode=hit.collider.GetComponent<Node>();
+                    newNodeLine.UpdateLastPosition(enemyNode.transform.position);
+
+
+                    // set enemy next node
+
+                }else if(newNodeLine!=null){
+                    Destroy(newNodeLine.gameObject);
+                }
+                newNodeLine=null;    
+                instantiatedNode=null;      
+            }
+            
+                
+            
+
+
         }
     }
     private Collider2D GetClosestCollider(Vector3 pos){
@@ -90,7 +154,6 @@ public class NodeManager : MonoBehaviour
         NodeLine newNodeLine=Instantiate(nodeLinePrefab,nodeLinesParent);
 
         newNodeLine.InitializeNodeLine();
-
         Node curNode = node;
         List<Vector3> positions=new List<Vector3>();
 
