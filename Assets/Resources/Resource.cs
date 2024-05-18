@@ -11,7 +11,9 @@ public class Resource : MonoBehaviour
     public int food = 0;
     public int water = 0;
 
-
+    private void Start() {
+        GetComponent<Node>().SetBuilded(true);
+    }
 
     public void GainStone(int stone)
     {

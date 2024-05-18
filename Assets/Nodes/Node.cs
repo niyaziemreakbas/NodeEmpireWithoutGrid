@@ -119,6 +119,9 @@ public class Node : MonoBehaviour
     public List<Node> GetNextNodes(){
         return nextNodes;
     }
+    public bool GetBuilded(){
+        return builded;
+    }
     public void SetNextNode(List<Node> newNextNodes){
         nextNodes=newNextNodes;
     }

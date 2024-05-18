@@ -13,9 +13,11 @@ public class NodeResources : MonoBehaviour
     private SourceType sourceType;
     private Node mainNode;
     private Resource resource;
+    private Node node;
 
     private void Start()
     {
+        node=GetComponent<Node>();
         mainNode = GetComponent<Node>();
 
         while (mainNode.GetBackNode() != null)
@@ -24,11 +26,15 @@ public class NodeResources : MonoBehaviour
         }
 
         resource = mainNode.GetComponent<Resource>();
+
     }
 
     private void FixedUpdate()
     {
-        
+        if (!node.GetBuilded())
+        {
+            return;
+        }        
         GainResources();
 
     }
