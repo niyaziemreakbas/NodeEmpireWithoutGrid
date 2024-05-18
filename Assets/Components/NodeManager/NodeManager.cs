@@ -82,7 +82,7 @@ public class NodeManager : MonoBehaviour
            newNodeLine=null;
         }
         }else if (mode==1){
-            
+
             if (Input.GetMouseButtonDown(0))
             {
                RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
@@ -126,7 +126,6 @@ public class NodeManager : MonoBehaviour
                         hittedNode.SetIsConnectedToEnemy(true);
                         hittedNode.SetEnemyNodeLine(newNodeLine);
                         
-
                     }
 
                     // set enemy next node

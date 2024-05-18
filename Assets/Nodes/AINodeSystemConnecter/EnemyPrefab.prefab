@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 5033564988573928284}
   - component: {fileID: 4773674198049352624}
   m_Layer: 6
-  m_Name: Node_Blue (1)
+  m_Name: EnemyPrefab
   m_TagString: EnemyNode
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
