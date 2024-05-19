@@ -21,11 +21,13 @@ public class DecisionEngine : MonoBehaviour
     public TextMeshProUGUI food;
     public TextMeshProUGUI water;
 
+    float delayAmount = 5f;
+
     int buildCost = 100;
 
     bool attack = false;
 
-    public int nodeCountUntilAttack = 5;    
+    int nodeCountUntilAttack = 5;    
 
     public GameObject Node;
 
@@ -87,7 +89,9 @@ public class DecisionEngine : MonoBehaviour
             case State.Attack:
                 AttackNode();
                 break;
-
+            case State.Idle:
+            default:
+                break;
         }
     }
 
@@ -127,13 +131,12 @@ public class DecisionEngine : MonoBehaviour
         }
     }
 
-    Vector2 centerPoint;
-
     private void Update()
     {
+
         if (botUI.activeInHierarchy) { updateText(); }
 
-        // Fare tıklamasını kontrol eder
+        // Bot UI aç kapa
         if (Input.GetMouseButtonDown(0))
         {
             // Fare pozisyonunu ekrandan dünya koordinatlarına çevirir
@@ -160,13 +163,15 @@ public class DecisionEngine : MonoBehaviour
 
         // Under Attack if()
         
-        if(nodeCountUntilAttack > 5 )
+        if(nodeCountUntilAttack < allyNodes.Count )
         {
-
+            Debug.Log("can Attack : ");
         }
 
         if (currentState == State.Idle)
         {
+            //Invoke("chooseResourceGoal",delayAmount);
+            //Invoke("updateState",delayAmount);
             chooseResourceGoal();
             updateState();
         }
@@ -188,7 +193,7 @@ public class DecisionEngine : MonoBehaviour
                 currentGoal = node.closestStone;
             }
         }
-        Debug.Log("current goal : " + currentGoal);
+        //Debug.Log("current goal : " + currentGoal);
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
         GoLocation(startNode, currentGoal);
 
@@ -250,6 +255,10 @@ public class DecisionEngine : MonoBehaviour
         generateNextNode(node, target);
     }
 
+    IEnumerator makeDelay()
+    {
+        yield return new WaitForSeconds(delayAmount);
+    }
 
     //S�radaki node'u bul
     void generateNextNode(NodeAI startNode, Vector2 targetLoc)
@@ -287,6 +296,13 @@ public class DecisionEngine : MonoBehaviour
 
             Debug.Log("Reached Location");
             currentState = State.Idle;
+            updateState();
+            //Debug.Log("Bekleme başladı ");
+            ////makeDelay();
+            //Debug.Log("Bekleme bitti ");
+
+            //Invoke("updateState", delayAmount);
+
         }
         else
         {
@@ -294,7 +310,7 @@ public class DecisionEngine : MonoBehaviour
 
             CreateNode(newPoint, startNode);
 
-            Invoke("updateState", 5f);
+            Invoke("updateState", delayAmount);
 
 
         }

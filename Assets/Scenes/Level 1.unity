@@ -999,7 +999,7 @@ PrefabInstance:
       objectReference: {fileID: 257593912}
     - target: {fileID: 1041812561115268668, guid: f7c0bb0e558a5f9408fb943a56b24dfd, type: 3}
       propertyPath: stone
-      value: 1000
+      value: 2000
       objectReference: {fileID: 0}
     - target: {fileID: 4167406500926892352, guid: f7c0bb0e558a5f9408fb943a56b24dfd, type: 3}
       propertyPath: m_LocalPosition.x
