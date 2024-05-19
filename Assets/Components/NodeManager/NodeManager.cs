@@ -66,6 +66,8 @@ private void Start() {
             
                     newNodeLine=SetLineBetweenParentNode(instantiatedNode);
 
+                    }else{
+                        UIHelper.Instance.ShowWarningText("You need 200 stones to build it",Color.red);
                     }
                 }
         }
