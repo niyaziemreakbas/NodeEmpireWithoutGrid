@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 5882493096357262257}
   - component: {fileID: 4079776445359779244}
   - component: {fileID: 8920332117109150847}
+  - component: {fileID: 7549404610908779183}
   m_Layer: 6
   m_Name: MainPlayerPrefab
   m_TagString: PlayerNode
@@ -308,6 +309,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca79f45041e6714cb6d875835e8cd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stone: 500
+  stone: 45
   food: 0
   water: 0
+--- !u!114 &7549404610908779183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4775465319561624571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42c3556af524aa42999cf8007a8b216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodToTrainSoldier: 10
+  waterToTrainSoldier: 10

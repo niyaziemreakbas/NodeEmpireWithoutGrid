@@ -69,16 +69,9 @@ public class NodeResources : MonoBehaviour
     }
         
 
-    public void TrainSoldier(float foodToTrainSoldier, float waterToTrainSoldier)
-    {
-        resource.SpendWater(waterToTrainSoldier);
-        resource.SpendFood(foodToTrainSoldier);
-    }
 
-    public bool CanTrainSoldier(float food , float water)
-    {
-        return resource.GetFood() >= food && resource.GetWater() >= water;
-    }
+
+
 
 
 

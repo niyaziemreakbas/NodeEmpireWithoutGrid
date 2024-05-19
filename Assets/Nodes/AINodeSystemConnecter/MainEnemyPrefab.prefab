@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: 6136511347038596199}
   - component: {fileID: 909879957145483399}
   - component: {fileID: 1041812561115268668}
+  - component: {fileID: 6653236880362727225}
   m_Layer: 6
   m_Name: MainEnemyPrefab
   m_TagString: EnemyNode
@@ -334,7 +335,6 @@ MonoBehaviour:
   stone: {fileID: 0}
   food: {fileID: 0}
   water: {fileID: 0}
-  nodeCountUntilAttack: 0
   Node: {fileID: 0}
   nodePrefab: {fileID: 4773674198049352624, guid: 6a195fb2a1e02224cb67e9d46bd68540, type: 3}
   nodeLinePrefab: {fileID: 3768583794070569800, guid: 9d19328f44329584dbb7b01810d5b177, type: 3}
@@ -351,6 +351,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca79f45041e6714cb6d875835e8cd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stone: 450
+  stone: 2000
   food: 0
   water: 0
+--- !u!114 &6653236880362727225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6793526769879120364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42c3556af524aa42999cf8007a8b216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodToTrainSoldier: 10
+  waterToTrainSoldier: 10

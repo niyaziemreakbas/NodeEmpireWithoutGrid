@@ -6,21 +6,15 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    private int foodToTrainSoldier = 10;
-    private int waterToTrainSoldier = 10;
     public TextMeshProUGUI soldierCountText;
     public Vector3 offSet;
-
-
 
     public Node backNode;
     private List<Node> nextNodes=new List<Node>();
     private NodeLine backNodeLine;
 
     public int soldierCount = 0;
-    private NodeResources nodeResources;
 
-    Vector2 centerPoint;
 
     private bool builded;
 
@@ -40,7 +34,6 @@ public class Node : MonoBehaviour
     {
         nextNodes=new List<Node>();
         builded=false;
-        nodeResources = GetComponent<NodeResources>();
         Canvas canvas= FindObjectOfType<Canvas>();
         soldierCountText.transform.SetParent(canvas.transform,false);   
     }
@@ -64,12 +57,6 @@ public class Node : MonoBehaviour
             return;
         }
 
-        if (nodeResources.CanTrainSoldier(foodToTrainSoldier,waterToTrainSoldier))
-        {
-            nodeResources.TrainSoldier(foodToTrainSoldier,waterToTrainSoldier);
-            soldierCount++;
-            UpdateSoldierCountText();
-        }
             if(isExporting && CanExport()){
 
                 soldierCount--;
@@ -106,7 +93,7 @@ public class Node : MonoBehaviour
     }
 
 
-    void UpdateSoldierCountText()
+    public void UpdateSoldierCountText()
     {
         soldierCountText.text = soldierCount.ToString();    
     }
