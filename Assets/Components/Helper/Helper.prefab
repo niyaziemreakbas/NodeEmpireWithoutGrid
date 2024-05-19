@@ -343,6 +343,11 @@ MonoBehaviour:
   - {fileID: 2740075678727928841}
   modeUpdateText: {fileID: 2554371023811780741}
   fadeDuration: 2
+  nodeHelperPrefab: {fileID: 5386575657159785646, guid: 4c36ba473c7448e438078ce03767905d, type: 3}
+  icons:
+  - {fileID: 21300000, guid: f12dc6f706696694ca3c1e2b661edd5e, type: 3}
+  - {fileID: 789623795, guid: 20230b0ba86d07b42bdcaef99a379530, type: 3}
+  - {fileID: 21300000, guid: 0131ae38495cc4d4085b6eb407215b74, type: 3}
 --- !u!1 &6871495362133096121
 GameObject:
   m_ObjectHideFlags: 0

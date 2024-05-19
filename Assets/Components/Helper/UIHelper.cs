@@ -19,7 +19,8 @@ public class UIHelper : MonoBehaviour
     private bool modeTextActivated;
     private Color originModeColor;
     private Color tempColor;
-   
+    public NodeHelper nodeHelperPrefab;
+    public Sprite[] icons;
     private void Awake() 
     { 
         if (Instance != null && Instance != this) 
@@ -83,26 +84,32 @@ public class UIHelper : MonoBehaviour
         modeUpdateText.text = text;
 
     }
-    public void ShowSourceType(SourceType sourceType){
+    public void ShowSourceType(SourceType sourceType,Node node){
+            if (node.nodeHelper==null){
+                node.nodeHelper=Instantiate(nodeHelperPrefab,transform);
+            }
          switch (sourceType)
         {
             case SourceType.Water:
-                //print("water:" + water);
+                node.nodeHelper.SetImage(icons[0]);
                 break;
 
             case SourceType.Food:
-                //print("food:" + food);
+                node.nodeHelper.SetImage(icons[1]);
                 break;
 
             case SourceType.Stone:
-            
+                node.nodeHelper.SetImage(icons[2]);
                 //print("stone:" + stone);
                 break;
             default:
                 break;
         }
     }
-    public void HideSourceType(){
-
+    public void HideSourceType(Node node){
+            if (node.nodeHelper!=null){
+                Destroy(node.nodeHelper.gameObject);
+                node.nodeHelper=null;
+            }
     }
 }
