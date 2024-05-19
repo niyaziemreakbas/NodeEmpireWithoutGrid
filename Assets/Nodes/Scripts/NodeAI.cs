@@ -65,9 +65,15 @@ public class NodeAI : MonoBehaviour
                 }
                 else if (target == "PlayerNode")
                 {
+                    Node currentNode = GetComponent<Node>();
+                    while (currentNode.GetBackNode() != null)
+                    {
+                            currentNode = currentNode.GetBackNode();
+                    }
 
+                    currentNode.gameObject.GetComponent<DecisionEngine>().attackTargetNodes.Add(hit.collider.GetComponent<Node>());
                     Debug.Log("Düşman Node bulundu");
-
+                    
                     attackTargets.Add(hit.collider.GetComponent<Node>());
                 }
             

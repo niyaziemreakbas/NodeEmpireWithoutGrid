@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIHelper : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class UIHelper : MonoBehaviour
     private Color tempColor;
     public NodeHelper nodeHelperPrefab;
     public Sprite[] icons;
+    [Header("Game Over Panels")]
+    public GameObject winScreen;
+    public GameObject loseScreen;
     private void Awake() 
     { 
         if (Instance != null && Instance != this) 
@@ -35,6 +39,8 @@ public class UIHelper : MonoBehaviour
     private void Start() {
         originModeColor=modeUpdateText.color;
         fadeKat=originModeColor.a/fadeDuration;
+        loseScreen.SetActive(false);
+        winScreen.SetActive(false);
     }
     private void Update() {
         if (modeTextActivated)
@@ -111,5 +117,17 @@ public class UIHelper : MonoBehaviour
                 Destroy(node.nodeHelper.gameObject);
                 node.nodeHelper=null;
             }
+    }
+    public void ShowWinScreen(){
+        winScreen.SetActive(true);
+        StartCoroutine(GoMainMenu());
+    }
+    public void ShowLoseScreen(){
+        loseScreen.SetActive(true);
+        StartCoroutine(GoMainMenu());
+    }
+    IEnumerator GoMainMenu(){
+        yield return new WaitForSeconds(5);
+        SceneManager.LoadScene(0);
     }
 }

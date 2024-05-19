@@ -5,14 +5,15 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class DecisionEngine : MonoBehaviour
 {
     public List<NodeAI> allyNodes=new List<NodeAI>();
-    List<Node> attackTargetNodes;
-    List<NodeAI> attackTargetNodesAlly;
+    public List<Node> attackTargetNodes;
+    //List<NodeAI> attackTargetNodesAlly;
 
-    List<NodeAI> defendTargetNodes;
+    //List<NodeAI> defendTargetNodes;
     //List<NodeAI> defendTargetNodesAlly;
 
     public GameObject botUI;
@@ -21,7 +22,7 @@ public class DecisionEngine : MonoBehaviour
     public TextMeshProUGUI food;
     public TextMeshProUGUI water;
 
-    float delayAmount = 5f;
+    float delayAmount = 2f;
 
     int buildCost = 100;
 
@@ -66,7 +67,6 @@ public class DecisionEngine : MonoBehaviour
         botUI.SetActive(false);
 
     }
-
 
 
 
@@ -131,8 +131,38 @@ public class DecisionEngine : MonoBehaviour
         }
     }
 
+    private float generateNewNode = 3f;
+
+    // Zamanlayıcı değişkeni
+    private float timer = 0f;
+
+    bool generateNode = false;
+
+
+
     private void Update()
     {
+
+        timer += Time.deltaTime;
+
+        // Zamanlayıcı süreyi aştıysa
+        if (timer >= generateNewNode)
+        {
+            // myBool değerini true yap
+            generateNode = true;
+
+            // Zamanlayıcıyı sıfırla
+            timer = 0f;
+
+            
+        }
+
+
+        if(attackTargetNodes.Count != 0)
+        {
+            Debug.Log("atttack nodes count  : " + attackTargetNodes.Count);
+
+        }
         //Bot UI update
         if (botUI.activeInHierarchy) { updateText(); }
 
@@ -159,24 +189,33 @@ public class DecisionEngine : MonoBehaviour
             }
         }
 
-        if(allyNodes.Count > 1 && GetComponent<Node>().soldierCount > 20)
+        if(currentState != State.Idle)
         {
-            DefenceNode();
+            Debug.Log("current state : " + currentState);
+
+        }
+        if (allyNodes.Count > 1 && GetComponent<Node>().soldierCount > 20)
+        {
+            Debug.Log("aktarım");
+            currentState = State.Defence;
+            updateState();
         }
         // Under Attack if()
 
-        if (nodeCountUntilAttack < allyNodes.Count )
+        if (nodeCountUntilAttack < allyNodes.Count && attackTargetNodes.Count > 0)
         {
             currentState = State.Attack;
             updateState();
         }
 
-        if (currentState == State.Idle)
+        if (generateNode)
         {
             //Invoke("chooseResourceGoal",delayAmount);
             //Invoke("updateState",delayAmount);
             chooseResourceGoal();
             updateState();
+            currentState = State.Idle;
+            generateNode = false;
         }
     }
 
@@ -198,7 +237,7 @@ public class DecisionEngine : MonoBehaviour
         }
         //Debug.Log("current goal : " + currentGoal);
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
-        GoLocation(startNode, currentGoal);
+        generateNextNode(startNode, currentGoal);
 
     }
 
@@ -219,7 +258,7 @@ public class DecisionEngine : MonoBehaviour
             }
         }
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
-        GoLocation(startNode, currentGoal);
+        generateNextNode(startNode, currentGoal);
     }
 
     //Nodelar aras�nda yeme�e en yak�n konumu bul
@@ -240,26 +279,16 @@ public class DecisionEngine : MonoBehaviour
             }
         }
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
-        GoLocation(startNode, currentGoal);
+        generateNextNode(startNode, currentGoal);
     }
 
 
 
-    //Belli bir konuma node �ek
-    void GoLocation(NodeAI node, Vector2 target)
+
+    IEnumerator DelayedGeneration()
     {
-        if(target == Vector2.zero)
-        {
-            Debug.Log("Target not reachable");
-        }
-
-        //Orada tam hedef noktada yeni bir node oluturulana kadar d devam etsin
-
-        generateNextNode(node, target);
-    }
-
-    IEnumerator makeDelay()
-    {
+        chooseResourceGoal();
+        updateState();
         yield return new WaitForSeconds(delayAmount);
     }
 
@@ -277,6 +306,11 @@ public class DecisionEngine : MonoBehaviour
             return;
         }
 
+        if (targetLoc == Vector2.zero)
+        {
+            Debug.Log("Target not reachable");
+            return;
+        }
         // İki nokta arasındaki yön vektörünü hesapla
         Vector2 direction = targetLoc - startNodeLoc;
 
@@ -300,11 +334,7 @@ public class DecisionEngine : MonoBehaviour
             Debug.Log("Reached Location");
             currentState = State.Idle;
             updateState();
-            //Debug.Log("Bekleme başladı ");
-            ////makeDelay();
-            //Debug.Log("Bekleme bitti ");
 
-            //Invoke("updateState", delayAmount);
 
         }
         else
@@ -312,36 +342,13 @@ public class DecisionEngine : MonoBehaviour
             Debug.Log("distance : " + distance);
 
             CreateNode(newPoint, startNode);
-
-            Invoke("updateState", delayAmount);
-
-
+            currentState = State.Idle;
+            updateState();
         }
 
     }
 
-    /*
-    IEnumerator generateNextNode(float waitTime, NodeAI startNode, Vector2 targetLoc)
-    {
-        yield return new WaitForSeconds(waitTime);
-        generateNextNode(startNode, targetLoc);
-    }
-    public void generateNextNodeDelay(float waitTime, NodeAI startNode, Vector2 targetLoc)
-    {
-        StartCoroutine(generateNextNode(waitTime, startNode, targetLoc));
-    }
 
-    IEnumerator CreateNode(float waitTime, Vector3 position, NodeAI backNode)
-    {
-        yield return new WaitForSeconds(waitTime);
-        CreateNode(position, backNode);
-    }
-    
-    public void StartCreateNode(float waitTime, Vector3 position, NodeAI backNode)
-    {
-        StartCoroutine(CreateNode(waitTime, position, backNode));
-    }
-    */
     void AttackNode()
     {
         NodeAI attacker;
@@ -360,42 +367,43 @@ public class DecisionEngine : MonoBehaviour
                 if(attacker.GetComponent<Node>().soldierCount > attacked.soldierCount)
                 {
                     ConnectEnemyToAttack(attacker, attacked);
-                    attackTargetNodes.Remove(attacked);
-                    Debug.Log("DEleted");
+                    node.attackTargets.Remove(attacked);
                 }
 
             }
 
         }
+        currentState = State.Idle;
         
     }
     
     void DefenceNode()
     {
         //&& allyNodes[randomIndex].GetComponent<Node>().backNode != null
-        int randomIndex = Random.Range(0, allyNodes.Count);
+        int randomIndex = Random.Range(1, allyNodes.Count);
         Debug.Log("seçilenNodes : " + randomIndex);
-        if (allyNodes[randomIndex].GetComponent<Node>().backNode.soldierCount != 0 && randomIndex != 0) 
+        if (allyNodes[randomIndex].GetComponent<Node>().backNode.soldierCount != 0) 
         {
-            int randomSoldierCount = Random.Range(0, 5);
+            int soldierTransferTime = 1;
+            //int randomSoldierCount = Random.Range(0, 5);
             Debug.Log("Asker Gönderiliyor...");
             StartCoroutine(ExportSoldier(allyNodes[randomIndex].GetComponent<Node>().backNode,
                                         allyNodes[randomIndex].GetComponent<Node>(),
-                                        randomSoldierCount));
-            //Invoke("DeleteLine", randomSoldierCount);
-           // ConnectToNodeExportSoldier(allyNodes[randomIndex].GetComponent<Node>().backNode.GetComponent<NodeAI>(), allyNodes[randomIndex].GetComponent<NodeAI>());
+                                        soldierTransferTime));
+            
         }
-
+        currentState = State.Idle;
         //defendTargetNodes[randomIndex].GetComponent<Node>();
 
     }
+
     IEnumerator ExportSoldier(Node exportNode,Node importNode,float waitTime){
         ConnectToNodeExportSoldier(exportNode, importNode);
         yield return new WaitForSeconds(waitTime);
         exportNode.ResetExport();
+        currentState = State.Idle;
         Debug.Log("Silindi");
     }
-
     
     public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode){
         //kendi dostu ise fonksiyonu sonlandır
@@ -427,7 +435,7 @@ public class DecisionEngine : MonoBehaviour
 
     }
 
-    public NodeAI CreateNode(Vector3 position, NodeAI backNode){
+    public void CreateNode(Vector3 position, NodeAI backNode){
         NodeAI newNode = Instantiate(nodePrefab);
         Node newNodeNode = newNode.GetComponent<Node>();
         newNode.transform.position = position;
@@ -444,8 +452,6 @@ public class DecisionEngine : MonoBehaviour
         backNode.GetComponent<Node>().AddNextNode(newNodeNode);
 
         GetComponent<Resource>().stone -= buildCost;
-
-        return newNode;
     }
     
     public void ConnectToNodeExportSoldier(Node exportNode, Node importNode){
@@ -469,5 +475,7 @@ public class DecisionEngine : MonoBehaviour
 
 
     }
+
+
 
 }

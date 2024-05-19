@@ -40,4 +40,14 @@ public class MainNode : MonoBehaviour
     {
         return resources.GetFood() >= foodToTrainSoldier && resources.GetWater() >= waterToTrainSoldier;
     }
+    private void OnDestroy() {
+        if (gameObject.CompareTag("PlayerNode"))
+        {
+            
+         UIHelper.Instance.ShowLoseScreen();
+        }else if(gameObject.CompareTag("EnemyNode")){
+            
+        UIHelper.Instance.ShowWinScreen();
+        }
+    }
 }
