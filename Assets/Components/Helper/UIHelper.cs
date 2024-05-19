@@ -87,17 +87,15 @@ public class UIHelper : MonoBehaviour
          switch (sourceType)
         {
             case SourceType.Water:
-                resource.GainWater(water);
                 //print("water:" + water);
                 break;
 
             case SourceType.Food:
-                resource.GainFood(food);
                 //print("food:" + food);
                 break;
 
             case SourceType.Stone:
-                resource.GainStone(stone);
+            
                 //print("stone:" + stone);
                 break;
             default:
