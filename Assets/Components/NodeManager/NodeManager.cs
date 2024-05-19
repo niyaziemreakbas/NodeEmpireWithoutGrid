@@ -180,9 +180,12 @@ private void Start() {
 
                                 hittedNode.SetTransferNode(instantiatedNode);
                                 hittedNode.SetIsImporting(true);
-        
+
                             }
                   
+                        }else{
+                            
+                    Destroy(newNodeLine.gameObject);
                         }
                     // set enemy next node
 
