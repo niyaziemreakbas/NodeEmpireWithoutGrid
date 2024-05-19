@@ -204,6 +204,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &279031208 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5705251463368033840, guid: e79c5324b3f622f4daefa1dce2350622, type: 3}
+  m_PrefabInstance: {fileID: 2076982430}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &497529525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -509,6 +514,10 @@ PrefabInstance:
     - target: {fileID: 6552051255161054412, guid: 8fa49fc401e940240b238c50b4699008, type: 3}
       propertyPath: m_Name
       value: Helper
+      objectReference: {fileID: 0}
+    - target: {fileID: 6552051255161054412, guid: 8fa49fc401e940240b238c50b4699008, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8552205760479992397, guid: 8fa49fc401e940240b238c50b4699008, type: 3}
       propertyPath: m_Pivot.x
@@ -1947,8 +1956,9 @@ MonoBehaviour:
   borderX: 14
   borderY: 11.5
   minusBorderY: -8.1
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 0, z: -10}
   damping: 0
+  startPos: {fileID: 279031208}
   speed: 0.1
 --- !u!1001 &2076982430
 PrefabInstance:

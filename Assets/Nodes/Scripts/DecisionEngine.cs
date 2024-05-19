@@ -2,10 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class DecisionEngine : MonoBehaviour
 {
@@ -15,12 +12,12 @@ public class DecisionEngine : MonoBehaviour
 
     //List<NodeAI> defendTargetNodes;
     //List<NodeAI> defendTargetNodesAlly;
+    /*
+    public GameObject botUI;
 
-    ////public GameObject botUI;
-
-    //public TextMeshProUGUI stone;
-    //public TextMeshProUGUI food;
-    //public TextMeshProUGUI water;
+    public TextMeshProUGUI stone;
+    public TextMeshProUGUI food;
+    public TextMeshProUGUI water;*/
 
     float delayAmount = 2f;
 
@@ -124,12 +121,13 @@ public class DecisionEngine : MonoBehaviour
     /*
     void updateText()
     {
+        /*
         if(botUI.activeInHierarchy)
         {
             stone.text = GetComponent<Resource>().stone.ToString();
             food.text = GetComponent<Resource>().food.ToString();
             water.text = GetComponent<Resource>().water.ToString();
-        }
+        }*/
     }
     */
 
@@ -168,28 +166,31 @@ public class DecisionEngine : MonoBehaviour
         //Bot UI update
         //if (botUI.activeInHierarchy) { updateText(); }
 
-        //// Bot UI aç kapa
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    // Fare pozisyonunu ekrandan dünya koordinatlarına çevirir
-        //    Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //    RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+        // Bot UI aç kapa
+        /*
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Fare pozisyonunu ekrandan dünya koordinatlarına çevirir
+            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
 
-        //    // Eğer tıklanan obje bu obje ise
-        //    if (hit.collider != null && hit.collider.gameObject.CompareTag("EnemyNode"))
-        //    {
-        //        // Aktif etmek istediğiniz objeyi aktif hale getirir
-        //        if (botUI != null && !botUI.activeInHierarchy)
-        //        {
-        //            botUI.SetActive(true);
-        //        }
-        //        else if (botUI != null && botUI.activeInHierarchy)
-        //        {
-        //            botUI.SetActive(false);
-        //        }
-        //        updateText();
-        //    }
-        //}
+            // Eğer tıklanan obje bu obje ise
+            if (hit.collider != null && hit.collider.gameObject.CompareTag("EnemyNode"))
+            {
+                // Aktif etmek istediğiniz objeyi aktif hale getirir
+
+                if (botUI != null && !botUI.activeInHierarchy)
+                {
+                    botUI.SetActive(true);
+                }
+                else if (botUI != null && botUI.activeInHierarchy)
+                {
+                    botUI.SetActive(false);
+                }
+                updateText();
+            }
+        }
+        */
 
         if (currentState != State.Idle)
         {

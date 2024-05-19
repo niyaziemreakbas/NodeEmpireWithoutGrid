@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.ObjectChangeEventStream;
-using static UnityEngine.GraphicsBuffer;
 
 public class NodeAI : MonoBehaviour
 {
