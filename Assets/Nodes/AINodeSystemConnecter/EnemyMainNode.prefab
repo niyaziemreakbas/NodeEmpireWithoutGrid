@@ -194,6 +194,7 @@ MonoBehaviour:
   offSet: {x: 0, y: 1.2, z: 0}
   backNode: {fileID: 0}
   soldierCount: 0
+  nodeHelper: {fileID: 0}
 --- !u!114 &4973293817025186847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,6 +214,7 @@ MonoBehaviour:
   closestFoodDistance: 0
   closestWaterDistance: 0
   nodeLinePrefab: {fileID: 0}
+  attackTargets: []
 --- !u!114 &-2705109411570418017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,10 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allyNodes: []
-  botUI: {fileID: 0}
-  stone: {fileID: 0}
-  food: {fileID: 0}
-  water: {fileID: 0}
+  attackTargetNodes: []
   Node: {fileID: 0}
   nodePrefab: {fileID: 3389560023233932928, guid: acded4c2b197f0f4498c41d337993340, type: 3}
   nodeLinePrefab: {fileID: 3768583794070569800, guid: 9d19328f44329584dbb7b01810d5b177, type: 3}

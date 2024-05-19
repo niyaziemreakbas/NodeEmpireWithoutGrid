@@ -75,9 +75,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingLayerID: -451208537
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: c0844474eeef19140807e7a4d645dbfe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   offSet: {x: 0, y: 1.2, z: 0}
   backNode: {fileID: 0}
   soldierCount: 0
+  nodeHelper: {fileID: 0}
 --- !u!114 &3389560023233932928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,6 +182,7 @@ MonoBehaviour:
   closestFoodDistance: 3.93
   closestWaterDistance: 0.84
   nodeLinePrefab: {fileID: 0}
+  attackTargets: []
 --- !u!1 &8328878732448585999
 GameObject:
   m_ObjectHideFlags: 0

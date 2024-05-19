@@ -848,6 +848,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sources
       objectReference: {fileID: 0}
+    - target: {fileID: 8880034069970049070, guid: 1c241e5c1019f5d408d8ffe3d903a207, type: 3}
+      propertyPath: m_Radius
+      value: 3.6674075
+      objectReference: {fileID: 0}
+    - target: {fileID: 8880034069970049070, guid: 1c241e5c1019f5d408d8ffe3d903a207, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.3183465
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
