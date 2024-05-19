@@ -10,12 +10,13 @@ public class CameraMovement : MonoBehaviour
     
     [SerializeField]private Vector3 offset;
     [SerializeField]private float damping;
-    
+    [SerializeField] private Transform startPos;
+
     public float speed;
     private Vector3 vel=Vector3.zero;
     void Start()
     {
-        
+        transform.position = startPos.position+offset;
     }
 
 
