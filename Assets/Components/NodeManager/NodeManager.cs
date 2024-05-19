@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NodeManager : MonoBehaviour
 {
+    public Resource mainNodeResource;
+
     public Node nodePrefab;
     public NodeLine nodeLinePrefab;
     public float maxDistanceFromNode;
@@ -19,6 +21,8 @@ public class NodeManager : MonoBehaviour
     private NodeLine newNodeLine;
     private int mode=0;
     public int totalMode=3;
+
+    private int nodeBuildingCost = 200;
     
     public bool modChangeAllow;
 private void Start() {
@@ -47,8 +51,10 @@ private void Start() {
                 Collider2D nodes=GetClosestCollider(worldPosition);
                 if (nodes != null)
                 {
-                    
-                    modChangeAllow=true;
+                    if (mainNodeResource.GetStone() >= nodeBuildingCost)
+                    {
+                      
+                    modChangeAllow =true;
                     UIHelper.Instance.ShowUIPrompt(1);
                     parentNode=nodes.GetComponent<Node>();
 
@@ -58,16 +64,19 @@ private void Start() {
 
                     parentNode.AddNextNode(instantiatedNode);
             
-                    newNodeLine=SetLineBetweenParentNode(instantiatedNode); 
+                    newNodeLine=SetLineBetweenParentNode(instantiatedNode);
+
+                    }
                 }
         }
         else if (Input.GetMouseButtonDown(0) && modChangeAllow){
             UIHelper.Instance.ShowUIPrompt(0);
             modChangeAllow=false;
             
-            if (instantiatedNode!=null)  //resource check
+            if (instantiatedNode!=null)  
             {
-                 instantiatedNode.SetBuilded(true); // spend resource
+                 mainNodeResource.SpendStone(nodeBuildingCost);
+                 instantiatedNode.SetBuilded(true);
                  AudioManager.instance.NodeConstructedSF();
             }
            parentNode=null;
