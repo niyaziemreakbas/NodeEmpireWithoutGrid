@@ -134,7 +134,7 @@ public class DecisionEngine : MonoBehaviour
 
     private void Update()
     {
-
+        //Bot UI update
         if (botUI.activeInHierarchy) { updateText(); }
 
         // Bot UI aç kapa
@@ -160,13 +160,14 @@ public class DecisionEngine : MonoBehaviour
             }
         }
 
-
-
-        // Under Attack if()
-        
-        if(nodeCountUntilAttack < allyNodes.Count )
+        if(allyNodes.Count > 1 && GetComponent<Node>().soldierCount > 20)
         {
-            Debug.Log("can attack");
+            DefenceNode();
+        }
+        // Under Attack if()
+
+        if (nodeCountUntilAttack < allyNodes.Count )
+        {
             currentState = State.Attack;
             updateState();
         }
@@ -360,6 +361,8 @@ public class DecisionEngine : MonoBehaviour
                 if(attacker.GetComponent<Node>().soldierCount > attacked.soldierCount)
                 {
                     ConnectEnemyToAttack(attacker, attacked);
+                    attackTargetNodes.Remove(attacked.GetComponent<NodeAI>());
+                    Debug.Log("DEleted");
                 }
 
             }
@@ -367,11 +370,27 @@ public class DecisionEngine : MonoBehaviour
         }
         
     }
+    
     void DefenceNode()
     {
-        int randomIndex = Random.Range(0, defendTargetNodes.Count);
-        defendTargetNodes[randomIndex].GetComponent<Node>();
+        //&& allyNodes[randomIndex].GetComponent<Node>().backNode != null
+        int randomIndex = Random.Range(0, allyNodes.Count);
+        Debug.Log("seçilenNodes : " + randomIndex);
+        if (allyNodes[randomIndex].GetComponent<Node>().backNode.soldierCount != 0 && randomIndex != 0) 
+        {
+            int randomSoldierCount = Random.Range(0, 5);
+            Debug.Log("Asker Gönderiliyor...");
+            Invoke("DeleteLine", randomSoldierCount);
+            ConnectToNodeExportSoldier(allyNodes[randomIndex].GetComponent<Node>().backNode.GetComponent<NodeAI>(), allyNodes[randomIndex].GetComponent<NodeAI>());
+        }
 
+        //defendTargetNodes[randomIndex].GetComponent<Node>();
+
+    }
+
+    void DeleteLine()
+    {
+        Debug.Log("Silindi");
     }
     
     public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode){
@@ -423,18 +442,19 @@ public class DecisionEngine : MonoBehaviour
 
         return newNode;
     }
+    
     public void ConnectToNodeExportSoldier(NodeAI exportNode, NodeAI importNode){
         Node nodeExportNode=exportNode.GetComponent<Node>();
         Node nodeImportNode=importNode.GetComponent<Node>();
 
         NodeLine newNodeLine=Instantiate(nodeLinePrefab);
-                    newNodeLine.SetColor(Color.green);
-                    newNodeLine.AppendNodeToLine(nodeExportNode.transform.position);
-                    newNodeLine.AppendNodeToLine(nodeImportNode.transform.position);
+        newNodeLine.SetColor(Color.green);
+        newNodeLine.AppendNodeToLine(nodeExportNode.transform.position);
+        newNodeLine.AppendNodeToLine(nodeImportNode.transform.position);
 
         nodeExportNode.SetTransferNode(nodeImportNode);
-                        nodeExportNode.SetIsExporting(true);
-                        nodeExportNode.SetExportLine(newNodeLine);
+        nodeExportNode.SetIsExporting(true);
+        nodeExportNode.SetExportLine(newNodeLine);
 
                         nodeImportNode.SetTransferNode(nodeExportNode);
                         nodeImportNode.SetIsImporting(true);
