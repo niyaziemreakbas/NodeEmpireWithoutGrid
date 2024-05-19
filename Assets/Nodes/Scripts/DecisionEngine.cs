@@ -423,5 +423,25 @@ public class DecisionEngine : MonoBehaviour
 
         return newNode;
     }
+    public void ConnectToNodeExportSoldier(NodeAI exportNode, NodeAI importNode){
+        Node nodeExportNode=exportNode.GetComponent<Node>();
+        Node nodeImportNode=importNode.GetComponent<Node>();
+
+        NodeLine newNodeLine=Instantiate(nodeLinePrefab);
+                    newNodeLine.SetColor(Color.green);
+                    newNodeLine.AppendNodeToLine(nodeExportNode.transform.position);
+                    newNodeLine.AppendNodeToLine(nodeImportNode.transform.position);
+
+        nodeExportNode.SetTransferNode(nodeImportNode);
+                        nodeExportNode.SetIsExporting(true);
+                        nodeExportNode.SetExportLine(newNodeLine);
+
+                        nodeImportNode.SetTransferNode(nodeExportNode);
+                        nodeImportNode.SetIsImporting(true);
+
+
+
+
+    }
 
 }
