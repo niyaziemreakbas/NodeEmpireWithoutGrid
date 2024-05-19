@@ -40,4 +40,7 @@ public class MainNode : MonoBehaviour
     {
         return resources.GetFood() >= foodToTrainSoldier && resources.GetWater() >= waterToTrainSoldier;
     }
+    private void OnDestroy() {
+        UIHelper.Instance.ShowLoseScreen();
+    }
 }
