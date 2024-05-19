@@ -16,11 +16,11 @@ public class DecisionEngine : MonoBehaviour
     //List<NodeAI> defendTargetNodes;
     //List<NodeAI> defendTargetNodesAlly;
 
-    public GameObject botUI;
+    ////public GameObject botUI;
 
-    public TextMeshProUGUI stone;
-    public TextMeshProUGUI food;
-    public TextMeshProUGUI water;
+    //public TextMeshProUGUI stone;
+    //public TextMeshProUGUI food;
+    //public TextMeshProUGUI water;
 
     float delayAmount = 2f;
 
@@ -64,7 +64,7 @@ public class DecisionEngine : MonoBehaviour
         allyNodes.Add(GetComponent<NodeAI>());
         //Invoke("CheckNodesForStone()",5f);
 
-        botUI.SetActive(false);
+        //botUI.SetActive(false);
 
     }
 
@@ -121,6 +121,7 @@ public class DecisionEngine : MonoBehaviour
 
     }
 
+    /*
     void updateText()
     {
         if(botUI.activeInHierarchy)
@@ -130,6 +131,7 @@ public class DecisionEngine : MonoBehaviour
             water.text = GetComponent<Resource>().water.ToString();
         }
     }
+    */
 
     private float generateNewNode = 3f;
 
@@ -164,32 +166,32 @@ public class DecisionEngine : MonoBehaviour
 
         }
         //Bot UI update
-        if (botUI.activeInHierarchy) { updateText(); }
+        //if (botUI.activeInHierarchy) { updateText(); }
 
-        // Bot UI aç kapa
-        if (Input.GetMouseButtonDown(0))
-        {
-            // Fare pozisyonunu ekrandan dünya koordinatlarına çevirir
-            Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
+        //// Bot UI aç kapa
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    // Fare pozisyonunu ekrandan dünya koordinatlarına çevirir
+        //    Vector2 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //    RaycastHit2D hit = Physics2D.Raycast(worldPoint, Vector2.zero);
 
-            // Eğer tıklanan obje bu obje ise
-            if (hit.collider != null && hit.collider.gameObject.CompareTag("EnemyNode"))
-            {
-                // Aktif etmek istediğiniz objeyi aktif hale getirir
-                if (botUI != null && !botUI.activeInHierarchy)
-                {
-                    botUI.SetActive(true);
-                }
-                else if (botUI != null && botUI.activeInHierarchy)
-                {
-                    botUI.SetActive(false);
-                }
-                updateText();
-            }
-        }
+        //    // Eğer tıklanan obje bu obje ise
+        //    if (hit.collider != null && hit.collider.gameObject.CompareTag("EnemyNode"))
+        //    {
+        //        // Aktif etmek istediğiniz objeyi aktif hale getirir
+        //        if (botUI != null && !botUI.activeInHierarchy)
+        //        {
+        //            botUI.SetActive(true);
+        //        }
+        //        else if (botUI != null && botUI.activeInHierarchy)
+        //        {
+        //            botUI.SetActive(false);
+        //        }
+        //        updateText();
+        //    }
+        //}
 
-        if(currentState != State.Idle)
+        if (currentState != State.Idle)
         {
             Debug.Log("current state : " + currentState);
 
@@ -199,6 +201,7 @@ public class DecisionEngine : MonoBehaviour
             Debug.Log("aktarım");
             currentState = State.Defence;
             updateState();
+
         }
         // Under Attack if()
 
@@ -217,6 +220,8 @@ public class DecisionEngine : MonoBehaviour
             currentState = State.Idle;
             generateNode = false;
         }
+
+
     }
 
     //Nodelar aras�nda ta�a en yak�n konumu bul
@@ -280,16 +285,6 @@ public class DecisionEngine : MonoBehaviour
         }
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
         generateNextNode(startNode, currentGoal);
-    }
-
-
-
-
-    IEnumerator DelayedGeneration()
-    {
-        chooseResourceGoal();
-        updateState();
-        yield return new WaitForSeconds(delayAmount);
     }
 
     //S�radaki node'u bul
