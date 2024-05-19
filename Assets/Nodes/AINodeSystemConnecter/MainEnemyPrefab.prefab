@@ -282,9 +282,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cd6bb18545d9c4192de8ed09300165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  food: 5
-  water: 5
-  stone: 5
 --- !u!114 &4993972110605906107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,8 +294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fefa7e0caf27f1446af1b3b9eb559807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodToTrainSoldier: 2
-  waterToTrainSoldier: 2
   soldierCountText: {fileID: 5454837083454264102}
   offSet: {x: 0, y: 1.2, z: 0}
   backNode: {fileID: 0}
@@ -320,7 +315,7 @@ MonoBehaviour:
   closestWater: {x: 0, y: 0}
   closestStoneDistance: 4.49
   closestFoodDistance: 3.93
-  closestWaterDistance: 0.84
+  closestWaterDistance: 1.94
   nodeLinePrefab: {fileID: 0}
 --- !u!114 &909879957145483399
 MonoBehaviour:
@@ -356,6 +351,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca79f45041e6714cb6d875835e8cd3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stone: 0
+  stone: 450
   food: 0
   water: 0

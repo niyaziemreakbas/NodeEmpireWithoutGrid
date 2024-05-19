@@ -18,8 +18,8 @@ public class ResourceUI : MonoBehaviour
 
     void UpdateResourceText()
     {
-        stoneValue.text = mainNodeResource.GetStone().ToString();
-        foodValue.text = mainNodeResource.GetFood().ToString();
-        waterValue.text = mainNodeResource.GetWater().ToString();
+        stoneValue.text = Mathf.RoundToInt(mainNodeResource.GetStone()).ToString();
+        foodValue.text = Mathf.RoundToInt(mainNodeResource.GetFood()).ToString();
+        waterValue.text = Mathf.RoundToInt(mainNodeResource.GetWater()).ToString();
     }
 }

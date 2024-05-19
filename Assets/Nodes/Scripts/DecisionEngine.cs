@@ -21,11 +21,11 @@ public class DecisionEngine : MonoBehaviour
     public TextMeshProUGUI food;
     public TextMeshProUGUI water;
 
-    int buildCost = 15;
+    int buildCost = 100;
 
     bool attack = false;
 
-    public int nodeCountUntilAttack = 5;
+    public int nodeCountUntilAttack = 5;    
 
     public GameObject Node;
 
@@ -93,9 +93,9 @@ public class DecisionEngine : MonoBehaviour
 
     void chooseResourceGoal()
     {
-        int stone = GetComponent<Resource>().stone;
-        int water = GetComponent<Resource>().water;
-        int food = GetComponent<Resource>().food;
+        int stone = Mathf.RoundToInt(GetComponent<Resource>().stone);
+        int water = Mathf.RoundToInt(GetComponent<Resource>().water);
+        int food = Mathf.RoundToInt(GetComponent<Resource>().food);
 
         // En az olan değeri bulmak için minimumu hesaplayın
         int minValue = Mathf.Min(stone, water, food);

@@ -280,9 +280,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80cd6bb18545d9c4192de8ed09300165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  food: 5
-  water: 5
-  stone: 5
+  food: 0.1
+  water: 0.1
+  stone: 0.1
 --- !u!114 &5033564988573928284
 MonoBehaviour:
   m_ObjectHideFlags: 0

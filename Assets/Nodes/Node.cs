@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    public int foodToTrainSoldier = 2;
-    public int waterToTrainSoldier = 2;
+    private int foodToTrainSoldier = 10;
+    private int waterToTrainSoldier = 10;
     public TextMeshProUGUI soldierCountText;
     public Vector3 offSet;
 

@@ -997,13 +997,9 @@ PrefabInstance:
       propertyPath: water
       value: 
       objectReference: {fileID: 257593912}
-    - target: {fileID: 909879957145483399, guid: f7c0bb0e558a5f9408fb943a56b24dfd, type: 3}
-      propertyPath: nodePrefab
-      value: 
-      objectReference: {fileID: 4773674198049352624, guid: 6a195fb2a1e02224cb67e9d46bd68540, type: 3}
     - target: {fileID: 1041812561115268668, guid: f7c0bb0e558a5f9408fb943a56b24dfd, type: 3}
       propertyPath: stone
-      value: 45
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4167406500926892352, guid: f7c0bb0e558a5f9408fb943a56b24dfd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1044,18 +1040,6 @@ PrefabInstance:
     - target: {fileID: 4167406500926892352, guid: f7c0bb0e558a5f9408fb943a56b24dfd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6136511347038596199, guid: f7c0bb0e558a5f9408fb943a56b24dfd, type: 3}
-      propertyPath: sourceSearchRadius
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6136511347038596199, guid: f7c0bb0e558a5f9408fb943a56b24dfd, type: 3}
-      propertyPath: targetSearchRadius
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6136511347038596199, guid: f7c0bb0e558a5f9408fb943a56b24dfd, type: 3}
-      propertyPath: closestWaterDistance
-      value: 1.94
       objectReference: {fileID: 0}
     - target: {fileID: 6793526769879120364, guid: f7c0bb0e558a5f9408fb943a56b24dfd, type: 3}
       propertyPath: m_Name
@@ -1558,6 +1542,22 @@ PrefabInstance:
     - target: {fileID: 4775465319561624571, guid: 6ffd8955c0e29054a84c82623b97ab98, type: 3}
       propertyPath: m_Name
       value: MainPlayerPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 5882493096357262257, guid: 6ffd8955c0e29054a84c82623b97ab98, type: 3}
+      propertyPath: food
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5882493096357262257, guid: 6ffd8955c0e29054a84c82623b97ab98, type: 3}
+      propertyPath: stone
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5882493096357262257, guid: 6ffd8955c0e29054a84c82623b97ab98, type: 3}
+      propertyPath: water
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8920332117109150847, guid: 6ffd8955c0e29054a84c82623b97ab98, type: 3}
+      propertyPath: stone
+      value: 45
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -65,9 +65,9 @@ private void Start() {
             UIHelper.Instance.ShowUIPrompt(0);
             modChangeAllow=false;
             
-            if (instantiatedNode!=null)
+            if (instantiatedNode!=null)  //resource check
             {
-                 instantiatedNode.SetBuilded(true);
+                 instantiatedNode.SetBuilded(true); // spend resource
                  AudioManager.instance.NodeConstructedSF();
             }
            parentNode=null;

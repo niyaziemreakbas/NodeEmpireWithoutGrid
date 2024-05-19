@@ -7,55 +7,55 @@ public class Resource : MonoBehaviour
 {
 
 
-    public int stone = 0;
-    public int food = 0;
-    public int water = 0;
+    public float stone = 0;
+    public float food = 0;
+    public float water = 0;
 
     private void Start() {
         GetComponent<Node>().SetBuilded(true);
     }
 
-    public void GainStone(int stone)
+    public void GainStone(float stone)
     {
         this.stone += stone;
     }
 
-    public void GainFood(int food)
+    public void GainFood(float food)
     {
         this.food += food;
     }
 
-    public void GainWater(int water)
+    public void GainWater(float water)
     {
         this.water += water;
     }
 
-    public void SpendStone(int stone)
+    public void SpendStone(float stone)
     {
         this.stone -= stone;
     }
 
-    public void SpendFood(int food)
+    public void SpendFood(float food)
     {
         this.food -= food;
     }
 
-    public void SpendWater(int water)
+    public void SpendWater(float water)
     {
         this.water -= water;
     }
 
-    public int GetStone()
+    public float GetStone()
     {
         return stone;
     }
 
-    public int GetFood()
+    public float GetFood()
     {
         return food;
     }
 
-    public int GetWater()
+    public float GetWater()
     {
         return water;
     }
