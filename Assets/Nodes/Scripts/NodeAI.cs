@@ -37,12 +37,10 @@ public class NodeAI : MonoBehaviour
         int sourceLayerMask = LayerMask.GetMask(layer);
 
         RaycastHit2D[] hits = Physics2D.CircleCastAll(centerPoint, radius, Vector2.zero, Mathf.Infinity, sourceLayerMask);
-        Debug.Log("Hit Counts : " +  hits.Length);
 
 
         foreach (RaycastHit2D hit in hits)
         {
-            Debug.Log("Hit Name : " + hit.collider.tag);
             if (hit.point != null && hit.collider.CompareTag(target))
             {
 

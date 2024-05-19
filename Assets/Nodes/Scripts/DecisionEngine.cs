@@ -118,7 +118,7 @@ public class DecisionEngine : MonoBehaviour
 
     }
 
-    /*
+    
     void updateText()
     {
         /*
@@ -129,7 +129,7 @@ public class DecisionEngine : MonoBehaviour
             water.text = GetComponent<Resource>().water.ToString();
         }*/
     }
-    */
+    
 
     private float generateNewNode = 3f;
 
@@ -378,7 +378,7 @@ public class DecisionEngine : MonoBehaviour
         //&& allyNodes[randomIndex].GetComponent<Node>().backNode != null
         int randomIndex = Random.Range(1, allyNodes.Count);
         Debug.Log("seçilenNodes : " + randomIndex);
-        if (allyNodes[randomIndex].GetComponent<Node>().backNode.soldierCount != 0) 
+        if (allyNodes[randomIndex] != null && allyNodes[randomIndex].GetComponent<Node>().backNode.soldierCount != 0)  //sıkıntı burda
         {
             int soldierTransferTime = 1;
             //int randomSoldierCount = Random.Range(0, 5);

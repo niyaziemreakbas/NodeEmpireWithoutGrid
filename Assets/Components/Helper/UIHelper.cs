@@ -119,8 +119,12 @@ public class UIHelper : MonoBehaviour
             }
     }
     public void ShowWinScreen(){
-        winScreen.SetActive(true);
-        StartCoroutine(GoMainMenu());
+        if (winScreen != null)
+        {
+            winScreen.SetActive(true);
+            StartCoroutine(GoMainMenu());
+        }
+       
     }
     public void ShowLoseScreen(){
         loseScreen.SetActive(true);

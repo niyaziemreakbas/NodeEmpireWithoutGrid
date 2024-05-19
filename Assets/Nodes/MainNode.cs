@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class MainNode : MonoBehaviour
 {
-
+    static int deadEnemyCounter = 0;
 
     public int foodToTrainSoldier = 10;
     public int waterToTrainSoldier = 10;
     private Resource resources;
     private Node thisNode;
 
+    private int maxEnemyCount = 4;
 
     private void Awake()
     {
@@ -44,10 +45,15 @@ public class MainNode : MonoBehaviour
         if (gameObject.CompareTag("PlayerNode"))
         {
             
-         UIHelper.Instance.ShowLoseScreen();
+            UIHelper.Instance.ShowLoseScreen();
+
         }else if(gameObject.CompareTag("EnemyNode")){
-            
-        UIHelper.Instance.ShowWinScreen();
+
+            if(deadEnemyCounter >= maxEnemyCount)
+            {
+                UIHelper.Instance.ShowWinScreen();
+            }
+        
         }
     }
 }
