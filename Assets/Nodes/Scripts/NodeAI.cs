@@ -47,25 +47,30 @@ public class NodeAI : MonoBehaviour
 
                 closestPoint = hit.point;
             }
-            if (target == "Food")
-            {
-                closestFood = closestPoint;
-            }
-            else if (target == "Stone")
-            {
+                
+            if (hit.collider.CompareTag(target)){
+                    
+                if (target == "Food")
+                {
+                    closestFood = closestPoint;
+                }
+                else if (target == "Stone")
+                {
 
-                closestStone = closestPoint;
-            }
-            else if (target == "Water")
-            {
-                closestWater = closestPoint;
-            }
-            else if (target == "PlayerNode")
-            {
+                    closestStone = closestPoint;
+                }
+                else if (target == "Water")
+                {
+                    closestWater = closestPoint;
+                }
+                else if (target == "PlayerNode")
+                {
 
-                Debug.Log("Düşman Node bulundu");
+                    Debug.Log("Düşman Node bulundu");
 
-                attackTargets.Add(hit.collider.GetComponent<Node>());
+                    attackTargets.Add(hit.collider.GetComponent<Node>());
+                }
+            
             }
         }
 

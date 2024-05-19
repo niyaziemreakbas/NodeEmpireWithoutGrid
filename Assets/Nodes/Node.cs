@@ -15,6 +15,7 @@ public class Node : MonoBehaviour
 
     public int soldierCount = 0;
 
+    public NodeHelper nodeHelper;
 
     private bool builded;
 
@@ -47,6 +48,11 @@ public class Node : MonoBehaviour
     }
     private void Update() {
         SetTextPosition();
+        if (nodeHelper!=null)
+        {
+            
+        nodeHelper.transform.position = Camera.main.WorldToScreenPoint(transform.position + offSet+new Vector3(0,1,0));
+        }
     }
 
     void FixedUpdate()
