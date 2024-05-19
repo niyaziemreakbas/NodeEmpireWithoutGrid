@@ -118,6 +118,7 @@ public class DecisionEngine : MonoBehaviour
 
     }
 
+    /*
     void updateText()
     {
         /*
@@ -128,6 +129,7 @@ public class DecisionEngine : MonoBehaviour
             water.text = GetComponent<Resource>().water.ToString();
         }*/
     }
+    */
 
     private float generateNewNode = 3f;
 
@@ -190,7 +192,7 @@ public class DecisionEngine : MonoBehaviour
         }
         */
 
-        if(currentState != State.Idle)
+        if (currentState != State.Idle)
         {
             Debug.Log("current state : " + currentState);
 
@@ -200,6 +202,7 @@ public class DecisionEngine : MonoBehaviour
             Debug.Log("aktarım");
             currentState = State.Defence;
             updateState();
+
         }
         // Under Attack if()
 
@@ -218,6 +221,8 @@ public class DecisionEngine : MonoBehaviour
             currentState = State.Idle;
             generateNode = false;
         }
+
+
     }
 
     //Nodelar aras�nda ta�a en yak�n konumu bul
@@ -281,16 +286,6 @@ public class DecisionEngine : MonoBehaviour
         }
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
         generateNextNode(startNode, currentGoal);
-    }
-
-
-
-
-    IEnumerator DelayedGeneration()
-    {
-        chooseResourceGoal();
-        updateState();
-        yield return new WaitForSeconds(delayAmount);
     }
 
     //S�radaki node'u bul

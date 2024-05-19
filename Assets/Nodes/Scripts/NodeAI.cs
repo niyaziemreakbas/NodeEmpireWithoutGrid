@@ -37,9 +37,12 @@ public class NodeAI : MonoBehaviour
         int sourceLayerMask = LayerMask.GetMask(layer);
 
         RaycastHit2D[] hits = Physics2D.CircleCastAll(centerPoint, radius, Vector2.zero, Mathf.Infinity, sourceLayerMask);
+        Debug.Log("Hit Counts : " +  hits.Length);
+
 
         foreach (RaycastHit2D hit in hits)
         {
+            Debug.Log("Hit Name : " + hit.collider.tag);
             if (hit.point != null && hit.collider.CompareTag(target))
             {
 
@@ -51,6 +54,7 @@ public class NodeAI : MonoBehaviour
                 if (target == "Food")
                 {
                     closestFood = closestPoint;
+                    Debug.Log("Bulundu Food");
                 }
                 else if (target == "Stone")
                 {
@@ -114,54 +118,7 @@ public class NodeAI : MonoBehaviour
        // Debug.Log("Nearest stone position in circle: " + closestStone + ", Distance: " + closestStoneDistance);
        // Debug.Log("Nearest water position in circle: " + closestWater + ", Distance: " + closestWaterDistance);
     }
-    private void Update()
-    {
 
-    }
-
-    /*
-    //Add new Targets
-    private void OnTriggerEnter(Collider other)
-    {
-        /*
-        // Giriş yapan objenin etiketini kontrol edebilirsiniz
-        if (other.CompareTag("EnemyNode"))
-        {
-            //Kendi node u bulmak 
-            
-
-        }
-        
-        if (other.CompareTag("PlayerNode"))
-        {
-
-            FindNearestTargetInCircle(targetSearchRadius, "PlayerNode", "Node");
-
-            
-            if(this.gameObject.GetComponent<Node>().soldierCount <= other.gameObject.GetComponent<Node>().soldierCount)
-            {
-                //savun
-                Debug.Log("Savunacak adam Location : ");
-
-
-                //defendTargets.Add(this.GetComponent<Vector2>());
-                //defendTargetsAlly.Add(this.GetComponent<Vector2>());
-            }
-            else
-            {
-                //saldır
-                Debug.Log("Saldırılacak adam Location : ");
-                //ConnectEnemyToAttack(this.GetComponent<NodeAI>(), other.GetComponent<Node>());
-
-                attackTargets.Add(other.GetComponent<Node>());
-
-                //attackTargetsAlly.Add(this.GetComponent<Vector2>());
-
-            }
-            
-        }
-    }
-    */
 
     public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode)
     {
