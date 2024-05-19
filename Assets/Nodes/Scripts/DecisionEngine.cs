@@ -104,11 +104,11 @@ public class DecisionEngine : MonoBehaviour
         {
             currentState = State.SearchingStone;
         }
-        if (minValue == water && (water <= stone && water <= food))
+        else if (minValue == water && (water <= stone && water <= food))
         {
             currentState = State.SearchingWater;
         }
-        if (minValue == food && (food <= stone && food <= water))
+        else if (minValue == food && (food <= stone && food <= water))
         {
             currentState = State.SearchingFood;
         }
@@ -167,8 +167,8 @@ public class DecisionEngine : MonoBehaviour
 
         if (currentState == State.Idle)
         {
-            Invoke("chooseResourceGoal", 5f);
-            Invoke("updateState", 5f);
+            chooseResourceGoal();
+            updateState();
         }
     }
 
@@ -183,12 +183,12 @@ public class DecisionEngine : MonoBehaviour
         {
             if(currentClosestGoalDistance > node.closestStoneDistance)
             {
-
+                startNode = node;
                 currentClosestGoalDistance = node.closestStoneDistance;
                 currentGoal = node.closestStone;
             }
         }
-
+        Debug.Log("current goal : " + currentGoal);
         //Yukar�da bulunuyor ve art�k hedefe gidebilir
         GoLocation(startNode, currentGoal);
 
@@ -204,6 +204,8 @@ public class DecisionEngine : MonoBehaviour
         {
             if (currentClosestGoalDistance > node.closestWaterDistance)
             {
+                startNode = node;
+
                 currentClosestGoalDistance = node.closestWaterDistance;
                 currentGoal = node.closestWater;
             }
@@ -238,7 +240,7 @@ public class DecisionEngine : MonoBehaviour
     //Belli bir konuma node �ek
     void GoLocation(NodeAI node, Vector2 target)
     {
-        if(target != Vector2.zero)
+        if(target == Vector2.zero)
         {
             Debug.Log("Target not reachable");
         }
@@ -248,8 +250,6 @@ public class DecisionEngine : MonoBehaviour
         generateNextNode(node, target);
     }
 
-
-    private IEnumerator coroutine;
 
     //S�radaki node'u bul
     void generateNextNode(NodeAI startNode, Vector2 targetLoc)
@@ -290,14 +290,18 @@ public class DecisionEngine : MonoBehaviour
         }
         else
         {
-            //Instantiate Object at nextNode
-            generateNextNodeDelay(10f, CreateNode(newPoint, startNode), targetLoc);
-            
+            Debug.Log("distance : " + distance);
+
+            CreateNode(newPoint, startNode);
+
+            Invoke("updateState", 5f);
+
 
         }
 
     }
 
+    /*
     IEnumerator generateNextNode(float waitTime, NodeAI startNode, Vector2 targetLoc)
     {
         yield return new WaitForSeconds(waitTime);
@@ -318,7 +322,7 @@ public class DecisionEngine : MonoBehaviour
     {
         StartCoroutine(CreateNode(waitTime, position, backNode));
     }
-
+    */
     void AttackNode()
     {
         int randomIndex = Random.Range(0, attackTargetNodes.Count);
