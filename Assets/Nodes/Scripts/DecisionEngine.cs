@@ -472,8 +472,4 @@ public class DecisionEngine : MonoBehaviour
 
 
 
-     private void OnDestroy() {
-        UIHelper.Instance.ShowWinScreen();
-    }
-
 }

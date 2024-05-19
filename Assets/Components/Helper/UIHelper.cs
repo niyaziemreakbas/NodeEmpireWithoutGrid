@@ -124,7 +124,6 @@ public class UIHelper : MonoBehaviour
     }
     public void ShowLoseScreen(){
         loseScreen.SetActive(true);
-    
         StartCoroutine(GoMainMenu());
     }
     IEnumerator GoMainMenu(){
