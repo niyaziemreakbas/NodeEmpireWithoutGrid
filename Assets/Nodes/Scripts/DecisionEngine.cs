@@ -428,6 +428,7 @@ public class DecisionEngine : MonoBehaviour
         Node nodeImportNode=importNode.GetComponent<Node>();
 
         NodeLine newNodeLine=Instantiate(nodeLinePrefab);
+        newNodeLine.InitializeNodeLine();
                     newNodeLine.SetColor(Color.green);
                     newNodeLine.AppendNodeToLine(nodeExportNode.transform.position);
                     newNodeLine.AppendNodeToLine(nodeImportNode.transform.position);

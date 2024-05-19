@@ -155,7 +155,7 @@ private void Start() {
 
                         Vector2 diff=hittedNode.transform.position-instantiatedNode.transform.position;
                         float distance=diff.magnitude;
-                        if (distance<=5f)
+                        if (distance<=5.5f)
                         {
                           
                             if (hittedNode.gameObject.CompareTag("EnemyNode"))
@@ -166,7 +166,7 @@ private void Start() {
                                 instantiatedNode.SetEnemyNode(hittedNode);
                                 instantiatedNode.SetIsConnectedToEnemy(true);
                                 instantiatedNode.SetEnemyNodeLine(newNodeLine);
-
+                            
                                 hittedNode.SetEnemyNode(instantiatedNode);
                                 hittedNode.SetIsConnectedToEnemy(true);
                                 hittedNode.SetEnemyNodeLine(newNodeLine);

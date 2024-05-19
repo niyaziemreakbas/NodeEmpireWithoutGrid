@@ -6,6 +6,12 @@ public class NaturalSources : MonoBehaviour
 {
     [SerializeField] private SourceType sourceType;
     private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("PlayerNode")){
+            if (!other.collider.GetComponent<Node>().GetBuilded()){}
+            {
+                UIHelper.Instance.ShowSourceType(sourceType);
+            }
+        }
         if (other.gameObject.CompareTag("PlayerNode") || other.gameObject.CompareTag("EnemyNode"))
         {
             other.gameObject.GetComponent<NodeResources>().SetResourceProductionSpeed(sourceType);
