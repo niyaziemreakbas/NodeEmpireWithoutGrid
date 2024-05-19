@@ -9,7 +9,7 @@ using UnityEngine;
 public class DecisionEngine : MonoBehaviour
 {
     public List<NodeAI> allyNodes=new List<NodeAI>();
-    List<NodeAI> attackTargetNodes;
+    List<Node> attackTargetNodes;
     List<NodeAI> attackTargetNodesAlly;
 
     List<NodeAI> defendTargetNodes;
@@ -38,7 +38,6 @@ public class DecisionEngine : MonoBehaviour
     public NodeLine nodeLinePrefab;
 
     public float lineLength = 5;
-
 
 
     enum State
@@ -361,7 +360,7 @@ public class DecisionEngine : MonoBehaviour
                 if(attacker.GetComponent<Node>().soldierCount > attacked.soldierCount)
                 {
                     ConnectEnemyToAttack(attacker, attacked);
-                    attackTargetNodes.Remove(attacked.GetComponent<NodeAI>());
+                    attackTargetNodes.Remove(attacked);
                     Debug.Log("DEleted");
                 }
 
@@ -380,18 +379,23 @@ public class DecisionEngine : MonoBehaviour
         {
             int randomSoldierCount = Random.Range(0, 5);
             Debug.Log("Asker Gönderiliyor...");
-            Invoke("DeleteLine", randomSoldierCount);
-            ConnectToNodeExportSoldier(allyNodes[randomIndex].GetComponent<Node>().backNode.GetComponent<NodeAI>(), allyNodes[randomIndex].GetComponent<NodeAI>());
+            StartCoroutine(ExportSoldier(allyNodes[randomIndex].GetComponent<Node>().backNode,
+                                        allyNodes[randomIndex].GetComponent<Node>(),
+                                        randomSoldierCount));
+            //Invoke("DeleteLine", randomSoldierCount);
+           // ConnectToNodeExportSoldier(allyNodes[randomIndex].GetComponent<Node>().backNode.GetComponent<NodeAI>(), allyNodes[randomIndex].GetComponent<NodeAI>());
         }
 
         //defendTargetNodes[randomIndex].GetComponent<Node>();
 
     }
-
-    void DeleteLine()
-    {
+    IEnumerator ExportSoldier(Node exportNode,Node importNode,float waitTime){
+        ConnectToNodeExportSoldier(exportNode, importNode);
+        yield return new WaitForSeconds(waitTime);
+        exportNode.ResetExport();
         Debug.Log("Silindi");
     }
+
     
     public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode){
         //kendi dostu ise fonksiyonu sonlandır
@@ -411,14 +415,15 @@ public class DecisionEngine : MonoBehaviour
         newNodeLine.SetColor(Color.red);
                     newNodeLine.AppendNodeToLine(attackedNode.transform.position);
                     newNodeLine.AppendNodeToLine(nodeAttackerNode.transform.position);
-    
+                        
+                        attackedNode.SetEnemyNodeLine(newNodeLine);
+                        nodeAttackerNode.SetEnemyNodeLine(newNodeLine);
+
                         nodeAttackerNode.SetEnemyNode(attackedNode);
                         nodeAttackerNode.SetIsConnectedToEnemy(true);
-                        nodeAttackerNode.SetEnemyNodeLine(newNodeLine);
 
                         attackedNode.SetEnemyNode(nodeAttackerNode);
                         attackedNode.SetIsConnectedToEnemy(true);
-                        attackedNode.SetEnemyNodeLine(newNodeLine);
 
     }
 
@@ -443,9 +448,9 @@ public class DecisionEngine : MonoBehaviour
         return newNode;
     }
     
-    public void ConnectToNodeExportSoldier(NodeAI exportNode, NodeAI importNode){
-        Node nodeExportNode=exportNode.GetComponent<Node>();
-        Node nodeImportNode=importNode.GetComponent<Node>();
+    public void ConnectToNodeExportSoldier(Node exportNode, Node importNode){
+        Node nodeExportNode=exportNode;
+        Node nodeImportNode=importNode;
 
         NodeLine newNodeLine=Instantiate(nodeLinePrefab);
         newNodeLine.InitializeNodeLine();
