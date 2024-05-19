@@ -184,8 +184,9 @@ private void Start() {
                             }
                   
                         }else{
-                            
-                    Destroy(newNodeLine.gameObject);
+                            // MESAFE ÇOK UZUN
+                            UIHelper.Instance.ShowWarningText("The connection you're trying to build is too long",Color.yellow);
+                            Destroy(newNodeLine.gameObject);
                         }
                     // set enemy next node
 

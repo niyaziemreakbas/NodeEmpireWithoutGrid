@@ -75,4 +75,12 @@ public class UIHelper : MonoBehaviour
         }
         prompts[id].SetActive(true);
     }
+    public void ShowWarningText(string text,Color color){
+        modeUpdateText.gameObject.SetActive(true);
+        modeTextActivated=true;
+        modeUpdateText.color=color;
+        tempColor=modeUpdateText.color;
+        modeUpdateText.text = text;
+
+    }
 }
