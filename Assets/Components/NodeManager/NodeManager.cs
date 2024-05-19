@@ -29,7 +29,7 @@ private void Start() {
     {
         if (Input.GetKeyDown(KeyCode.Q) && !modChangeAllow)
         {
-            Debug.Log("değişti");
+            Debug.Log("mod değişti");
             mode++;
             mode%=totalMode;
             UIHelper.Instance.ShowModeUpdate(mode);
@@ -149,33 +149,41 @@ private void Start() {
                     RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10)), Vector2.zero,Mathf.Infinity,nodeMask);
                     if(hit.collider != null)
                     {
+                        
                         Node hittedNode=hit.collider.GetComponent<Node>();
                         newNodeLine.UpdateLastPosition(hittedNode.transform.position);
 
-                    if (hittedNode.gameObject.CompareTag("EnemyNode"))
-                    {
-                        newNodeLine.SetColor(Color.red);
+                        Vector2 diff=hittedNode.transform.position-instantiatedNode.transform.position;
+                        float distance=diff.magnitude;
+                        if (distance<=5f)
+                        {
+                          
+                            if (hittedNode.gameObject.CompareTag("EnemyNode"))
+                            {
 
-                        instantiatedNode.SetEnemyNode(hittedNode);
-                        instantiatedNode.SetIsConnectedToEnemy(true);
-                        instantiatedNode.SetEnemyNodeLine(newNodeLine);
+                                newNodeLine.SetColor(Color.red);
 
-                        hittedNode.SetEnemyNode(instantiatedNode);
-                        hittedNode.SetIsConnectedToEnemy(true);
-                        hittedNode.SetEnemyNodeLine(newNodeLine);
-                        
-                    }else if (hittedNode.gameObject.CompareTag("PlayerNode")){
+                                instantiatedNode.SetEnemyNode(hittedNode);
+                                instantiatedNode.SetIsConnectedToEnemy(true);
+                                instantiatedNode.SetEnemyNodeLine(newNodeLine);
 
-                        newNodeLine.SetColor(Color.green);
-                        instantiatedNode.SetTransferNode(hittedNode);
-                        instantiatedNode.SetIsExporting(true);
-                        instantiatedNode.SetExportLine(newNodeLine);
+                                hittedNode.SetEnemyNode(instantiatedNode);
+                                hittedNode.SetIsConnectedToEnemy(true);
+                                hittedNode.SetEnemyNodeLine(newNodeLine);
+                                
+                            }else if (hittedNode.gameObject.CompareTag("PlayerNode")){
 
-                        hittedNode.SetTransferNode(instantiatedNode);
-                        hittedNode.SetIsImporting(true);
- 
-                    }
+                                newNodeLine.SetColor(Color.green);
+                                instantiatedNode.SetTransferNode(hittedNode);
+                                instantiatedNode.SetIsExporting(true);
+                                instantiatedNode.SetExportLine(newNodeLine);
 
+                                hittedNode.SetTransferNode(instantiatedNode);
+                                hittedNode.SetIsImporting(true);
+        
+                            }
+                  
+                        }
                     // set enemy next node
 
                 }else if(newNodeLine!=null){

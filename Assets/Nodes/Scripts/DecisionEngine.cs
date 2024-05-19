@@ -55,6 +55,7 @@ public class DecisionEngine : MonoBehaviour
     State currentState;
 
     private void Start() {
+        GetComponent<Node>().soldierCount = 20;
         currentState = State.Idle;
         if(allyNodes.Count == 0)
         {
@@ -165,7 +166,9 @@ public class DecisionEngine : MonoBehaviour
         
         if(nodeCountUntilAttack < allyNodes.Count )
         {
-            Debug.Log("can Attack : ");
+            Debug.Log("can attack");
+            currentState = State.Attack;
+            updateState();
         }
 
         if (currentState == State.Idle)
@@ -341,8 +344,27 @@ public class DecisionEngine : MonoBehaviour
     */
     void AttackNode()
     {
-        int randomIndex = Random.Range(0, attackTargetNodes.Count);
-        //ConnectEnemyToAttack(attackTargetNodes[randomIndex].GetComponent<Node>(), attackTargetNodesAlly[randomIndex].GetComponent<Node>());
+        NodeAI attacker;
+        Node attacked;
+
+        foreach (NodeAI node in allyNodes)
+        {
+
+            if(node.attackTargets.Count != 0)
+            {
+                int randomIndex = Random.Range(0, node.attackTargets.Count);
+                
+                attacked = node.attackTargets[randomIndex];
+                attacker = node;
+
+                if(attacker.GetComponent<Node>().soldierCount > attacked.soldierCount)
+                {
+                    ConnectEnemyToAttack(attacker, attacked);
+                }
+
+            }
+
+        }
         
     }
     void DefenceNode()
@@ -353,6 +375,7 @@ public class DecisionEngine : MonoBehaviour
     }
     
     public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode){
+        //kendi dostu ise fonksiyonu sonlandır
         foreach (NodeAI item in allyNodes)
         {   
 
@@ -365,8 +388,8 @@ public class DecisionEngine : MonoBehaviour
         Node nodeAttackerNode=attackerNode.GetComponent<Node>();
 
         NodeLine newNodeLine=Instantiate(nodeLinePrefab);
-                    newNodeLine.InitializeNodeLine();
-                    newNodeLine.SetColor(Color.red);
+        newNodeLine.InitializeNodeLine();
+        newNodeLine.SetColor(Color.red);
                     newNodeLine.AppendNodeToLine(attackedNode.transform.position);
                     newNodeLine.AppendNodeToLine(nodeAttackerNode.transform.position);
     
@@ -399,6 +422,26 @@ public class DecisionEngine : MonoBehaviour
         GetComponent<Resource>().stone -= buildCost;
 
         return newNode;
+    }
+    public void ConnectToNodeExportSoldier(NodeAI exportNode, NodeAI importNode){
+        Node nodeExportNode=exportNode.GetComponent<Node>();
+        Node nodeImportNode=importNode.GetComponent<Node>();
+
+        NodeLine newNodeLine=Instantiate(nodeLinePrefab);
+                    newNodeLine.SetColor(Color.green);
+                    newNodeLine.AppendNodeToLine(nodeExportNode.transform.position);
+                    newNodeLine.AppendNodeToLine(nodeImportNode.transform.position);
+
+        nodeExportNode.SetTransferNode(nodeImportNode);
+                        nodeExportNode.SetIsExporting(true);
+                        nodeExportNode.SetExportLine(newNodeLine);
+
+                        nodeImportNode.SetTransferNode(nodeExportNode);
+                        nodeImportNode.SetIsImporting(true);
+
+
+
+
     }
 
 }

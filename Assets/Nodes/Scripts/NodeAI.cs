@@ -18,9 +18,8 @@ public class NodeAI : MonoBehaviour
     public NodeLine nodeLinePrefab;
 
 
+    public List<Node> attackTargets = new List<Node>();
 
-
-    // List<Vector2> attackTargets;
     // List<Vector2> attackTargetsAlly;
 
 
@@ -35,37 +34,6 @@ public class NodeAI : MonoBehaviour
     /// Belirli bir merkez nokta ve yar��ap ile dairenin i�indeki en yak�n tag'ine sahip nesnenin pozisyonunu d�ner
     public void FindNearestTargetInCircle(float radius, string target, string layer)
     {
-
-        /*
-        RaycastHit2D[] hits = Physics2D.CircleCastAll(centerPoint, radius, Vector2.zero, Mathf.Infinity, sourceLayerMask);
-        foreach (RaycastHit2D hit in hits)
-        {
-            if (hit.collider != null && hit.collider.CompareTag(target))
-            {
-                Vector2 point = Physics2D.ClosestPoint(centerPoint, hit.collider);
-                float distance = Vector2.Distance(centerPoint, point);
-
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestPoint = point;
-                }
-            }
-        }
-
-        if (target == "Food")
-        {
-            closestFood = closestPoint;
-        }
-        else if (target == "Stone")
-        {
-            closestStone = closestPoint;
-        }
-        else if (target == "Water")
-        {
-            closestWater = closestPoint;
-        }
-        */
         centerPoint = transform.position;
         Vector2 closestPoint = Vector2.zero;
         int sourceLayerMask = LayerMask.GetMask(layer);
@@ -92,6 +60,13 @@ public class NodeAI : MonoBehaviour
             {
                 closestWater = closestPoint;
             }
+            else if (target == "PlayerNode")
+            {
+
+                Debug.Log("Düşman Node bulundu");
+
+                attackTargets.Add(hit.collider.GetComponent<Node>());
+            }
         }
 
     }
@@ -108,6 +83,7 @@ public class NodeAI : MonoBehaviour
 
     private void Start()
     {
+        FindNearestTargetInCircle(targetSearchRadius, "PlayerNode", "Node");
 
         // NearestFoodFinder script'ini kullanarak daire i�indeki en yak�n "taş" nesnesinin pozisyonunu al
         FindNearestTargetInCircle(sourceSearchRadius, "Stone", "Source");
@@ -120,6 +96,7 @@ public class NodeAI : MonoBehaviour
         FindNearestTargetInCircle(sourceSearchRadius, "Water", "Source");
 
 
+
         closestWaterDistance = (closestWater != Vector2.zero) ? Vector2.Distance(centerPoint, closestWater) : Mathf.Infinity;
         closestStoneDistance = (closestStone != Vector2.zero) ? Vector2.Distance(centerPoint, closestStone) : Mathf.Infinity;
         closestFoodDistance = (closestFood != Vector2.zero) ? Vector2.Distance(centerPoint, closestFood) : Mathf.Infinity;
@@ -128,7 +105,12 @@ public class NodeAI : MonoBehaviour
        // Debug.Log("Nearest stone position in circle: " + closestStone + ", Distance: " + closestStoneDistance);
        // Debug.Log("Nearest water position in circle: " + closestWater + ", Distance: " + closestWaterDistance);
     }
+    private void Update()
+    {
 
+    }
+
+    /*
     //Add new Targets
     private void OnTriggerEnter(Collider other)
     {
@@ -140,9 +122,13 @@ public class NodeAI : MonoBehaviour
             
 
         }
-        */
-        if (other.CompareTag("Node"))
+        
+        if (other.CompareTag("PlayerNode"))
         {
+
+            FindNearestTargetInCircle(targetSearchRadius, "PlayerNode", "Node");
+
+            
             if(this.gameObject.GetComponent<Node>().soldierCount <= other.gameObject.GetComponent<Node>().soldierCount)
             {
                 //savun
@@ -156,16 +142,18 @@ public class NodeAI : MonoBehaviour
             {
                 //saldır
                 Debug.Log("Saldırılacak adam Location : ");
-                ConnectEnemyToAttack(this.GetComponent<NodeAI>(), other.GetComponent<Node>());
+                //ConnectEnemyToAttack(this.GetComponent<NodeAI>(), other.GetComponent<Node>());
 
-                //attackTargets.Add(other.GetComponent<Vector2>());
+                attackTargets.Add(other.GetComponent<Node>());
 
                 //attackTargetsAlly.Add(this.GetComponent<Vector2>());
 
             }
+            
         }
     }
-    
+    */
+
     public void ConnectEnemyToAttack(NodeAI attackerNode, Node attackedNode)
     {
         /*
