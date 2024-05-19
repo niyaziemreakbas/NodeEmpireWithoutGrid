@@ -14,7 +14,7 @@ public class UIHelper : MonoBehaviour
     private TMP_Text modeUpdateText;
     [SerializeField]
     private float fadeDuration;
-    
+
     private float fadeKat;
     private bool modeTextActivated;
     private Color originModeColor;
@@ -61,10 +61,11 @@ public class UIHelper : MonoBehaviour
             case 1:
                 modeText="Import Export Soldier / Attack Enemy";
                 break;
-            default:
+            case 2:
+                modeText="Empty";
                 break;
         }
-        modeUpdateText.text = "Your mode is now "+modeText;
+        modeUpdateText.text = "Your mode is "+modeText+" now";
     }
 
     public void ShowUIPrompt(int id){
