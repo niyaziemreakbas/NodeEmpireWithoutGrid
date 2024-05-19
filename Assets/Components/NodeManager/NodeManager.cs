@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class NodeManager : MonoBehaviour
 {
+    // https://itch.io/game/accept-admin/2718018/7550942
+    // https://itch.io/game/accept-admin/2718018/9174636
     public Resource mainNodeResource;
 
     public Node nodePrefab;
